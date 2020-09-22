@@ -1,2 +1,2 @@
 # slate-fluid-framework
-a adapter for slate to fluidFramework
+a adapter for slate to fluid framework
