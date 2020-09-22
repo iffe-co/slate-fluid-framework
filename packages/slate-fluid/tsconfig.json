@@ -1,10 +1,6 @@
 {
   "extends": "../../scripts/tsconfig.json",
-  "include": [
-    "src/**/*",
-    "../auth/src/auth.ts",
-    "index.ts"
-  ],
+  "include": ["src/**/*", "../auth/src/auth.ts", "index.ts"],
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./lib"

@@ -1,8 +1,5 @@
 {
-  "exclude": [
-    "dist",
-    "node_modules"
-  ],
+  "exclude": ["dist", "node_modules"],
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "target": "es6",
@@ -13,13 +10,7 @@
     "sourceMap": true,
     "inlineSources": true,
     "jsx": "react",
-    "types": [
-      "react",
-      "react-dom",
-      "jest"
-    ]
+    "types": ["react", "react-dom", "jest"]
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }

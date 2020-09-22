@@ -1,9 +1,9 @@
-import React, { useState, PropsWithChildren, Ref } from 'react'
-import { cx, css } from 'emotion'
+import React, { useState, PropsWithChildren, Ref } from 'react';
+import { cx, css } from 'emotion';
 
-import { Icon } from './components'
+import { Icon } from './components';
 
-import RichText from './rich-text'
+import RichText from './rich-text';
 
 const Header = props => (
   <div
@@ -18,7 +18,7 @@ const Header = props => (
       z-index: 1; /* To appear above the underlay */
     `}
   />
-)
+);
 
 const Title = props => (
   <span
@@ -27,7 +27,7 @@ const Title = props => (
       margin-left: 1em;
     `}
   />
-)
+);
 
 const LinkList = props => (
   <div
@@ -37,7 +37,7 @@ const LinkList = props => (
       margin-right: 1em;
     `}
   />
-)
+);
 
 const A = props => (
   <a
@@ -53,7 +53,7 @@ const A = props => (
       }
     `}
   />
-)
+);
 
 const TabList = ({ isVisible, ...props }) => (
   <div
@@ -72,7 +72,7 @@ const TabList = ({ isVisible, ...props }) => (
       z-index: 1; /* To appear above the underlay */
     `}
   />
-)
+);
 
 const TabListUnderlay = ({ isVisible, ...props }) => (
   <div
@@ -86,7 +86,7 @@ const TabListUnderlay = ({ isVisible, ...props }) => (
       width: 100%;
     `}
   />
-)
+);
 
 const TabButton = props => (
   <span
@@ -104,7 +104,7 @@ const TabButton = props => (
       }
     `}
   />
-)
+);
 React.forwardRef(
   (
     {
@@ -112,11 +112,11 @@ React.forwardRef(
       href,
       ...props
     }: PropsWithChildren<{
-      active: boolean
-      href: string
-      [key: string]: unknown
+      active: boolean;
+      href: string;
+      [key: string]: unknown;
     }>,
-    ref: Ref<HTMLAnchorElement | null>
+    ref: Ref<HTMLAnchorElement | null>,
   ) => (
     <a
       ref={ref}
@@ -136,8 +136,8 @@ React.forwardRef(
         }
       `}
     />
-  )
-)
+  ),
+);
 const Wrapper = ({ className, ...props }) => (
   <div
     {...props}
@@ -147,10 +147,10 @@ const Wrapper = ({ className, ...props }) => (
         max-width: 42em;
         margin: 20px auto;
         padding: 20px;
-      `
+      `,
     )}
   />
-)
+);
 
 const ExampleHeader = props => (
   <div
@@ -165,7 +165,7 @@ const ExampleHeader = props => (
       z-index: 1; /* To appear above the underlay */
     `}
   />
-)
+);
 
 const ExampleTitle = props => (
   <span
@@ -174,7 +174,7 @@ const ExampleTitle = props => (
       margin-left: 1em;
     `}
   />
-)
+);
 
 const ExampleContent = props => (
   <Wrapper
@@ -183,7 +183,7 @@ const ExampleContent = props => (
       background: #fff;
     `}
   />
-)
+);
 
 const Warning = props => (
   <Wrapper
@@ -199,13 +199,13 @@ const Warning = props => (
       }
     `}
   />
-)
+);
 
 const App = () => {
-  const [error] = useState<Error | undefined>()
-  const [stacktrace] = useState<string | undefined>()
-  const [showTabs, setShowTabs] = useState<boolean>()
-  const [name, Component, path] = ['Rich Text', RichText, 'richtext']
+  const [error] = useState<Error | undefined>();
+  const [stacktrace] = useState<string | undefined>();
+  const [showTabs, setShowTabs] = useState<boolean>();
+  const [name, Component, path] = ['Rich Text', RichText, 'richtext'];
   return (
     <div>
       <div>
@@ -229,8 +229,8 @@ const App = () => {
         <ExampleHeader>
           <TabButton
             onClick={e => {
-              e.stopPropagation()
-              setShowTabs(!showTabs)
+              e.stopPropagation();
+              setShowTabs(!showTabs);
             }}
           >
             <Icon>menu</Icon>
@@ -267,6 +267,6 @@ const App = () => {
         />
       </div>
     </div>
-  )
-}
-export default App
+  );
+};
+export default App;

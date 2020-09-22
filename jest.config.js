@@ -1,7 +1,7 @@
 const path = require('path');
 module.exports = {
   transform: {
-    "^.+\\.ts?$": "ts-jest"
+    '^.+\\.ts?$': 'ts-jest',
   },
   collectCoverage: true, // 收集测试时的覆盖率信息
   coverageDirectory: path.resolve(__dirname, './coverage'), // 指定输出覆盖信息文件的目录
