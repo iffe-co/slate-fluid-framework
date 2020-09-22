@@ -60,7 +60,7 @@
     "fix:eslint": "yarn lint:eslint --fix",
     "fix:prettier": "yarn lint:prettier --write",
     "lint": "yarn lint:eslint",
-    "lint:eslint": "eslint \"./src/**/*.{js,jsx,ts,tsx}\" -c ./configs/eslintrc.js",
+    "lint:eslint": "eslint \"./**/src/**/*.{js,jsx,ts}\" -c ./configs/eslintrc.js",
     "lint:prettier": "prettier --list-different \"**/*.{css,md,js,jsx,json,ts,tsx}\"",
     "build": "node scripts/build.js",
     "build:start": "yarn build:pkg && yarn rs-build",
