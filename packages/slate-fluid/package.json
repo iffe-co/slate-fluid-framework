@@ -1,0 +1,33 @@
+{
+  "name": "slate-fluid",
+  "version": "0.0.1",
+  "description": "adapter for slate to fluid framework",
+  "keywords": [
+    "fluid",
+    "slate"
+  ],
+  "author": "CoffeyGit <tjcaofei@126.com>",
+  "homepage": "https://github.com/iffe-co/slate-fluid-framework.git",
+  "license": "ISC",
+  "main": "lib/slate-fluid.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iffe-co/slate-fluid-framework.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/iffe-co/slate-fluid-framework/issues"
+  }
+}
