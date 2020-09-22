@@ -1,0 +1,3 @@
+const eventHandler = () => {};
+
+export { eventHandler };

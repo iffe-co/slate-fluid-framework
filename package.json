@@ -92,5 +92,6 @@
   },
   "lint-staged": {
     "src/**/*": "yarn fix"
-  }
+  },
+  "dependencies": {}
 }
