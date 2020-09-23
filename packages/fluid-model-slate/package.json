@@ -33,6 +33,11 @@
     "url": "https://github.com/iffe-co/slate-fluid-framework/issues"
   },
   "dependencies": {
-    "@solidoc/fluid-model-base": "^0.0.1"
+    "@solidoc/fluid-model-base": "^0.0.1",
+    "core-js": "3",
+    "@fluidframework/core-interfaces": "^0.26.1",
+    "@fluidframework/map": "^0.26.1",
+    "@fluidframework/sequence": "^0.26.1",
+    "@fluidframework/shared-object-base": "^0.26.1"
   }
 }
