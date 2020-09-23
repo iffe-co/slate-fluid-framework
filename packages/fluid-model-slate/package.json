@@ -38,6 +38,7 @@
     "@fluidframework/core-interfaces": "^0.26.1",
     "@fluidframework/map": "^0.26.1",
     "@fluidframework/sequence": "^0.26.1",
-    "@fluidframework/shared-object-base": "^0.26.1"
+    "@fluidframework/shared-object-base": "^0.26.1",
+    "@fluidframework/aqueduct": "^0.26.1"
   }
 }

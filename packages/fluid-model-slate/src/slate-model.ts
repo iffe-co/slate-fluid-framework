@@ -1,6 +1,7 @@
 import { BaseFluidModel, IOperation } from '@solidoc/fluid-model-base';
 import { SharedMap } from '@fluidframework/map';
 import { SharedObjectSequence } from '@fluidframework/sequence';
+import { DataObjectFactory } from "@fluidframework/aqueduct";
 import { IFluidHandle } from '@fluidframework/core-interfaces';
 import { FLUIDNODE_KEYS } from './interfaces';
 import { addEventListenerHandler } from './event-handler';
@@ -16,6 +17,15 @@ class SlateFluidModel extends BaseFluidModel {
   //   [SharedMap.getFactory()],
   //   {},
   // );
+
+  public static get Name() { return "name"; }
+
+  public static readonly factory = new DataObjectFactory(
+      SlateFluidModel.Name,
+      SlateFluidModel,
+      [SharedMap.getFactory(), SharedObjectSequence.getFactory()],
+      {},
+  );
 
   subscribe(id: string) {
     throw new Error('Method not implemented.');

@@ -4,10 +4,13 @@
  */
 
 import {
-    ContainerRuntimeFactoryWithDefaultDataStore,
+    ContainerRuntimeFactoryWithDefaultDataStore, DataObjectFactory,
 } from "@fluidframework/aqueduct";
 
-import { FluidDraftJsObject } from "../fluid-object";
+import {SlateFluidModel} from "@solidoc/fluid-model-slate";
+import {SharedMap} from "@fluidframework/map";
+import {SharedObjectSequence} from "@fluidframework/sequence";
+import {FluidDraftJsObject} from "../fluid-object";
 
 /**
  * This does setup for the Fluid Container.
@@ -20,6 +23,11 @@ import { FluidDraftJsObject } from "../fluid-object";
  * FluidObjects.
  */
 export const FluidDraftJsContainer = new ContainerRuntimeFactoryWithDefaultDataStore(
-    FluidDraftJsObject.Name,
-    new Map([FluidDraftJsObject.factory.registryEntry]),
+    SlateFluidModel.Name,
+    new Map([new DataObjectFactory(
+        SlateFluidModel.Name,
+        SlateFluidModel,
+        [SharedMap.getFactory()],
+        {},
+    ).registryEntry]),
 );

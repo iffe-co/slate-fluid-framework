@@ -7,8 +7,8 @@ import { useState, useEffect } from "react";
 import { getDefaultObjectFromContainer } from "@fluidframework/aqueduct";
 import { getTinyliciousContainer } from "@fluidframework/get-tinylicious-container";
 import { Container } from "@fluidframework/container-loader";
-import { FluidDraftJsObject } from "../fluid-object";
 import { FluidDraftJsContainer } from "../containers";
+import {SlateFluidModel} from "@solidoc/fluid-model-slate";
 
 export const useDraftJsData = (id, isNew) => {
     const [context, setContext] = useState(undefined);
@@ -23,7 +23,8 @@ export const useDraftJsData = (id, isNew) => {
                     FluidDraftJsContainer,
                     isNew
                 );
-                defaultObject = await getDefaultObjectFromContainer<FluidDraftJsObject>(container);
+                defaultObject = await getDefaultObjectFromContainer<SlateFluidModel>(container);
+                // defaultObject = await getDefaultObjectFromContainer<FluidDraftJsObject>(container);
                 setContext(defaultObject);
             } catch (e) {
                 // Something went wrong

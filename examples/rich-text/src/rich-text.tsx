@@ -33,22 +33,23 @@ const RichTextExample = () => {
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
-  model.doc.on("valueChanged", (event: any, local: boolean, op: any) => {
-    if (event.isLocal) {
-      console.log('local event', event)
-      return;
-    } else {
-      console.log('not local event', event)
-      const v = model.doc.get('value')
-      console.log(v)
-      setValue(v)
-      return;
-    }
-  });
+  // model.doc.on("valueChanged", (event: any, local: boolean, op: any) => {
+  //   if (event.isLocal) {
+  //     console.log('local event', event)
+  //     return;
+  //   } else {
+  //     console.log('not local event', event)
+  //     const v = model.doc.get('value')
+  //     console.log(v)
+  //     setValue(v)
+  //     return;
+  //   }
+  // });
 
   const onChanged = value => {
     console.log(value)
-    model.doc.set('value', value)
+    setValue(value)
+    // model.doc.set('value', value)
   }
 
   return (

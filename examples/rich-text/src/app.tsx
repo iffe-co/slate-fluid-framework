@@ -203,7 +203,7 @@ const Warning = props => (
 );
 
 const App = () => {
-  const context = useDraftJsData(`1600847902502`, undefined);
+  const context = useDraftJsData(`9600847902502`, true);
   console.log("context", context)
   const [error] = useState<Error | undefined>();
   const [stacktrace] = useState<string | undefined>();

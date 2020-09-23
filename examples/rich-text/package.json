@@ -25,7 +25,8 @@
     "@fluidframework/aqueduct": "latest",
     "@fluidframework/sequence": "latest",
     "draft-js": "^0.11.7",
-    "immutable": "^4.0.0-rc.12"
+    "immutable": "^4.0.0-rc.12",
+    "@solidoc/fluid-model-slate": "0.0.1"
   },
   "devDependencies": {
     "@types/expect-puppeteer": "2.2.1",
