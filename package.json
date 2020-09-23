@@ -93,5 +93,7 @@
   "lint-staged": {
     "src/**/*": "yarn fix"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@fluidframework/sequence": "^0.26.1"
+  }
 }

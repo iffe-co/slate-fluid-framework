@@ -1,7 +1,7 @@
 const path = require('path');
 module.exports = {
   transform: {
-    "^.+\\.ts?$": "ts-jest"
+    '^.+\\.ts?$': 'ts-jest',
   },
   collectCoverage: true, // 收集测试时的覆盖率信息
   coverageDirectory: path.resolve(__dirname, './coverage'), // 指定输出覆盖信息文件的目录
@@ -22,10 +22,10 @@ module.exports = {
   coverageThreshold: {
     // 配置测试最低阈值
     global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80,
+      // branches: 80,
+      // functions: 80,
+      // lines: 80,
+      // statements: 80,
     },
   },
 };

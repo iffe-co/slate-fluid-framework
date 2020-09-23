@@ -1368,6 +1368,18 @@
     "@fluidframework/shared-object-base" "^0.26.1"
     debug "^4.1.1"
 
+"@fluidframework/merge-tree@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/merge-tree/-/merge-tree-0.26.1.tgz#5bcd283e006be235e15eb04d7925a789963907ba"
+  integrity sha512-GaECIFKAgnhyEuIuDhN8qmY/HbKCOvzTNhWXqp9iuqbs1VQxaDT6ELTGYTvoEWztrxlBcRZEYHTmlK6aE5/Znw==
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.23.0"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/datastore-definitions" "^0.26.1"
+    "@fluidframework/protocol-definitions" "^0.1012.0"
+    "@fluidframework/telemetry-utils" "^0.26.1"
+
 "@fluidframework/protocol-base@^0.1012.0":
   version "0.1012.2"
   resolved "https://registry.npmjs.org/@fluidframework/protocol-base/-/protocol-base-0.1012.2.tgz#ce354ae314e97fa5c0772a7446a5bdf1beca27c1"
@@ -1431,6 +1443,24 @@
     "@fluidframework/protocol-base" "^0.1012.0"
     "@fluidframework/protocol-definitions" "^0.1012.0"
     "@fluidframework/runtime-definitions" "^0.26.1"
+
+"@fluidframework/sequence@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/sequence/-/sequence-0.26.1.tgz#602a02632685d17ee584d54f3a11d0d89a841d2a"
+  integrity sha512-9HxEQtR5mq0CumNbWdj9vMw9K+1TWS/NnzyqeH9mmerlpp/rS4CNbaeVo1teo/UYfofu2ExwWWdhNFhMNIvEPQ==
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.23.0"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/datastore-definitions" "^0.26.1"
+    "@fluidframework/map" "^0.26.1"
+    "@fluidframework/merge-tree" "^0.26.1"
+    "@fluidframework/protocol-definitions" "^0.1012.0"
+    "@fluidframework/runtime-utils" "^0.26.1"
+    "@fluidframework/shared-object-base" "^0.26.1"
+    "@fluidframework/telemetry-utils" "^0.26.1"
+    debug "^4.1.1"
+    lodash "^4.17.19"
 
 "@fluidframework/shared-object-base@^0.26.1":
   version "0.26.1"

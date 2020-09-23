@@ -6,7 +6,7 @@ abstract class BaseFluidModel extends DataObject implements IBaseFluidModel {
 
   abstract unsubscribe(id: string): void;
 
-  abstract apply<T extends IOperation>(op: T): any;
+  abstract async apply<T extends IOperation>(op: T): Promise<void>;
 }
 
 export { BaseFluidModel };

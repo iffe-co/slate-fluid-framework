@@ -1,3 +1,8 @@
-const eventHandler = () => {};
+import { SharedObject } from '@fluidframework/shared-object-base';
+const addEventListenerHandler = (...ddsArray: SharedObject[]) => {
+  ddsArray?.forEach(dds => {
+    dds.on('op', () => {});
+  });
+};
 
-export { eventHandler };
+export { addEventListenerHandler };

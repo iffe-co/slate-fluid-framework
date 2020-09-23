@@ -1,6 +1,22 @@
 import { BaseFluidModel, IOperation } from '@solidoc/fluid-model-base';
+import { SharedMap } from '@fluidframework/map';
+import { SharedObjectSequence } from '@fluidframework/sequence';
+import { IFluidHandle } from '@fluidframework/core-interfaces';
+import { FLUIDNODE_KEYS } from './interfaces';
+import { addEventListenerHandler } from './event-handler';
+import { slateOpHandler } from './slate-op-handler';
 
 class SlateFluidModel extends BaseFluidModel {
+  private fluidNodeSequence!: SharedObjectSequence<IFluidHandle<SharedMap>>;
+  private fluidNode!: SharedMap;
+
+  // public static readonly factory = new DataObjectFactory(
+  //   SlateFluidModel.Name,
+  //   SlateFluidModel,
+  //   [SharedMap.getFactory()],
+  //   {},
+  // );
+
   subscribe(id: string) {
     throw new Error('Method not implemented.');
   }
@@ -9,8 +25,8 @@ class SlateFluidModel extends BaseFluidModel {
     throw new Error('Method not implemented.');
   }
 
-  apply<T extends IOperation>(op: T) {
-    throw new Error('Method not implemented.');
+  async apply<T extends IOperation>(op: T) {
+    return slateOpHandler(op);
   }
 
   /**
@@ -22,7 +38,18 @@ class SlateFluidModel extends BaseFluidModel {
   protected async initializingFirstTime<S = undefined>(
     props?: S,
   ): Promise<void> {
-    //TODO createDDS
+    this.fluidNode = SharedMap.create(this.runtime);
+    this.fluidNode.set(FLUIDNODE_KEYS.ID, 'id=1234');
+    this.fluidNode.set(FLUIDNODE_KEYS.TYPE, 'text');
+    this.fluidNode.set(FLUIDNODE_KEYS.TEXT, 'text-test1111');
+
+    this.fluidNodeSequence = SharedObjectSequence.create(this.runtime);
+    this.fluidNodeSequence.insert(0, [
+      <IFluidHandle<SharedMap>>this.fluidNode.handle,
+    ]);
+
+    this.root.set(FLUIDNODE_KEYS.ID, '');
+    this.root.set(FLUIDNODE_KEYS.CHILDREN, this.fluidNodeSequence.handle);
   }
 
   /**
@@ -35,7 +62,8 @@ class SlateFluidModel extends BaseFluidModel {
    * Called every time the data store is initialized after create or existing.
    */
   protected async hasInitialized(): Promise<void> {
-    //TODO 注册event-handler
+    //注册event-handler
+    addEventListenerHandler(this.fluidNode, this.fluidNodeSequence);
   }
 }
 
