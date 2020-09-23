@@ -24,6 +24,7 @@ module.exports = env => {
     },
     devServer: {
       contentBase: path.join(__dirname, '/src/assets/'),
+      port: 9090
     },
     output: {
       filename: '[name].bundle.js',

@@ -5,6 +5,7 @@ import { Editor, Transforms, createEditor, Node } from 'slate';
 import { withHistory } from 'slate-history';
 
 import { Button, Icon, Toolbar } from './components';
+import {FluidContext} from "./utils";
 
 const HOTKEYS = {
   'mod+b': 'bold',
@@ -16,13 +17,42 @@ const HOTKEYS = {
 const LIST_TYPES = ['numbered-list', 'bulleted-list'];
 
 const RichTextExample = () => {
+  const model = React.useContext(FluidContext);
+
+  const initialValue = [
+    {
+      type: 'paragraph',
+      children: [
+        { text: 'This is editable ' }
+      ],
+    }
+  ];
+
   const [value, setValue] = useState<Node[]>(initialValue);
   const renderElement = useCallback(props => <Element {...props} />, []);
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
+  model.doc.on("valueChanged", (event: any, local: boolean, op: any) => {
+    if (event.isLocal) {
+      console.log('local event', event)
+      return;
+    } else {
+      console.log('not local event', event)
+      const v = model.doc.get('value')
+      console.log(v)
+      setValue(v)
+      return;
+    }
+  });
+
+  const onChanged = value => {
+    console.log(value)
+    model.doc.set('value', value)
+  }
+
   return (
-    <Slate editor={editor} value={value} onChange={value => setValue(value)}>
+    <Slate editor={editor} value={value} onChange={onChanged}>
       <Toolbar>
         <MarkButton format="bold" icon="format_bold" />
         <MarkButton format="italic" icon="format_italic" />
@@ -166,42 +196,5 @@ const MarkButton = ({ format, icon }) => {
     </Button>
   );
 };
-
-const initialValue = [
-  {
-    type: 'paragraph',
-    children: [
-      { text: 'This is editable ' },
-      { text: 'rich', bold: true },
-      { text: ' text, ' },
-      { text: 'much', italic: true },
-      { text: ' better than a ' },
-      { text: '<textarea>', code: true },
-      { text: '!' },
-    ],
-  },
-  {
-    type: 'paragraph',
-    children: [
-      {
-        text:
-          "Since it's rich text, you can do things like turn a selection of text ",
-      },
-      { text: 'bold', bold: true },
-      {
-        text:
-          ', or add a semantically rendered block quote in the middle of the page, like this:',
-      },
-    ],
-  },
-  {
-    type: 'block-quote',
-    children: [{ text: 'A wise quote.' }],
-  },
-  {
-    type: 'paragraph',
-    children: [{ text: 'Try it out for yourself!' }],
-  },
-];
 
 export default RichTextExample;

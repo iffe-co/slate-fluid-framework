@@ -19,7 +19,13 @@
     "react-error-boundary": "^3.0.2",
     "slate": "^0.58.4",
     "slate-history": "^0.58.4",
-    "slate-react": "^0.58.4"
+    "slate-react": "^0.58.4",
+    "@fluidframework/get-tinylicious-container": "latest",
+    "@fluidframework/container-loader": "latest",
+    "@fluidframework/aqueduct": "latest",
+    "@fluidframework/sequence": "latest",
+    "draft-js": "^0.11.7",
+    "immutable": "^4.0.0-rc.12"
   },
   "devDependencies": {
     "@types/expect-puppeteer": "2.2.1",

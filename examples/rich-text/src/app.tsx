@@ -4,6 +4,7 @@ import { cx, css } from 'emotion';
 import { Icon } from './components';
 
 import RichText from './rich-text';
+import {useDraftJsData, FluidContext} from "./utils";
 
 const Header = props => (
   <div
@@ -202,6 +203,8 @@ const Warning = props => (
 );
 
 const App = () => {
+  const context = useDraftJsData(`1600847902502`, undefined);
+  console.log("context", context)
   const [error] = useState<Error | undefined>();
   const [stacktrace] = useState<string | undefined>();
   const [showTabs, setShowTabs] = useState<boolean>();
@@ -258,7 +261,7 @@ const App = () => {
           </Warning>
         ) : (
           <ExampleContent>
-            <Component />
+              { context ? (<FluidContext.Provider value={context}> <Component /> </FluidContext.Provider>) : (<div />)}
           </ExampleContent>
         )}
         <TabListUnderlay
