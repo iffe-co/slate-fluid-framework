@@ -1152,6 +1152,357 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@fluidframework/agent-scheduler@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/agent-scheduler/-/agent-scheduler-0.26.1.tgz#5669120bab17d2a04ac616cf8d44dab94ad03a2d"
+  integrity sha512-3GSky/0N8bWpxk1RH99v0bENQxE8nu7fyLWCtt0keM/ZR78H5ANcRVy39nFLOZ505cn7cNJWS+twRrx/lo+/3w==
+  dependencies:
+    "@fluidframework/container-definitions" "^0.26.1"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/datastore" "^0.26.1"
+    "@fluidframework/datastore-definitions" "^0.26.1"
+    "@fluidframework/map" "^0.26.1"
+    "@fluidframework/register-collection" "^0.26.1"
+    "@fluidframework/runtime-definitions" "^0.26.1"
+    debug "^4.1.1"
+    uuid "^3.3.2"
+
+"@fluidframework/aqueduct@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/aqueduct/-/aqueduct-0.26.1.tgz#7a2f3a38a9d871a26a0854b16501cdb75b22448e"
+  integrity sha512-jBhZ79H+XxrKXx/OA7EX6vswCRK4Px+ojso7dPuSYzJKuCBoddmQSdxF9LWmCIevHV+RexLbMRRVdeeA3ownPA==
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.23.0"
+    "@fluidframework/container-definitions" "^0.26.1"
+    "@fluidframework/container-loader" "^0.26.1"
+    "@fluidframework/container-runtime" "^0.26.1"
+    "@fluidframework/container-runtime-definitions" "^0.26.1"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/datastore" "^0.26.1"
+    "@fluidframework/datastore-definitions" "^0.26.1"
+    "@fluidframework/map" "^0.26.1"
+    "@fluidframework/request-handler" "^0.26.1"
+    "@fluidframework/runtime-definitions" "^0.26.1"
+    "@fluidframework/runtime-utils" "^0.26.1"
+    "@fluidframework/synthesize" "^0.26.1"
+    "@fluidframework/view-interfaces" "^0.26.1"
+    uuid "^3.3.2"
+
+"@fluidframework/common-definitions@^0.19.1":
+  version "0.19.1"
+  resolved "https://registry.npmjs.org/@fluidframework/common-definitions/-/common-definitions-0.19.1.tgz#bca1aed0a388e359043f1b7cd321c9252b856b31"
+  integrity sha512-H+wEaxuIHODVNqyY8XSMY6ww7ndrRfht9CXKUAUzdQjUN1Oi++YonKcD3CXWZod6afxZ6abDmltIO9wLrjOJzg==
+
+"@fluidframework/common-utils@^0.23.0":
+  version "0.23.0"
+  resolved "https://registry.npmjs.org/@fluidframework/common-utils/-/common-utils-0.23.0.tgz#da26220c24ed02e6c0588d18259353ef7598eaa7"
+  integrity sha512-4jawHuQhkIyhGCYhKfKCMbE6bufj95AoEQofJ0YMzWli66iDtj1cOIJexqM36dxPXWpFoXcr5DdEtqMXhX2ufw==
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@types/events" "^3.0.0"
+    assert "^2.0.0"
+    base64-js "^1.3.1"
+    events "^3.1.0"
+    lodash "^4.17.19"
+    performance-now "^2.1.0"
+    sha.js "^2.4.11"
+
+"@fluidframework/container-definitions@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/container-definitions/-/container-definitions-0.26.1.tgz#00637c53ff4a71aaff679566e729901d22814002"
+  integrity sha512-YJjZXDE12W9bQU0NlWz4efXLBS0PWUI+6gbcsqNIJMzHTcN1RLIUpDyJNGCt52lj+6hD5TdvZ0e1coEv3AqAJg==
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/driver-definitions" "^0.26.1"
+    "@fluidframework/protocol-definitions" "^0.1012.0"
+
+"@fluidframework/container-loader@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/container-loader/-/container-loader-0.26.1.tgz#921f036a247569f2869fd45179dfe1de7e9d4eb9"
+  integrity sha512-Iqbk3w0vunsWugpvGc/TAefSHwbjT6+s3CQWCFSsRZJMdJR8ILmBQpXp4T11MsWStfLforjXtoUVBO+/GrC6nw==
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.23.0"
+    "@fluidframework/container-definitions" "^0.26.1"
+    "@fluidframework/container-utils" "^0.26.1"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/driver-definitions" "^0.26.1"
+    "@fluidframework/driver-utils" "^0.26.1"
+    "@fluidframework/protocol-base" "^0.1012.0"
+    "@fluidframework/protocol-definitions" "^0.1012.0"
+    "@fluidframework/telemetry-utils" "^0.26.1"
+    "@types/double-ended-queue" "^2.1.0"
+    debug "^4.1.1"
+    double-ended-queue "^2.1.0-0"
+    lodash "^4.17.19"
+    uuid "^3.3.2"
+
+"@fluidframework/container-runtime-definitions@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/container-runtime-definitions/-/container-runtime-definitions-0.26.1.tgz#180c412413020860ff6f6f752a90419b8f7ccfb9"
+  integrity sha512-eQw8g4nGNJs2t9kB+7IgD7CiyIyI3DZpV8t8f0UFHMNudxOHq6TYvAmiEC/zVdN8OhcxqJuEX7nLAORpTWhBXg==
+  dependencies:
+    "@fluidframework/container-definitions" "^0.26.1"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/driver-definitions" "^0.26.1"
+    "@fluidframework/protocol-definitions" "^0.1012.0"
+    "@fluidframework/runtime-definitions" "^0.26.1"
+    "@types/node" "^10.17.24"
+
+"@fluidframework/container-runtime@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/container-runtime/-/container-runtime-0.26.1.tgz#f8af9bce996d1dad09538c34582a821202637e03"
+  integrity sha512-w2U1g+s4nwCo6gFMIId5E2BrriDiX2M27PB/ZzvuPi6oI2ZO9jsmWH68i5fukaA/RqGvjvkzjbWO/2UYTckv1Q==
+  dependencies:
+    "@fluidframework/agent-scheduler" "^0.26.1"
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.23.0"
+    "@fluidframework/container-definitions" "^0.26.1"
+    "@fluidframework/container-runtime-definitions" "^0.26.1"
+    "@fluidframework/container-utils" "^0.26.1"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/datastore" "^0.26.1"
+    "@fluidframework/driver-definitions" "^0.26.1"
+    "@fluidframework/driver-utils" "^0.26.1"
+    "@fluidframework/protocol-base" "^0.1012.0"
+    "@fluidframework/protocol-definitions" "^0.1012.0"
+    "@fluidframework/runtime-definitions" "^0.26.1"
+    "@fluidframework/runtime-utils" "^0.26.1"
+    "@fluidframework/telemetry-utils" "^0.26.1"
+    "@types/debug" "^4.1.5"
+    "@types/double-ended-queue" "^2.1.0"
+    "@types/node" "^10.17.24"
+    "@types/uuid" "^3.4.4"
+    debug "^4.1.1"
+    double-ended-queue "^2.1.0-0"
+    uuid "^3.3.2"
+
+"@fluidframework/container-utils@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/container-utils/-/container-utils-0.26.1.tgz#c3e90004e6dd2f288a571009f0e3a0488b4bae7f"
+  integrity sha512-Azta/3jJeHrUtZXCOGIft/geJxUGq2Qy5OvLdJGJr4w35JKSelpGuBjLUMIgmBlnEZMWgNVv1ghdbrwZxqCaTg==
+  dependencies:
+    "@fluidframework/container-definitions" "^0.26.1"
+    "@fluidframework/telemetry-utils" "^0.26.1"
+
+"@fluidframework/core-interfaces@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/core-interfaces/-/core-interfaces-0.26.1.tgz#0799a04ad0554728492ed4bcefd73c583ffdaedf"
+  integrity sha512-2A2xsOL9fQ/k7AiHJSNUGIvQWBKjQiWvhkIREHk2qOSTAvc+hPNWKDtxUNoKTbZTCVPHXqxpGkQwHA6TtjSnHA==
+
+"@fluidframework/datastore-definitions@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/datastore-definitions/-/datastore-definitions-0.26.1.tgz#68707c0ae503e27d6475f4d070a284210ca6df46"
+  integrity sha512-UY3UyMEJ8BU6fegC6MwKY3aoq5pVHBlrom95CchDvjk9moDMgmYQNMBZ4tMEXzMTHdxR8QD6bRlx7pcb6Pf2kw==
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/container-definitions" "^0.26.1"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/protocol-definitions" "^0.1012.0"
+    "@fluidframework/runtime-definitions" "^0.26.1"
+    "@types/node" "^10.17.24"
+
+"@fluidframework/datastore@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/datastore/-/datastore-0.26.1.tgz#33d6d4bc104658973279ed3ade8586e366e509b4"
+  integrity sha512-aLvGlSXKCf+Qbm61eGwYAbAISgcu0CVN3DqFA5ixg5l87nb6PabHUIJHsRmtGsGxG5XF3+Y4bWS3+UQmdkKnDg==
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.23.0"
+    "@fluidframework/container-definitions" "^0.26.1"
+    "@fluidframework/container-utils" "^0.26.1"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/datastore-definitions" "^0.26.1"
+    "@fluidframework/driver-definitions" "^0.26.1"
+    "@fluidframework/driver-utils" "^0.26.1"
+    "@fluidframework/protocol-base" "^0.1012.0"
+    "@fluidframework/protocol-definitions" "^0.1012.0"
+    "@fluidframework/runtime-definitions" "^0.26.1"
+    "@fluidframework/runtime-utils" "^0.26.1"
+    "@fluidframework/telemetry-utils" "^0.26.1"
+    assert "^2.0.0"
+    debug "^4.1.1"
+    uuid "^3.3.2"
+
+"@fluidframework/driver-definitions@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/driver-definitions/-/driver-definitions-0.26.1.tgz#d96f414761269d889264a17dd034097063975c2c"
+  integrity sha512-Xd8CDe5LGPEq6xa6DsCswQuMIDriDso1T3WMcvaUnnuquKTdZh7phTzlsDH4O6dQuhprsKxI/Jnohke2AA/UuA==
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/protocol-definitions" "^0.1012.0"
+
+"@fluidframework/driver-utils@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/driver-utils/-/driver-utils-0.26.1.tgz#ae969a5ec42bf4e8e51926518f717926686f7001"
+  integrity sha512-hJupVQCg55MWD4+W3CVEr6IdLc88KoAvj8BQvDwnvi1+2aziq7DqVBoHu/nl0+8ZVYZ/gK+4JqFR7L6TP0YPAQ==
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.23.0"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/driver-definitions" "^0.26.1"
+    "@fluidframework/gitresources" "^0.1012.0"
+    "@fluidframework/protocol-base" "^0.1012.0"
+    "@fluidframework/protocol-definitions" "^0.1012.0"
+    "@fluidframework/telemetry-utils" "^0.26.1"
+
+"@fluidframework/gitresources@^0.1012.0", "@fluidframework/gitresources@^0.1012.2":
+  version "0.1012.2"
+  resolved "https://registry.npmjs.org/@fluidframework/gitresources/-/gitresources-0.1012.2.tgz#3d740df4d08ddcd131e2a19dbb2a6ec680d81894"
+  integrity sha512-ysb9skxUKtIUSNUFqqcTQBMpCDrPcezc4pvDLaBdxcK4BuP3Ak2gZGmIVeXfbsx40+isBQ8xGbJISIZlgtGlZw==
+
+"@fluidframework/map@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/map/-/map-0.26.1.tgz#a341e61abf54651ab2fe62339ab9ba020e4b3280"
+  integrity sha512-e0NhYibjO/3C6ucP2ykW3/RL1eG5Iz9BHNJrb/OjyE6aBGwM7fDVuF34KU1dJv2UUIzK4ayimhEvz/nl0QIIMQ==
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.23.0"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/datastore-definitions" "^0.26.1"
+    "@fluidframework/protocol-base" "^0.1012.0"
+    "@fluidframework/protocol-definitions" "^0.1012.0"
+    "@fluidframework/shared-object-base" "^0.26.1"
+    debug "^4.1.1"
+
+"@fluidframework/merge-tree@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/merge-tree/-/merge-tree-0.26.1.tgz#5bcd283e006be235e15eb04d7925a789963907ba"
+  integrity sha512-GaECIFKAgnhyEuIuDhN8qmY/HbKCOvzTNhWXqp9iuqbs1VQxaDT6ELTGYTvoEWztrxlBcRZEYHTmlK6aE5/Znw==
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.23.0"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/datastore-definitions" "^0.26.1"
+    "@fluidframework/protocol-definitions" "^0.1012.0"
+    "@fluidframework/telemetry-utils" "^0.26.1"
+
+"@fluidframework/protocol-base@^0.1012.0":
+  version "0.1012.2"
+  resolved "https://registry.npmjs.org/@fluidframework/protocol-base/-/protocol-base-0.1012.2.tgz#ce354ae314e97fa5c0772a7446a5bdf1beca27c1"
+  integrity sha512-K8YRUIvrlO+54hyzLgLhZ9tQNeyPd9/yX0h/6XEE4m0oazCcCOFihAFzBIQXxypv1zNH2fbKlsQ7xaHHDbZ6rA==
+  dependencies:
+    "@fluidframework/common-utils" "^0.23.0"
+    "@fluidframework/gitresources" "^0.1012.2"
+    "@fluidframework/protocol-definitions" "^0.1012.2"
+    assert "^2.0.0"
+    lodash "^4.17.19"
+
+"@fluidframework/protocol-definitions@^0.1012.0", "@fluidframework/protocol-definitions@^0.1012.2":
+  version "0.1012.2"
+  resolved "https://registry.npmjs.org/@fluidframework/protocol-definitions/-/protocol-definitions-0.1012.2.tgz#afff8f9f8445d2ebea6534157c61915b7a6ee1ba"
+  integrity sha512-nwZtRr1Cty2Dw0Uav38brRf2ztwBfc++ix5Q11mdqJVSlfHvjCR91PWRoeaQnIS947xCs3MeahPhEavRW+60pw==
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+
+"@fluidframework/register-collection@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/register-collection/-/register-collection-0.26.1.tgz#b8d9a4a99cc1ccfc5274e4f91df3e20a382726e5"
+  integrity sha512-Z73hIo4IcO4VLbxl/7b+gmTK0wQa2lDOEwbXxUVxLI5/fucah6Mzcdf68cNvAl8UtOvb/bXAw7x3YRLAfS3BDw==
+  dependencies:
+    "@fluidframework/common-utils" "^0.23.0"
+    "@fluidframework/datastore-definitions" "^0.26.1"
+    "@fluidframework/protocol-definitions" "^0.1012.0"
+    "@fluidframework/shared-object-base" "^0.26.1"
+    debug "^4.1.1"
+
+"@fluidframework/request-handler@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/request-handler/-/request-handler-0.26.1.tgz#871095a66a0ba6bb9a1178ddc1befccb6d808d0b"
+  integrity sha512-Zn0uCDv2shHQcLnA/S5iSymb3NhSJ9TC7FEKps9yUxOG136KXbHufp6tcTVxowLoNt+eI7tfD6Nk5NTHMkAS6A==
+  dependencies:
+    "@fluidframework/container-runtime-definitions" "^0.26.1"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/runtime-definitions" "^0.26.1"
+    "@fluidframework/runtime-utils" "^0.26.1"
+
+"@fluidframework/runtime-definitions@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/runtime-definitions/-/runtime-definitions-0.26.1.tgz#c5be381f1f50fb87128b6e29c9b157a1a3b8eeb1"
+  integrity sha512-c0YRh1YntPXP1E/lyVOi/UDJ+jPQ9pcyddlU7IVJxNknLMUpM9GzXleIjf65FMV7L/csexSIt4H51IdJZSmxGw==
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/container-definitions" "^0.26.1"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/driver-definitions" "^0.26.1"
+    "@fluidframework/protocol-definitions" "^0.1012.0"
+    "@types/node" "^10.17.24"
+
+"@fluidframework/runtime-utils@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/runtime-utils/-/runtime-utils-0.26.1.tgz#9d9d9e218bf77d01aefb58b85a9eb801a91cb126"
+  integrity sha512-QTw7icvrz2Il7Z18eTlMNyXLqszbaTWmVVPhmX/f8vGiY2G7N4dRY9Vc4DViwu66CPCloc0w1vKtfeH/czc9xw==
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.23.0"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/datastore-definitions" "^0.26.1"
+    "@fluidframework/protocol-base" "^0.1012.0"
+    "@fluidframework/protocol-definitions" "^0.1012.0"
+    "@fluidframework/runtime-definitions" "^0.26.1"
+
+"@fluidframework/sequence@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/sequence/-/sequence-0.26.1.tgz#602a02632685d17ee584d54f3a11d0d89a841d2a"
+  integrity sha512-9HxEQtR5mq0CumNbWdj9vMw9K+1TWS/NnzyqeH9mmerlpp/rS4CNbaeVo1teo/UYfofu2ExwWWdhNFhMNIvEPQ==
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.23.0"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/datastore-definitions" "^0.26.1"
+    "@fluidframework/map" "^0.26.1"
+    "@fluidframework/merge-tree" "^0.26.1"
+    "@fluidframework/protocol-definitions" "^0.1012.0"
+    "@fluidframework/runtime-utils" "^0.26.1"
+    "@fluidframework/shared-object-base" "^0.26.1"
+    "@fluidframework/telemetry-utils" "^0.26.1"
+    debug "^4.1.1"
+    lodash "^4.17.19"
+
+"@fluidframework/shared-object-base@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/shared-object-base/-/shared-object-base-0.26.1.tgz#7b7056cc555a9082569253410ca3fe0dab708833"
+  integrity sha512-qoOp2Ox7Z8PWCv15yOBkqtFFsUjVm2UO5Xa3mdUThvCWlo6AC/i5uI9ejw09B+FRPou3715RmaSnJU7DEYvL5w==
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/container-definitions" "^0.26.1"
+    "@fluidframework/core-interfaces" "^0.26.1"
+    "@fluidframework/datastore" "^0.26.1"
+    "@fluidframework/datastore-definitions" "^0.26.1"
+    "@fluidframework/protocol-definitions" "^0.1012.0"
+    "@fluidframework/telemetry-utils" "^0.26.1"
+    "@types/debug" "^4.1.5"
+    "@types/node" "^10.17.24"
+    debug "^4.1.1"
+    uuid "^3.3.2"
+
+"@fluidframework/synthesize@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/synthesize/-/synthesize-0.26.1.tgz#a92e439206836eafd44d51562529f5f4e2d8ba5f"
+  integrity sha512-G+2Hox+fafo/v7eUwkIcxiC0FnItFuJuSElVuTq8nPzbkXtnraF3is+ytUC/+JLr788AvTm8V2bRD9IbyQhBpQ==
+  dependencies:
+    "@fluidframework/core-interfaces" "^0.26.1"
+
+"@fluidframework/telemetry-utils@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/telemetry-utils/-/telemetry-utils-0.26.1.tgz#de0b846effdde389bd88209efdcd116c08477998"
+  integrity sha512-eQhj0bRuQ4VA8AAjk1kGW9PHToIqvLnE7aVdXpmoXLrbcdZ80YigVR6ZCdZ53AQmxfd3QMu7/65o3xpQ306kug==
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.23.0"
+    debug "^4.1.1"
+    events "^3.1.0"
+
+"@fluidframework/view-interfaces@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.npmjs.org/@fluidframework/view-interfaces/-/view-interfaces-0.26.1.tgz#57701a3fda7754c30e5967da7e91e86f5fb6b908"
+  integrity sha512-hF/do+i25Xy5607UclWISRJI2iojMt/j2cR6Y/SSDQLwi8b/eG1jv6M/mxDtkN+vpa6bL+5+dW5kU9aB0bMJSw==
+  dependencies:
+    "@fluidframework/core-interfaces" "^0.26.1"
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.npmjs.org/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
@@ -1483,6 +1834,16 @@
   resolved "https://registry.npmjs.org/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
   integrity sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
 
+"@types/debug@^4.1.5":
+  version "4.1.5"
+  resolved "https://registry.npmjs.org/@types/debug/-/debug-4.1.5.tgz#b14efa8852b7768d898906613c23f688713e02cd"
+  integrity sha512-Q1y515GcOdTHgagaVFhHnIFQ38ygs/kmxdNpvpou+raI9UO3YZcHDngBSYKQklcKlvA7iuQlmIKbzvmxcOE9CQ==
+
+"@types/double-ended-queue@^2.1.0":
+  version "2.1.1"
+  resolved "https://registry.npmjs.org/@types/double-ended-queue/-/double-ended-queue-2.1.1.tgz#f077386134f0f736d927812c85c43a04f21ddc27"
+  integrity sha512-O2+umEIlHBVyi+ePmucPjpINqTvSnsz+hAok0D4IpvrOsIsDr6c34B0AbNXW2UDVYuxbv51z5dxnrRt23ohgWg==
+
 "@types/estree@*":
   version "0.0.45"
   resolved "https://registry.npmjs.org/@types/estree/-/estree-0.0.45.tgz#e9387572998e5ecdac221950dab3e8c3b16af884"
@@ -1492,6 +1853,11 @@
   version "0.0.39"
   resolved "https://registry.npmjs.org/@types/estree/-/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
   integrity sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==
+
+"@types/events@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
+  integrity sha512-EaObqwIvayI5a8dCzhFrjKzVwKLxjoG9T6Ppd5CEo07LRKfQ8Yokw54r5+Wq7FaBQ+yXRvQAYPrHwya1/UFt9g==
 
 "@types/graceful-fs@^4.1.2":
   version "4.1.3"
@@ -1555,6 +1921,11 @@
   resolved "https://registry.npmjs.org/@types/node/-/node-14.11.2.tgz#2de1ed6670439387da1c9f549a2ade2b0a799256"
   integrity sha512-jiE3QIxJ8JLNcb1Ps6rDbysDhN4xa8DJJvuC9prr6w+1tIh+QAbYyNF3tyiZNLDBIuBCf4KEcV2UvQm/V60xfA==
 
+"@types/node@^10.17.24":
+  version "10.17.35"
+  resolved "https://registry.npmjs.org/@types/node/-/node-10.17.35.tgz#58058f29b870e6ae57b20e4f6e928f02b7129f56"
+  integrity sha512-gXx7jAWpMddu0f7a+L+txMplp3FnHl53OhQIF9puXKq3hDGY/GjH+MF04oWnV/adPSCrbtHumDCFwzq2VhltWA==
+
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
   resolved "https://registry.npmjs.org/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
@@ -1586,6 +1957,11 @@
   version "1.0.1"
   resolved "https://registry.npmjs.org/@types/stack-utils/-/stack-utils-1.0.1.tgz#0a851d3bd96498fa25c33ab7278ed3bd65f06c3e"
   integrity sha512-l42BggppR6zLmpfU6fq9HEa2oGPEI8yrSPL3GITjfRInppYFahObbIQOQK3UGxEnyQpltZLaPe75046NOZQikw==
+
+"@types/uuid@^3.4.4":
+  version "3.4.9"
+  resolved "https://registry.npmjs.org/@types/uuid/-/uuid-3.4.9.tgz#fcf01997bbc9f7c09ae5f91383af076d466594e1"
+  integrity sha512-XDwyIlt/47l2kWLTzw/mtrpLdB+GPSskR2n/PIcPn+VYhVO77rGhRncIR5GPU0KRzXuqkDO+J5qqrG0Y8P6jzQ==
 
 "@types/yargs-parser@*":
   version "15.0.0"
@@ -1848,6 +2224,11 @@ arr-union@^3.1.0:
   resolved "https://registry.npmjs.org/arr-union/-/arr-union-3.1.0.tgz#e39b09aea9def866a8f206e288af63919bae39c4"
   integrity sha1-45sJrqne+Gao8gbiiK9jkZuuOcQ=
 
+array-filter@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/array-filter/-/array-filter-1.0.0.tgz#baf79e62e6ef4c2a4c0b831232daffec251f9d83"
+  integrity sha1-uveeYubvTCpMC4MSMtr/7CUfnYM=
+
 array-ify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/array-ify/download/array-ify-1.0.0.tgz#9e528762b4a9066ad163a6962a364418e9626ece"
@@ -1916,6 +2297,16 @@ assert-plus@1.0.0, assert-plus@^1.0.0:
   resolved "https://registry.npmjs.org/assert-plus/-/assert-plus-1.0.0.tgz#f12e0f3c5d77b0b1cdd9146942e4e96c1e4dd525"
   integrity sha1-8S4PPF13sLHN2RRpQuTpbB5N1SU=
 
+assert@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/assert/-/assert-2.0.0.tgz#95fc1c616d48713510680f2eaf2d10dd22e02d32"
+  integrity sha512-se5Cd+js9dXJnu6Ag2JFc00t+HmHOen+8Q+L7O9zI0PqQXr20uk2J0XQqMxZEeo5U50o8Nvmmx7dZrl+Ufr35A==
+  dependencies:
+    es6-object-assign "^1.1.0"
+    is-nan "^1.2.1"
+    object-is "^1.0.1"
+    util "^0.12.0"
+
 assign-symbols@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/assign-symbols/-/assign-symbols-1.0.0.tgz#59667f41fadd4f20ccbc2bb96b8d4f7f78ec0367"
@@ -1955,6 +2346,13 @@ atob@^2.1.2:
   version "2.1.2"
   resolved "https://registry.npmjs.org/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
+
+available-typed-arrays@^1.0.0, available-typed-arrays@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/available-typed-arrays/-/available-typed-arrays-1.0.2.tgz#6b098ca9d8039079ee3f77f7b783c4480ba513f5"
+  integrity sha512-XWX3OX8Onv97LMk/ftVyBibpGwY5a8SmuxZPzeOxqmuEqUCOM9ZE+uIaD1VNJ5QnvU2UQusvmKbuM1FR8QWGfQ==
+  dependencies:
+    array-filter "^1.0.0"
 
 aws-sign2@~0.7.0:
   version "0.7.0"
@@ -2077,6 +2475,11 @@ balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
+
+base64-js@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.npmjs.org/base64-js/-/base64-js-1.3.1.tgz#58ece8cb75dd07e71ed08c736abc5fac4dbf8df1"
+  integrity sha512-mLQ4i2QO1ytvGWFWmcngKO//JXAQueZvwEKtjgQFM4jIK0kU+ytMfplL8j+n5mspOfjHwoAg+9yhb7BwAHm36g==
 
 base@^0.11.1:
   version "0.11.2"
@@ -2630,6 +3033,11 @@ compare-func@^2.0.0:
   dependencies:
     array-ify "^1.0.0"
     dot-prop "^5.1.0"
+
+compare-versions@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.npm.taobao.org/compare-versions/download/compare-versions-3.6.0.tgz#1a5689913685e5a87637b8d3ffca75514ec41d62"
+  integrity sha1-GlaJkTaF5ah2N7jT/8p1UU7EHWI=
 
 component-emitter@^1.2.1:
   version "1.3.0"
@@ -3270,6 +3678,11 @@ dot-prop@^5.1.0, dot-prop@^5.2.0:
   dependencies:
     is-obj "^2.0.0"
 
+double-ended-queue@^2.1.0-0:
+  version "2.1.0-0"
+  resolved "https://registry.npmjs.org/double-ended-queue/-/double-ended-queue-2.1.0-0.tgz#103d3527fd31528f40188130c841efdd78264e5c"
+  integrity sha1-ED01J/0xUo9AGIEwyEHv3XgmTlw=
+
 ecc-jsbn@~0.1.1:
   version "0.1.2"
   resolved "https://registry.npmjs.org/ecc-jsbn/-/ecc-jsbn-0.1.2.tgz#3a83a904e54353287874c564b7549386849a98c9"
@@ -3370,7 +3783,7 @@ error-ex@^1.2.0, error-ex@^1.3.1:
   dependencies:
     is-arrayish "^0.2.1"
 
-es-abstract@^1.17.0, es-abstract@^1.17.0-next.1, es-abstract@^1.17.2, es-abstract@^1.17.5:
+es-abstract@^1.17.0, es-abstract@^1.17.0-next.1, es-abstract@^1.17.2, es-abstract@^1.17.4, es-abstract@^1.17.5:
   version "1.17.6"
   resolved "https://registry.npm.taobao.org/es-abstract/download/es-abstract-1.17.6.tgz?cache=0&sync_timestamp=1597446119395&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fes-abstract%2Fdownload%2Fes-abstract-1.17.6.tgz#9142071707857b2cacc7b89ecb670316c3e2d52a"
   integrity sha1-kUIHFweFeyysx7iey2cDFsPi1So=
@@ -3413,6 +3826,11 @@ es-to-primitive@^1.2.1:
     is-callable "^1.1.4"
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
+
+es6-object-assign@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/es6-object-assign/-/es6-object-assign-1.1.0.tgz#c2c3582656247c39ea107cb1e6652b6f9f24523c"
+  integrity sha1-wsNYJlYkfDnqEHyx5mUrb58kUjw=
 
 escalade@^3.1.0:
   version "3.1.0"
@@ -3659,6 +4077,11 @@ eventemitter3@^4.0.4:
   version "4.0.7"
   resolved "https://registry.npmjs.org/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
   integrity sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
+
+events@^3.1.0:
+  version "3.2.0"
+  resolved "https://registry.npmjs.org/events/-/events-3.2.0.tgz#93b87c18f8efcd4202a461aec4dfc0556b639379"
+  integrity sha512-/46HWwbfCX2xTawVfkKLGxMifJYQBWMwY1mjywRtb4c9x8l5NP3KoJtnIOiL1hfdRkIuYhETxQlo62IF8tcnlg==
 
 evp_bytestokey@^1.0.0, evp_bytestokey@^1.0.3:
   version "1.0.3"
@@ -3958,6 +4381,13 @@ find-value@^1.0.3:
   resolved "https://registry.npmjs.org/find-value/-/find-value-1.0.12.tgz#68b6cec84e5b2d51272965e0bf09b26c9159c26e"
   integrity sha512-OCpo8LTk8eZ2sdDCwbU2Lc3ivYsdM6yod6jP2jHcNEFcjPhkgH0+POzTIol7xx1LZgtbI5rkO5jqxsG5MWtPjQ==
 
+find-versions@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.npm.taobao.org/find-versions/download/find-versions-3.2.0.tgz#10297f98030a786829681690545ef659ed1d254e"
+  integrity sha1-ECl/mAMKeGgpaBaQVF72We0dJU4=
+  dependencies:
+    semver-regex "^2.0.0"
+
 findup-sync@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npm.taobao.org/findup-sync/download/findup-sync-3.0.0.tgz#17b108f9ee512dfb7a5c7f3c8b27ea9e1a9c08d1"
@@ -3987,7 +4417,7 @@ for-in@^1.0.2:
   resolved "https://registry.npmjs.org/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=
 
-foreach@~2.0.1:
+foreach@^2.0.5, foreach@~2.0.1:
   version "2.0.5"
   resolved "https://registry.npmjs.org/foreach/-/foreach-2.0.5.tgz#0bee005018aeb260d0a3af3ae658dd0136ec1b99"
   integrity sha1-C+4AUBiusmDQo6865ljdATbsG5k=
@@ -4413,6 +4843,22 @@ human-signals@^1.1.1:
   resolved "https://registry.npmjs.org/human-signals/-/human-signals-1.1.1.tgz#c5b1cd14f50aeae09ab6c59fe63ba3395fe4dfa3"
   integrity sha512-SEQu7vl8KjNL2eoGBLF3+wAjpsNfA9XMlXAYj/3EdaNfAlxKthD1xjEQfGOUhllCGGJVNY34bRr6lPINhNjyZw==
 
+husky@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.npm.taobao.org/husky/download/husky-4.3.0.tgz?cache=0&sync_timestamp=1600671441746&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fhusky%2Fdownload%2Fhusky-4.3.0.tgz#0b2ec1d66424e9219d359e26a51c58ec5278f0de"
+  integrity sha1-Cy7B1mQk6SGdNZ4mpRxY7FJ48N4=
+  dependencies:
+    chalk "^4.0.0"
+    ci-info "^2.0.0"
+    compare-versions "^3.6.0"
+    cosmiconfig "^7.0.0"
+    find-versions "^3.2.0"
+    opencollective-postinstall "^2.0.2"
+    pkg-dir "^4.2.0"
+    please-upgrade-node "^3.2.0"
+    slash "^3.0.0"
+    which-pm-runs "^1.0.0"
+
 iconv-lite@0.4.24, iconv-lite@^0.4.24:
   version "0.4.24"
   resolved "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
@@ -4594,6 +5040,11 @@ is-accessor-descriptor@^1.0.0:
   dependencies:
     kind-of "^6.0.0"
 
+is-arguments@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.npmjs.org/is-arguments/-/is-arguments-1.0.4.tgz#3faf966c7cba0ff437fb31f6250082fcf0448cf3"
+  integrity sha512-xPh0Rmt8NE65sNzvyUmWgI1tz3mKq74lGA0mL8LYZcoIzKOzDh6HmrYm3d18k60nHerC8A9Km8kYu87zfSFnLA==
+
 is-arrayish@^0.2.1:
   version "0.2.1"
   resolved "https://registry.npmjs.org/is-arrayish/-/is-arrayish-0.2.1.tgz#77c99840527aa8ecb1a8ba697b80645a7a926a9d"
@@ -4724,6 +5175,11 @@ is-generator-fn@^2.0.0:
   resolved "https://registry.npmjs.org/is-generator-fn/-/is-generator-fn-2.1.0.tgz#7d140adc389aaf3011a8f2a2a4cfa6faadffb118"
   integrity sha512-cTIB4yPYL/Grw0EaSzASzg6bBy9gqCofvWN8okThAYIxKJZC+udlRAmGbM0XLeniEJSs8uEgHPGuHSe1XsOLSQ==
 
+is-generator-function@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.npmjs.org/is-generator-function/-/is-generator-function-1.0.7.tgz#d2132e529bb0000a7f80794d4bdf5cd5e5813522"
+  integrity sha512-YZc5EwyO4f2kWCax7oegfuSr9mFz1ZvieNYBEjmukLxgXfBUbxAWGVF7GZf0zidYtoBl3WvC07YK0wT76a+Rtw==
+
 is-glob@^2.0.0:
   version "2.0.1"
   resolved "https://registry.npmjs.org/is-glob/-/is-glob-2.0.1.tgz#d096f926a3ded5600f3fdfd91198cb0888c2d863"
@@ -4756,6 +5212,13 @@ is-module@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/is-module/-/is-module-1.0.0.tgz#3258fb69f78c14d5b815d664336b4cffb6441591"
   integrity sha1-Mlj7afeMFNW4FdZkM2tM/7ZEFZE=
+
+is-nan@^1.2.1:
+  version "1.3.0"
+  resolved "https://registry.npmjs.org/is-nan/-/is-nan-1.3.0.tgz#85d1f5482f7051c2019f5673ccebdb06f3b0db03"
+  integrity sha512-z7bbREymOqt2CCaZVly8aC4ML3Xhfi0ekuOnjO2L8vKdl+CttdVoGZQhd4adMFAsxQ5VeRVwORs4tU8RH+HFtQ==
+  dependencies:
+    define-properties "^1.1.3"
 
 is-negative-zero@^2.0.0:
   version "2.0.0"
@@ -4865,6 +5328,16 @@ is-text-path@^1.0.1:
   integrity sha1-Thqg+1G/vLPpJogAE5cgLBd1tm4=
   dependencies:
     text-extensions "^1.0.0"
+
+is-typed-array@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.npmjs.org/is-typed-array/-/is-typed-array-1.1.3.tgz#a4ff5a5e672e1a55f99c7f54e59597af5c1df04d"
+  integrity sha512-BSYUBOK/HJibQ30wWkWold5txYwMUXQct9YHAQJr8fSwvZoiglcqB0pd7vEN23+Tsi9IUEjztdOSzl4qLVYGTQ==
+  dependencies:
+    available-typed-arrays "^1.0.0"
+    es-abstract "^1.17.4"
+    foreach "^2.0.5"
+    has-symbols "^1.0.1"
 
 is-typedarray@^1.0.0, is-typedarray@~1.0.0:
   version "1.0.0"
@@ -6224,6 +6697,14 @@ object-inspect@^1.7.0, object-inspect@^1.8.0:
   resolved "https://registry.npm.taobao.org/object-inspect/download/object-inspect-1.8.0.tgz?cache=0&sync_timestamp=1592545152574&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fobject-inspect%2Fdownload%2Fobject-inspect-1.8.0.tgz#df807e5ecf53a609cc6bfe93eac3cc7be5b3a9d0"
   integrity sha1-34B+Xs9TpgnMa/6T6sPMe+WzqdA=
 
+object-is@^1.0.1:
+  version "1.1.2"
+  resolved "https://registry.npmjs.org/object-is/-/object-is-1.1.2.tgz#c5d2e87ff9e119f78b7a088441519e2eec1573b6"
+  integrity sha512-5lHCz+0uufF6wZ7CRFWJN3hp8Jqblpgve06U5CMQ3f//6iDjPr2PEo9MWCjEssDsa+UZEL4PkFpr+BMop6aKzQ==
+  dependencies:
+    define-properties "^1.1.3"
+    es-abstract "^1.17.5"
+
 object-keys@^1.0.12, object-keys@^1.1.1:
   version "1.1.1"
   resolved "https://registry.npm.taobao.org/object-keys/download/object-keys-1.1.1.tgz#1c47f272df277f3b1daf061677d9c82e2322c60e"
@@ -6329,6 +6810,11 @@ onetime@^5.1.0:
   integrity sha512-kbpaSSGJTWdAY5KPVeMOKXSrPtr8C8C7wodJbcsd51jRnmD+GZu8Y0VoU6Dm5Z4vWr0Ig/1NKuWRKf7j5aaYSg==
   dependencies:
     mimic-fn "^2.1.0"
+
+opencollective-postinstall@^2.0.2:
+  version "2.0.3"
+  resolved "https://registry.npm.taobao.org/opencollective-postinstall/download/opencollective-postinstall-2.0.3.tgz#7a0fff978f6dbfa4d006238fbac98ed4198c3259"
+  integrity sha1-eg//l49tv6TQBiOPusmO1BmMMlk=
 
 optionator@^0.8.1:
   version "0.8.3"
@@ -7683,6 +8169,11 @@ semver-compare@^1.0.0:
   resolved "https://registry.npm.taobao.org/semver-compare/download/semver-compare-1.0.0.tgz#0dee216a1c941ab37e9efb1788f6afc5ff5537fc"
   integrity sha1-De4hahyUGrN+nvsXiPavxf9VN/w=
 
+semver-regex@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npm.taobao.org/semver-regex/download/semver-regex-2.0.0.tgz#a93c2c5844539a770233379107b38c7b4ac9d338"
+  integrity sha1-qTwsWERTmncCMzeRB7OMe0rJ0zg=
+
 "semver@2 || 3 || 4 || 5", semver@^5.4.1, semver@^5.5.0, semver@^5.5.1, semver@^5.6.0:
   version "5.7.1"
   resolved "https://registry.npmjs.org/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
@@ -7742,7 +8233,7 @@ set-value@^3.0.1:
   dependencies:
     is-plain-object "^2.0.4"
 
-sha.js@^2.4.0, sha.js@^2.4.8:
+sha.js@^2.4.0, sha.js@^2.4.11, sha.js@^2.4.8:
   version "2.4.11"
   resolved "https://registry.npmjs.org/sha.js/-/sha.js-2.4.11.tgz#37a5cf0b81ecbc6943de109ba2960d1b26584ae7"
   integrity sha512-QMEp5B7cftE7APOjk5Y6xgrbWu+WkLVQwk8JNjZ8nKRciZaByEW6MubieAiToS7+dwvrjGhH8jRXz3MVd0AYqQ==
@@ -8657,6 +9148,18 @@ util.promisify@~1.0.0:
     has-symbols "^1.0.1"
     object.getownpropertydescriptors "^2.1.0"
 
+util@^0.12.0:
+  version "0.12.3"
+  resolved "https://registry.npmjs.org/util/-/util-0.12.3.tgz#971bb0292d2cc0c892dab7c6a5d37c2bec707888"
+  integrity sha512-I8XkoQwE+fPQEhy9v012V+TSdH2kp9ts29i20TaaDUXsg7x/onePbhFJUExBfv/2ay1ZOp/Vsm3nDlmnFGSAog==
+  dependencies:
+    inherits "^2.0.3"
+    is-arguments "^1.0.4"
+    is-generator-function "^1.0.7"
+    is-typed-array "^1.1.3"
+    safe-buffer "^5.1.2"
+    which-typed-array "^1.1.2"
+
 uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.npmjs.org/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
@@ -8769,6 +9272,23 @@ which-module@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/which-module/-/which-module-2.0.0.tgz#d9ef07dce77b9902b8a3a8fa4b31c3e3f7e6e87a"
   integrity sha1-2e8H3Od7mQK4o6j6SzHD4/fm6Ho=
+
+which-pm-runs@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npm.taobao.org/which-pm-runs/download/which-pm-runs-1.0.0.tgz#670b3afbc552e0b55df6b7780ca74615f23ad1cb"
+  integrity sha1-Zws6+8VS4LVd9rd4DKdGFfI60cs=
+
+which-typed-array@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.npmjs.org/which-typed-array/-/which-typed-array-1.1.2.tgz#e5f98e56bda93e3dac196b01d47c1156679c00b2"
+  integrity sha512-KT6okrd1tE6JdZAy3o2VhMoYPh3+J6EMZLyrxBQsZflI1QCZIxMrIYLkosd8Twf+YfknVIHmYQPgJt238p8dnQ==
+  dependencies:
+    available-typed-arrays "^1.0.2"
+    es-abstract "^1.17.5"
+    foreach "^2.0.5"
+    function-bind "^1.1.1"
+    has-symbols "^1.0.1"
+    is-typed-array "^1.1.3"
 
 which@^1.2.14, which@^1.2.9:
   version "1.3.1"

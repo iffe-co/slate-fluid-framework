@@ -22,10 +22,10 @@ module.exports = {
   coverageThreshold: {
     // 配置测试最低阈值
     global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80,
+      // branches: 80,
+      // functions: 80,
+      // lines: 80,
+      // statements: 80,
     },
   },
 };
