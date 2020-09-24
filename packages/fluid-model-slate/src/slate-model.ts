@@ -61,6 +61,7 @@ class SlateFluidModel extends BaseFluidModel {
     ]);
 
     this.root.set(FLUIDNODE_KEYS.ID, '');
+
     this.root.set(FLUIDNODE_KEYS.CHILDREN, this.fluidNodeSequence.handle);
   }
 
