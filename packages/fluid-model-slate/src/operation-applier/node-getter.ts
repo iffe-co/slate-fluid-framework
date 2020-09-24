@@ -1,4 +1,4 @@
-import { SharedObjectSequence } from '@fluidframework/sequence';
+import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
 import { SharedMap } from '@fluidframework/map';
 import { FLUIDNODE_KEYS } from '../interfaces';
@@ -31,4 +31,10 @@ const getChildren = async (
   return children;
 };
 
-export { getNode, getChildren };
+const getText = async (node: SharedMap): Promise<SharedString> => {
+  const textHandle = <IFluidHandle<SharedString>>node.get(FLUIDNODE_KEYS.TEXT);
+  const text = await textHandle.get();
+  return text;
+};
+
+export { getNode, getChildren, getText };

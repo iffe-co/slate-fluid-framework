@@ -12,6 +12,7 @@ import { IFluidHandle } from '@fluidframework/core-interfaces';
 import { SharedMap } from '@fluidframework/map';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { applyInsertNodeOperation } from './applier';
+import { applyInsertTextOperation } from './applier/insert-text';
 
 const applyMergeNodeOperation = (
   op: MergeNodeOperation,
@@ -51,6 +52,7 @@ const applySplitNodeOperation = (
 
 const operationApplier = {
   insert_node: applyInsertNodeOperation,
+  insert_text: applyInsertTextOperation,
   merge_node: applyMergeNodeOperation,
   move_node: applyMoveNodeOperation,
   remove_node: applyRemoveNodeOperation,
