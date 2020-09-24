@@ -84,7 +84,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint --config node_modules/@solidoc/iffe-cli/configs/commitlint.js --env HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged"
+      "pre-commit": "yarn fix"
     }
   },
   "prettier": "./configs/prettierrc.js",
@@ -92,8 +92,7 @@
     "extends": "./configs/releaserc.json"
   },
   "lint-staged": {
-    "packages/*": "yarn fix",
-    "examples/*": "yarn fix"
+    "*.{css,md,js,jsx,json,ts,tsx}": "yarn fix"
   },
   "dependencies": {
     "lerna": "^3.22.1"
