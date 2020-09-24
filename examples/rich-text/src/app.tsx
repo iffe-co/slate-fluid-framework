@@ -202,8 +202,23 @@ const Warning = props => (
   />
 );
 
+function getUrlParam(name) {
+  const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');
+  const r = window.location.search.substr(1).match(reg);
+  if (r != null) {
+    return unescape(r[2]);
+  } else {
+    return null;
+  }
+}
+
 const App = () => {
-  const context = useDraftJsData(`9600847902501`, false);
+  const id = getUrlParam('id');
+  const isNew = getUrlParam('isNew');
+
+  console.log(id, isNew);
+
+  const context = useDraftJsData(id, isNew);
   console.log('context', context);
   const [error] = useState<Error | undefined>();
   const [stacktrace] = useState<string | undefined>();
@@ -250,7 +265,9 @@ const App = () => {
         <TabList isVisible={showTabs} />
         {error ? (
           <Warning>
-            <p>An error was thrown by one of the example's React components!</p>
+            <p>
+              An error was thrown by one of the example&apos;s React components!
+            </p>
             <pre>
               <code>
                 {error.stack}
