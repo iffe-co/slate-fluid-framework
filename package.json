@@ -61,8 +61,8 @@
     "fix:eslint": "yarn lint:eslint --fix",
     "fix:prettier": "yarn lint:prettier --write",
     "lint": "yarn lint:eslint",
-    "lint:eslint": "eslint \"./**/src/**/*.{js,jsx,ts}\" -c ./configs/eslintrc.js",
-    "lint:prettier": "prettier --list-different \"**/*.{css,md,js,jsx,json,ts,tsx}\"",
+    "lint:eslint": "eslint \"./{packages,examples}/**/src/**/*.{js,jsx,ts}\" -c ./configs/eslintrc.js",
+    "lint:prettier": "prettier --list-different \"{packages,examples}/**/src/*.{css,md,js,jsx,json,ts,tsx}\"",
     "build": "node scripts/build.js",
     "build:start": "yarn build:pkg && yarn rs-build",
     "rs-start": "PORT=8888 yarn react-scripts start",
@@ -92,9 +92,8 @@
     "extends": "./configs/releaserc.json"
   },
   "lint-staged": {
-    "packages/**/src/*": "yarn fix",
-    "examples/**/src/*": "yarn fix",
-    "src/**/*.{js,jsx,ts,tsx}": "yarn fix"
+    "packages/*": "yarn fix",
+    "examples/*": "yarn fix"
   },
   "dependencies": {
     "lerna": "^3.22.1"

@@ -3,11 +3,9 @@
  * Licensed under the MIT License.
  */
 
-import {
-    ContainerRuntimeFactoryWithDefaultDataStore,
-} from "@fluidframework/aqueduct";
+import { ContainerRuntimeFactoryWithDefaultDataStore } from '@fluidframework/aqueduct';
 
-import { DocumentManager } from "../fluid-object";
+import { DocumentManager } from '../fluid-object';
 
 /**
  * This does setup for the Fluid Container.
@@ -20,6 +18,6 @@ import { DocumentManager } from "../fluid-object";
  * FluidObjects.
  */
 export const DocumentManagerContainer = new ContainerRuntimeFactoryWithDefaultDataStore(
-    DocumentManager.Name,
-    new Map([DocumentManager.factory.registryEntry]),
+  DocumentManager.Name,
+  new Map([DocumentManager.factory.registryEntry]),
 );

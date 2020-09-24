@@ -3,8 +3,8 @@
  * Licensed under the MIT License.
  */
 
-import React from "react";
-import {SlateFluidModel} from "@solidoc/fluid-model-slate";
+import React from 'react';
+import { SlateFluidModel } from '@solidoc/fluid-model-slate';
 
 /**
  * Having a React Context allows the INoteroDataModel object to be passed through
@@ -13,4 +13,6 @@ import {SlateFluidModel} from "@solidoc/fluid-model-slate";
  * This is faking a default to make TypeScript happy. This context will not work
  * if not initialized with a real object.
  */
-export const FluidContext = React.createContext({} as unknown as SlateFluidModel);
+export const FluidContext = React.createContext(
+  ({} as unknown) as SlateFluidModel,
+);
