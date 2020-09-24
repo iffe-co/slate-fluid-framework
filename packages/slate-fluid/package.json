@@ -1,0 +1,39 @@
+{
+  "name": "@solidoc/slate-fluid",
+  "version": "0.0.1",
+  "description": "adapter for slate operation and fluid framework",
+  "keywords": [
+    "fluid",
+    "slate"
+  ],
+  "author": "CoffeyGit <tjcaofei@126.com>",
+  "homepage": "https://github.com/iffe-co/slate-fluid-framework.git",
+  "license": "ISC",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "directories": {
+    "lib": "src",
+    "test": "test"
+  },
+  "files": [
+    "src"
+  ],
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iffe-co/slate-fluid-framework.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/iffe-co/slate-fluid-framework/issues"
+  },
+  "dependencies": {
+    "@solidoc/fluid-model-slate": "^0.0.1",
+    "slate": "^0.58.4"
+  }
+}
