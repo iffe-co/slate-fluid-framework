@@ -1,7 +1,8 @@
 {
   "name": "slate-fluid-framework",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "examples/*"
   ],
   "private": true,
   "devDependencies": {

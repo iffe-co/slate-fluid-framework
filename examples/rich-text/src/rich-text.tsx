@@ -5,7 +5,6 @@ import { Editor, Transforms, createEditor, Node } from 'slate';
 import { withHistory } from 'slate-history';
 
 import { Button, Icon, Toolbar } from './components';
-import {FluidContext} from "./utils";
 
 const HOTKEYS = {
   'mod+b': 'bold',
@@ -17,15 +16,12 @@ const HOTKEYS = {
 const LIST_TYPES = ['numbered-list', 'bulleted-list'];
 
 const RichTextExample = () => {
-  const model = React.useContext(FluidContext);
-
+  // const model = React.useContext(FluidContext);
   const initialValue = [
     {
       type: 'paragraph',
-      children: [
-        { text: 'This is editable ' }
-      ],
-    }
+      children: [{ text: 'This is editable ' }],
+    },
   ];
 
   const [value, setValue] = useState<Node[]>(initialValue);
@@ -47,10 +43,10 @@ const RichTextExample = () => {
   // });
 
   const onChanged = value => {
-    console.log(value)
-    setValue(value)
+    console.log(value);
+    setValue(value);
     // model.doc.set('value', value)
-  }
+  };
 
   return (
     <Slate editor={editor} value={value} onChange={onChanged}>

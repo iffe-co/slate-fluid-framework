@@ -1,7 +1,7 @@
 import { BaseFluidModel, IOperation } from '@solidoc/fluid-model-base';
 import { SharedMap } from '@fluidframework/map';
 import { SharedObjectSequence } from '@fluidframework/sequence';
-import { DataObjectFactory } from "@fluidframework/aqueduct";
+import { DataObjectFactory } from '@fluidframework/aqueduct';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
 import { FLUIDNODE_KEYS } from './interfaces';
 import { addEventListenerHandler } from './event-handler';
@@ -18,13 +18,15 @@ class SlateFluidModel extends BaseFluidModel {
   //   {},
   // );
 
-  public static get Name() { return "name"; }
+  public static get Name() {
+    return 'name';
+  }
 
   public static readonly factory = new DataObjectFactory(
-      SlateFluidModel.Name,
-      SlateFluidModel,
-      [SharedMap.getFactory(), SharedObjectSequence.getFactory()],
-      {},
+    SlateFluidModel.Name,
+    SlateFluidModel,
+    [SharedMap.getFactory(), SharedObjectSequence.getFactory()],
+    {},
   );
 
   subscribe(id: string) {
@@ -72,6 +74,10 @@ class SlateFluidModel extends BaseFluidModel {
    * Called every time the data store is initialized after create or existing.
    */
   protected async hasInitialized(): Promise<void> {
+    [this.fluidNodeSequence] = await Promise.all([
+      this.root.get(FLUIDNODE_KEYS.CHILDREN).get(),
+    ]);
+
     //注册event-handler
     addEventListenerHandler(this.fluidNode, this.fluidNodeSequence);
   }

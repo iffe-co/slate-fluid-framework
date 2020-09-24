@@ -3,14 +3,9 @@
  * Licensed under the MIT License.
  */
 
-import {
-    ContainerRuntimeFactoryWithDefaultDataStore, DataObjectFactory,
-} from "@fluidframework/aqueduct";
+import { ContainerRuntimeFactoryWithDefaultDataStore } from '@fluidframework/aqueduct';
 
-import {SlateFluidModel} from "@solidoc/fluid-model-slate";
-import {SharedMap} from "@fluidframework/map";
-import {SharedObjectSequence} from "@fluidframework/sequence";
-import {FluidDraftJsObject} from "../fluid-object";
+import { SlateFluidModel } from '@solidoc/fluid-model-slate';
 
 /**
  * This does setup for the Fluid Container.
@@ -23,11 +18,6 @@ import {FluidDraftJsObject} from "../fluid-object";
  * FluidObjects.
  */
 export const FluidDraftJsContainer = new ContainerRuntimeFactoryWithDefaultDataStore(
-    SlateFluidModel.Name,
-    new Map([new DataObjectFactory(
-        SlateFluidModel.Name,
-        SlateFluidModel,
-        [SharedMap.getFactory()],
-        {},
-    ).registryEntry]),
+  SlateFluidModel.Name,
+  new Map([SlateFluidModel.factory.registryEntry]),
 );
