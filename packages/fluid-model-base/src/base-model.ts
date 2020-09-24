@@ -1,12 +1,15 @@
 import { DataObject } from '@fluidframework/aqueduct';
-import { IBaseFluidModel, IOperation } from './interfaces';
+import { IBaseFluidModel } from './interfaces';
 
-abstract class BaseFluidModel extends DataObject implements IBaseFluidModel {
-  abstract subscribe(id: string): any;
+abstract class BaseFluidModel<T>
+  extends DataObject
+  implements IBaseFluidModel<T> {
+  abstract subscribe(): any;
 
-  abstract unsubscribe(id: string): void;
+  abstract unsubscribe(): void;
 
-  abstract async apply<T extends IOperation>(op: T): Promise<void>;
+  abstract apply(op: T): void;
+  abstract fetch(): any;
 }
 
 export { BaseFluidModel };

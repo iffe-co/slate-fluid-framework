@@ -1,4 +1,4 @@
-import { BaseFluidModel, IOperation } from '@solidoc/fluid-model-base';
+import { BaseFluidModel } from '@solidoc/fluid-model-base';
 import { SharedMap } from '@fluidframework/map';
 import { SharedObjectSequence } from '@fluidframework/sequence';
 import { DataObjectFactory } from '@fluidframework/aqueduct';
@@ -6,17 +6,11 @@ import { IFluidHandle } from '@fluidframework/core-interfaces';
 import { FLUIDNODE_KEYS } from './interfaces';
 import { addEventListenerHandler } from './event-handler';
 import { slateOpHandler } from './slate-op-handler';
+import { Operation } from 'slate';
 
-class SlateFluidModel extends BaseFluidModel {
+class SlateFluidModel extends BaseFluidModel<Operation> {
   private fluidNodeSequence!: SharedObjectSequence<IFluidHandle<SharedMap>>;
   private fluidNode!: SharedMap;
-
-  // public static readonly factory = new DataObjectFactory(
-  //   SlateFluidModel.Name,
-  //   SlateFluidModel,
-  //   [SharedMap.getFactory()],
-  //   {},
-  // );
 
   public static get Name() {
     return 'name';
@@ -29,17 +23,21 @@ class SlateFluidModel extends BaseFluidModel {
     {},
   );
 
-  subscribe(id: string) {
+  subscribe = () => {
     throw new Error('Method not implemented.');
-  }
+  };
 
-  unsubscribe(id: string): void {
+  unsubscribe = (): void => {
     throw new Error('Method not implemented.');
-  }
+  };
 
-  async apply<T extends IOperation>(op: T) {
+  apply = (op: Operation) => {
     return slateOpHandler(op);
-  }
+  };
+
+  fetch = (): any => {
+    throw new Error('Method not implemented.');
+  };
 
   /**
    * Called the first time the data store is initialized (new creations with a new
@@ -47,9 +45,9 @@ class SlateFluidModel extends BaseFluidModel {
    *
    * @param props - Optional props to be passed in on create
    */
-  protected async initializingFirstTime<S = undefined>(
+  protected initializingFirstTime = async <S = undefined>(
     props?: S,
-  ): Promise<void> {
+  ): Promise<void> => {
     this.fluidNode = SharedMap.create(this.runtime);
     this.fluidNode.set(FLUIDNODE_KEYS.ID, 'id=1234');
     this.fluidNode.set(FLUIDNODE_KEYS.TYPE, 'text');
@@ -63,25 +61,25 @@ class SlateFluidModel extends BaseFluidModel {
     this.root.set(FLUIDNODE_KEYS.ID, '');
 
     this.root.set(FLUIDNODE_KEYS.CHILDREN, this.fluidNodeSequence.handle);
-  }
+  };
 
   /**
    * Called every time but the first time the data store is initialized (creations
    * with an existing data store runtime)
    */
-  protected async initializingFromExisting(): Promise<void> {}
+  protected initializingFromExistingasync = async (): Promise<void> => {};
 
   /**
    * Called every time the data store is initialized after create or existing.
    */
-  protected async hasInitialized(): Promise<void> {
+  protected hasInitialized = async (): Promise<void> => {
     [this.fluidNodeSequence] = await Promise.all([
       this.root.get(FLUIDNODE_KEYS.CHILDREN).get(),
     ]);
 
     //注册event-handler
     addEventListenerHandler(this.fluidNode, this.fluidNodeSequence);
-  }
+  };
 }
 
 export { SlateFluidModel };

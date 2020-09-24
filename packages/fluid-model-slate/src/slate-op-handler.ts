@@ -1,5 +1,5 @@
-import { IOperation } from '@solidoc/fluid-model-base';
+import { Operation } from 'slate';
 
-const slateOpHandler = async (op: IOperation): Promise<void> => {};
+const slateOpHandler = async (op: Operation): Promise<void> => {};
 
 export { slateOpHandler };
