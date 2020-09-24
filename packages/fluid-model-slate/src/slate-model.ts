@@ -7,6 +7,7 @@ import { FLUIDNODE_KEYS } from './interfaces';
 import { addEventListenerHandler } from './event-handler';
 import { slateOpHandler } from './slate-op-handler';
 import { Operation } from 'slate';
+import { operationApplier } from './operation-applier/operation-applier';
 
 class SlateFluidModel extends BaseFluidModel<Operation> {
   private fluidNodeSequence!: SharedObjectSequence<IFluidHandle<SharedMap>>;
@@ -32,11 +33,16 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
   };
 
   apply = (op: Operation) => {
+    this.applyOperation(op);
     return slateOpHandler(op);
   };
 
   fetch = (): any => {
     throw new Error('Method not implemented.');
+  };
+
+  applyOperation = (op: Operation) => {
+    operationApplier[op.type](op, this.fluidNodeSequence);
   };
 
   /**

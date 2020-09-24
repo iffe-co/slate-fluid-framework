@@ -1,7 +1,7 @@
 import { Editor, Operation } from 'slate';
 import { BaseFluidModel } from '@solidoc/fluid-model-base';
 
-const withSlateFluid = <T extends Editor, U extends BaseFluidModel>(
+const withSlateFluid = <T extends Editor, U extends BaseFluidModel<Operation>>(
   editor: T,
   model: U,
 ) => {
