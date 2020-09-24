@@ -65,7 +65,6 @@
     "lint:prettier": "prettier --list-different \"**/*.{css,md,js,jsx,json,ts,tsx}\"",
     "build": "node scripts/build.js",
     "build:start": "yarn build:pkg && yarn rs-build",
-    "start": "node scripts/start.js --watch",
     "rs-start": "PORT=8888 yarn react-scripts start",
     "rs-build": "yarn react-scripts build",
     "rs-test": "yarn react-scripts test",
@@ -96,7 +95,6 @@
     "src/**/*": "yarn fix"
   },
   "dependencies": {
-    "@fluidframework/sequence": "^0.26.1",
     "lerna": "^3.22.1"
   }
 }

@@ -5,7 +5,9 @@
   "main": "index.ts",
   "scripts": {
     "build": "npm run webpack && npm run tsc",
-    "start": "webpack-dev-server",
+    "start": "concurrently \"yarn:start:server\" \"yarn:start:client\"",
+    "start:client": "webpack-dev-server",
+    "start:server": "tinylicious",
     "tsc": "tsc",
     "webpack": "webpack"
   },
@@ -41,6 +43,8 @@
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.8.0",
     "webpack-merge": "^5.1.4",
-    "copy-webpack-plugin": "^6.1.1"
+    "copy-webpack-plugin": "^6.1.1",
+    "concurrently": "^5.3.0",
+    "tinylicious": "0.2.3810"
   }
 }

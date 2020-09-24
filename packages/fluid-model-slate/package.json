@@ -39,6 +39,7 @@
     "@fluidframework/map": "^0.26.1",
     "@fluidframework/sequence": "^0.26.1",
     "@fluidframework/shared-object-base": "^0.26.1",
-    "@fluidframework/aqueduct": "^0.26.1"
+    "@fluidframework/aqueduct": "^0.26.1",
+    "tinylicious": "0.2.3810"
   }
 }
