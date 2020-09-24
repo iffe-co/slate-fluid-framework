@@ -92,7 +92,9 @@
     "extends": "./configs/releaserc.json"
   },
   "lint-staged": {
-    "src/**/*": "yarn fix"
+    "packages/**/src/*": "yarn fix",
+    "examples/**/src/*": "yarn fix",
+    "src/**/*.{js,jsx,ts,tsx}": "yarn fix"
   },
   "dependencies": {
     "lerna": "^3.22.1"
