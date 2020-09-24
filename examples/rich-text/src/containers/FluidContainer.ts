@@ -17,7 +17,7 @@ import { SlateFluidModel } from '@solidoc/fluid-model-slate';
  * In this example, we are only registering a single FluidObject, but more complex examples will register multiple
  * FluidObjects.
  */
-export const FluidDraftJsContainer = new ContainerRuntimeFactoryWithDefaultDataStore(
+export const FluidContainer = new ContainerRuntimeFactoryWithDefaultDataStore(
   SlateFluidModel.Name,
   new Map([SlateFluidModel.factory.registryEntry]),
 );

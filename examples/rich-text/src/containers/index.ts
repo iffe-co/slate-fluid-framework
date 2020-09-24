@@ -4,4 +4,4 @@
  */
 
 export * from './DocumentManagerContainer';
-export * from './FluidDraftJsContainer';
+export * from './FluidContainer';

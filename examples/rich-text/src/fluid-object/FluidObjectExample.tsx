@@ -22,7 +22,7 @@ export interface IFluidDraftJsObject {
 const addMemberValue = "addMember";
 const removeMemberValue = "removeMember";
 
-export class FluidDraftJsObject extends DataObject implements IFluidDraftJsObject {
+export class FluidObjectExample extends DataObject implements IFluidDraftJsObject {
     public static get Name() { return "@fluid-example/draft-js"; }
 
     public doc: SharedMap | undefined;
@@ -30,8 +30,8 @@ export class FluidDraftJsObject extends DataObject implements IFluidDraftJsObjec
     public presenceManager: PresenceManager;
 
     public static readonly factory = new DataObjectFactory(
-        FluidDraftJsObject.Name,
-        FluidDraftJsObject,
+        FluidObjectExample.Name,
+        FluidObjectExample,
         [SharedMap.getFactory()],
         {},
     );

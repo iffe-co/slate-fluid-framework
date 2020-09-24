@@ -5,6 +5,8 @@ import { Editor, Transforms, createEditor, Node } from 'slate';
 import { withHistory } from 'slate-history';
 
 import { Button, Icon, Toolbar } from './components';
+import { withSlateFluid } from '@solidoc/slate-fluid/src';
+import { FluidContext } from './utils';
 
 const HOTKEYS = {
   'mod+b': 'bold',
@@ -16,7 +18,7 @@ const HOTKEYS = {
 const LIST_TYPES = ['numbered-list', 'bulleted-list'];
 
 const RichTextExample = () => {
-  // const model = React.useContext(FluidContext);
+  const model = React.useContext(FluidContext);
   const initialValue = [
     {
       type: 'paragraph',
@@ -27,20 +29,10 @@ const RichTextExample = () => {
   const [value, setValue] = useState<Node[]>(initialValue);
   const renderElement = useCallback(props => <Element {...props} />, []);
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
-  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
-
-  // model.doc.on("valueChanged", (event: any, local: boolean, op: any) => {
-  //   if (event.isLocal) {
-  //     console.log('local event', event)
-  //     return;
-  //   } else {
-  //     console.log('not local event', event)
-  //     const v = model.doc.get('value')
-  //     console.log(v)
-  //     setValue(v)
-  //     return;
-  //   }
-  // });
+  const editor = useMemo(
+    () => withHistory(withReact(withSlateFluid(createEditor(), model))),
+    [],
+  );
 
   const onChanged = value => {
     console.log(value);
@@ -145,23 +137,24 @@ const Element = ({ attributes, children, element }) => {
 };
 
 const Leaf = ({ attributes, children, leaf }) => {
+  let result = children;
   if (leaf.bold) {
-    children = <strong>{children}</strong>;
+    result = <strong>{children}</strong>;
   }
 
   if (leaf.code) {
-    children = <code>{children}</code>;
+    result = <code>{children}</code>;
   }
 
   if (leaf.italic) {
-    children = <em>{children}</em>;
+    result = <em>{children}</em>;
   }
 
   if (leaf.underline) {
-    children = <u>{children}</u>;
+    result = <u>{children}</u>;
   }
 
-  return <span {...attributes}>{children}</span>;
+  return <span {...attributes}>{result}</span>;
 };
 
 const BlockButton = ({ format, icon }) => {

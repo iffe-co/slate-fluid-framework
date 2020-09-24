@@ -4,7 +4,7 @@ import { cx, css } from 'emotion';
 import { Icon } from './components';
 
 import RichText from './rich-text';
-import { useDraftJsData, FluidContext } from './utils';
+import { useExampleData, FluidContext } from './utils';
 
 const Header = props => (
   <div
@@ -218,7 +218,7 @@ const App = () => {
 
   console.log(id, isNew);
 
-  const context = useDraftJsData(id, isNew);
+  const context = useExampleData(id, isNew);
   console.log('context', context);
   const [error] = useState<Error | undefined>();
   const [stacktrace] = useState<string | undefined>();

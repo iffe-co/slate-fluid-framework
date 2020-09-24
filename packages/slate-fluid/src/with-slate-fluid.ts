@@ -1,5 +1,5 @@
 import { Editor, Operation } from 'slate';
-import { BaseFluidModel, IOperation } from '@solidoc/fluid-model-base';
+import { BaseFluidModel } from '@solidoc/fluid-model-base';
 
 const withSlateFluid = <T extends Editor, U extends BaseFluidModel>(
   editor: T,
@@ -7,12 +7,13 @@ const withSlateFluid = <T extends Editor, U extends BaseFluidModel>(
 ) => {
   const { apply } = editor;
 
-  editor.apply = async (op: Operation) => {
-    await model.apply(op as any);
+  editor.apply = (op: Operation) => {
+    console.log(op);
+    // model.apply(op as any);
     apply(op);
   };
 
-  model.subscribe('id');
+  // model.subscribe('id');
   return editor;
 };
 export { withSlateFluid };

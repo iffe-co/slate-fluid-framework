@@ -7,10 +7,10 @@ import { useState, useEffect } from 'react';
 import { getDefaultObjectFromContainer } from '@fluidframework/aqueduct';
 import { getTinyliciousContainer } from '@fluidframework/get-tinylicious-container';
 import { Container } from '@fluidframework/container-loader';
-import { FluidDraftJsContainer } from '../containers';
+import { FluidContainer } from '../containers';
 import { SlateFluidModel } from '@solidoc/fluid-model-slate';
 
-export const useDraftJsData = (id, isNew) => {
+export const useExampleData = (id, isNew) => {
   const [context, setContext] = useState(undefined);
   let defaultObject = undefined;
   useEffect(() => {
@@ -20,7 +20,7 @@ export const useDraftJsData = (id, isNew) => {
       try {
         const container = await getTinyliciousContainer(
           id,
-          FluidDraftJsContainer,
+          FluidContainer,
           isNew,
         );
         defaultObject = await getDefaultObjectFromContainer<SlateFluidModel>(
