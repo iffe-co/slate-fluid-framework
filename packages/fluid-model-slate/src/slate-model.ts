@@ -42,7 +42,7 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
   };
 
   applyOperation = (op: Operation) => {
-    operationApplier[op.type](op, this.fluidNodeSequence);
+    operationApplier[op.type](op, this.fluidNodeSequence, this.runtime);
   };
 
   /**
