@@ -5,7 +5,7 @@ import {
   RemoveTextOperation,
   SetNodeOperation,
   SetSelectionOperation,
-  SplitNodeOperation
+  SplitNodeOperation,
 } from 'slate';
 import { SharedObjectSequence } from '@fluidframework/sequence';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
@@ -51,19 +51,23 @@ const applySplitNodeOperation = (
 ) => Promise.resolve();
 
 type OperationApplier = {
-  [key: string]: (op: any, root: SharedObjectSequence<IFluidHandle<SharedMap>>, runtime: IFluidDataStoreRuntime) => Promise<void>
-}
+  [key: string]: (
+    op: any,
+    root: SharedObjectSequence<IFluidHandle<SharedMap>>,
+    runtime: IFluidDataStoreRuntime,
+  ) => Promise<void>;
+};
 
 const operationApplier: OperationApplier = {
-  "insert_node": applyInsertNodeOperation,
-  "insert_text": applyInsertTextOperation,
-  "merge_node": applyMergeNodeOperation,
-  "move_node": applyMoveNodeOperation,
-  "remove_node": applyRemoveNodeOperation,
-  "remove_text": applyRemoveTextOperation,
-  "set_node": applySetNodeOperation,
-  "set_selection": applySetSelectionOperation,
-  "split_node": applySplitNodeOperation,
+  insert_node: applyInsertNodeOperation,
+  insert_text: applyInsertTextOperation,
+  merge_node: applyMergeNodeOperation,
+  move_node: applyMoveNodeOperation,
+  remove_node: applyRemoveNodeOperation,
+  remove_text: applyRemoveTextOperation,
+  set_node: applySetNodeOperation,
+  set_selection: applySetSelectionOperation,
+  split_node: applySplitNodeOperation,
 };
 
 export { operationApplier };

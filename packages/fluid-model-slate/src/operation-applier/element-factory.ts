@@ -1,18 +1,18 @@
 import { Node } from 'slate';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
-import {SharedObjectSequence, SharedString} from '@fluidframework/sequence';
+import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
 import { SharedMap } from '@fluidframework/map';
-import {FLUIDNODE_KEYS} from "../interfaces";
+import { FLUIDNODE_KEYS } from '../interfaces';
 
 const createText = (text: string, runtime: IFluidDataStoreRuntime) => {
   const shareString = SharedString.create(runtime);
-  shareString.insertText(0, text)
-  return shareString
-}
+  shareString.insertText(0, text);
+  return shareString;
+};
 
 const createChildren = (runtime: IFluidDataStoreRuntime) => {
   return SharedObjectSequence.create(runtime);
-}
+};
 
 const create = (node: Node, runtime: IFluidDataStoreRuntime) => {
   const element = SharedMap.create(runtime);
@@ -26,4 +26,4 @@ const create = (node: Node, runtime: IFluidDataStoreRuntime) => {
   return element;
 };
 
-export { create, };
+export { create };
