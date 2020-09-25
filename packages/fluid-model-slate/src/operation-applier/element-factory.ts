@@ -17,11 +17,13 @@ const createChildren = (runtime: IFluidDataStoreRuntime) => {
 const create = (node: Node, runtime: IFluidDataStoreRuntime) => {
   const element = SharedMap.create(runtime);
 
-  const children = createChildren(runtime);
-  const text = createText(node.text as string, runtime);
-
-  element.set(FLUIDNODE_KEYS.TEXT, text.handle);
-  element.set(FLUIDNODE_KEYS.CHILDREN, children.handle);
+  if (node.text) {
+    const text = createText(node.text as string, runtime);
+    element.set(FLUIDNODE_KEYS.TEXT, text.handle);
+  } else {
+    const children = createChildren(runtime);
+    element.set(FLUIDNODE_KEYS.CHILDREN, children.handle);
+  }
 
   return element;
 };
