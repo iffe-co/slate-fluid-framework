@@ -39,7 +39,7 @@ const getText = async (node: SharedMap): Promise<SharedString> => {
 };
 
 const getParent = async (path: number[], root: SharedObjectSequence<IFluidHandle<SharedMap>>): Promise<SharedObjectSequence<IFluidHandle<SharedMap>>> => {
-  return (await getNode(path.slice(0, -1), root)).get(FLUIDNODE_KEYS.CHILDREN).get()
+  return path.length === 1 ? root : (await getNode(path.slice(0, -1), root)).get(FLUIDNODE_KEYS.CHILDREN).get()
 }
 
 export { getNode, getChildren, getText, getParent };

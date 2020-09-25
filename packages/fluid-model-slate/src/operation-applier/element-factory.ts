@@ -3,6 +3,7 @@ import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
 import { SharedMap } from '@fluidframework/map';
 import { FLUIDNODE_KEYS } from '../interfaces';
+import {IFluidHandle} from "@fluidframework/core-interfaces";
 
 const createText = (text: string, runtime: IFluidDataStoreRuntime) => {
   const shareString = SharedString.create(runtime);
@@ -10,11 +11,15 @@ const createText = (text: string, runtime: IFluidDataStoreRuntime) => {
   return shareString;
 };
 
-const createChildren = (runtime: IFluidDataStoreRuntime) => {
-  return SharedObjectSequence.create(runtime);
+const createChildren = (runtime: IFluidDataStoreRuntime, content?: IFluidHandle<SharedMap>[]) => {
+  const sequence = SharedObjectSequence.create<IFluidHandle<SharedMap>>(runtime);
+  if (content) {
+    sequence.insert(0, content);
+  }
+  return sequence;
 };
 
-const create = (node: Node, runtime: IFluidDataStoreRuntime) => {
+const createNode = (node: Node, runtime: IFluidDataStoreRuntime) => {
   const element = SharedMap.create(runtime);
 
   if (node.text) {
@@ -28,4 +33,10 @@ const create = (node: Node, runtime: IFluidDataStoreRuntime) => {
   return element;
 };
 
-export { create };
+const createNodeWithChildren = (children: IFluidHandle<SharedMap>[], runtime: IFluidDataStoreRuntime) => {
+  const element = SharedMap.create(runtime);
+  element.set(FLUIDNODE_KEYS.CHILDREN, createChildren(runtime, children).handle);
+  return element;
+};
+
+export { createNode, createNodeWithChildren };
