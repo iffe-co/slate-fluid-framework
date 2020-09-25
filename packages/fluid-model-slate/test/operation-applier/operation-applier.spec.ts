@@ -147,4 +147,29 @@ describe('operation applier', () => {
       expect(expectText).toEqual('T default text');
     });
   });
+
+  describe('split node operation', () => {
+    it('should split text node when split op target was a text ', async () => {
+      const root = initEditorRoot();
+
+      const splitTextOp = {
+        path: [0, 0],
+        type: 'split_node',
+        position: 2,
+        properties: {}
+      };
+
+      await operationApplier[splitTextOp.type](
+          splitTextOp,
+          root,
+          mockRuntime,
+      );
+
+      const expectText1 = await getNodeText(root, [0, 0]);
+      const expectText2 = await getNodeText(root, [0, 1]);
+
+      expect(expectText1).toEqual('Th');
+      expect(expectText2).toEqual('is default text');
+    });
+  });
 });
