@@ -33,13 +33,16 @@
     "url": "https://github.com/iffe-co/slate-fluid-framework/issues"
   },
   "dependencies": {
+    "@fluidframework/aqueduct": "^0.27.0",
+    "@fluidframework/core-interfaces": "^0.27.0",
+    "@fluidframework/datastore-definitions": "^0.27.0",
+    "@fluidframework/map": "^0.27.0",
+    "@fluidframework/sequence": "^0.27.0",
+    "@fluidframework/shared-object-base": "^0.27.0",
+    "@fluidframework/test-runtime-utils": "^0.27.0",
     "@solidoc/fluid-model-base": "^0.0.1",
     "core-js": "3",
-    "@fluidframework/core-interfaces": "^0.26.1",
-    "@fluidframework/map": "^0.26.1",
-    "@fluidframework/sequence": "^0.26.1",
-    "@fluidframework/shared-object-base": "^0.26.1",
-    "@fluidframework/aqueduct": "^0.26.1",
-    "tinylicious": "0.2.3810"
+    "tinylicious": "0.2.3810",
+    "uuid": "^8.3.0"
   }
 }

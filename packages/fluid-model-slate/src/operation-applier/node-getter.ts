@@ -9,7 +9,7 @@ const getNode = async (
 ): Promise<SharedMap> => {
   const [index, ...rest] = path;
 
-  if (!index) {
+  if (index === undefined) {
     throw 'can not get effective index to get node!';
   }
 
@@ -18,7 +18,8 @@ const getNode = async (
   }
 
   const map = await children.getRange(index, index + 1)[0].get();
-  return await getNode(rest, map.get('children'));
+  let nextChildren = await map.get(FLUIDNODE_KEYS.CHILDREN).get();
+  return await getNode(rest, nextChildren);
 };
 
 const getChildren = async (
