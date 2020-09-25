@@ -6,6 +6,8 @@ import {
   SetNodeOperation,
   SetSelectionOperation,
   SplitNodeOperation,
+  InsertNodeOperation,
+  Operation,
 } from 'slate';
 import { SharedObjectSequence } from '@fluidframework/sequence';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
@@ -13,6 +15,7 @@ import { SharedMap } from '@fluidframework/map';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { applyInsertNodeOperation } from './applier';
 import { applyInsertTextOperation } from './applier/insert-text';
+import { applyRemoveTextOperation } from './applier/remove-text';
 
 const applyMergeNodeOperation = (
   op: MergeNodeOperation,
@@ -26,11 +29,6 @@ const applyMoveNodeOperation = (
 ) => Promise.resolve();
 const applyRemoveNodeOperation = (
   op: RemoveNodeOperation,
-  root: SharedObjectSequence<IFluidHandle<SharedMap>>,
-  runtime: IFluidDataStoreRuntime,
-) => Promise.resolve();
-const applyRemoveTextOperation = (
-  op: RemoveTextOperation,
   root: SharedObjectSequence<IFluidHandle<SharedMap>>,
   runtime: IFluidDataStoreRuntime,
 ) => Promise.resolve();

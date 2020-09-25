@@ -102,8 +102,8 @@ describe('operation applier', () => {
     });
   });
 
-  describe('insert text operation', function () {
-    it('should insert text to a exist node', async () => {
+  describe('insert text operation', () => {
+    it('should insert text from a exist node', async () => {
       const root = initEditorRoot();
 
       const insertTextOp = {
@@ -122,6 +122,29 @@ describe('operation applier', () => {
       const expectText = await getNodeText(root, [0, 0]);
 
       expect(expectText).toEqual('This default text and this insert text');
+    });
+  });
+
+  describe('remove text operation', () => {
+    it('should remove text from a exist node', async () => {
+      const root = initEditorRoot();
+
+      const removeTextOp = {
+        type: 'remove_text',
+        offset: 1,
+        path: [0, 0],
+        text: 'his',
+      };
+
+      await operationApplier[removeTextOp.type](
+        removeTextOp,
+        root,
+        mockRuntime,
+      );
+
+      const expectText = await getNodeText(root, [0, 0]);
+
+      expect(expectText).toEqual('T default text');
     });
   });
 });
