@@ -5,7 +5,7 @@ import { FLUIDNODE_KEYS } from '../interfaces';
 
 const getNode = async (
   path: number[],
-  children: SharedObjectSequence<IFluidHandle<SharedMap>>,
+  root: SharedObjectSequence<IFluidHandle<SharedMap>>,
 ): Promise<SharedMap> => {
   const [index, ...rest] = path;
 
@@ -14,10 +14,10 @@ const getNode = async (
   }
 
   if (rest.length === 0) {
-    return await children.getRange(index, index + 1)[0].get();
+    return await root.getRange(index, index + 1)[0].get();
   }
 
-  const map = await children.getRange(index, index + 1)[0].get();
+  const map = await root.getRange(index, index + 1)[0].get();
   let nextChildren = await map.get(FLUIDNODE_KEYS.CHILDREN).get();
   return await getNode(rest, nextChildren);
 };
@@ -38,4 +38,8 @@ const getText = async (node: SharedMap): Promise<SharedString> => {
   return text;
 };
 
-export { getNode, getChildren, getText };
+const getParent = async (path: number[], root: SharedObjectSequence<IFluidHandle<SharedMap>>): Promise<SharedObjectSequence<IFluidHandle<SharedMap>>> => {
+  return (await getNode(path.slice(0, -1), root)).get(FLUIDNODE_KEYS.CHILDREN).get()
+}
+
+export { getNode, getChildren, getText, getParent };
