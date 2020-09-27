@@ -14,7 +14,7 @@ const getNode = async (
   const [index, ...rest] = path;
 
   if (index === undefined) {
-    throw 'can not get effective index to get node!';
+    throw new Error('can not get effective index to get node!');
   }
 
   if (rest.length === 0) {
@@ -51,4 +51,16 @@ const getParent = async (
         .get();
 };
 
-export { getNode, getChildren, getText, getParent };
+const getPrevious = async (
+    path: number[],
+    root: FluidNodeChildren,
+) => {
+  if (path.length === 0 || path[path.length - 1] <= 0) {
+    throw `Cannot get the previous path of a root path [${path}], because it has no previous index.`
+  }
+
+  const prevPath =  [...path.slice(0, -1), path[path.length - 1] - 1]
+  return await getNode(prevPath, root)
+}
+
+export { getNode, getChildren, getText, getParent, getPrevious };

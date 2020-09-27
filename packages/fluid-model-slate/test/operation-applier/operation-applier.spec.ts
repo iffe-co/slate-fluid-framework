@@ -278,4 +278,31 @@ describe('operation applier', () => {
       expect(expectTitalic).toEqual(true);
     });
   });
+
+  describe('merge node operation', () => {
+    it('should merge text node when target was text node', async () => {
+      const root = initEditorRoot();
+
+      const splitTextOp = {
+        path: [0, 0],
+        type: 'split_node',
+        position: 2,
+        properties: {
+          type: 'block-quote',
+        },
+      } as Operation;
+
+      await applyOp(splitTextOp, root);
+
+      const mergeNodeOp = {
+        path: [0, 1],
+        type: 'merge_node'
+      } as Operation;
+
+      await applyOp(mergeNodeOp, root);
+
+      const expectText1 = await getNodeText(root, [0, 0]);
+      expect(expectText1).toEqual('This default text');
+    });
+  });
 });

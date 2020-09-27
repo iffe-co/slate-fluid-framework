@@ -2,7 +2,6 @@ import {
   MergeNodeOperation,
   MoveNodeOperation,
   RemoveNodeOperation,
-  SetNodeOperation,
   SetSelectionOperation,
 } from 'slate';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
@@ -12,12 +11,8 @@ import { applyRemoveTextOperation } from './applier/remove-text';
 import { applySplitNodeOperation } from './applier/split-node';
 import { FluidNodeChildren } from '../types';
 import { applySetNodeOperation } from './applier/set-node';
+import {applyMergeNodeOperation} from "./applier/merge-node";
 
-const applyMergeNodeOperation = (
-  op: MergeNodeOperation,
-  root: FluidNodeChildren,
-  runtime: IFluidDataStoreRuntime,
-) => Promise.resolve();
 const applyMoveNodeOperation = (
   op: MoveNodeOperation,
   root: FluidNodeChildren,
