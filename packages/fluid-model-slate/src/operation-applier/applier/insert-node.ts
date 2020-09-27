@@ -1,21 +1,17 @@
 import { InsertNodeOperation } from 'slate';
-import { SharedObjectSequence } from '@fluidframework/sequence';
-import { IFluidHandle } from '@fluidframework/core-interfaces';
-import { SharedMap } from '@fluidframework/map';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
-import {getChildren, getNode, getParent} from '../node-getter';
+import { getParent } from '../node-getter';
 import { createNode } from '../element-factory';
+import { FluidNodeChildren, FluidNodeHandle } from '../../types';
 
 const applyInsertNodeOperation = async (
   op: InsertNodeOperation,
-  root: SharedObjectSequence<IFluidHandle<SharedMap>>,
+  root: FluidNodeChildren,
   runtime: IFluidDataStoreRuntime,
 ) => {
   const parent = await getParent(op.path, root);
   const element = createNode(op.node, runtime);
-  parent.insert(parent.getLength(), [
-    <IFluidHandle<SharedMap>>element.handle,
-  ]);
+  parent.insert(parent.getLength(), [<FluidNodeHandle>element.handle]);
 };
 
 export { applyInsertNodeOperation };

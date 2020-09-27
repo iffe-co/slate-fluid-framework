@@ -2,51 +2,45 @@ import {
   MergeNodeOperation,
   MoveNodeOperation,
   RemoveNodeOperation,
-  RemoveTextOperation,
   SetNodeOperation,
   SetSelectionOperation,
-  SplitNodeOperation,
-  InsertNodeOperation,
-  Operation,
 } from 'slate';
-import { SharedObjectSequence } from '@fluidframework/sequence';
-import { IFluidHandle } from '@fluidframework/core-interfaces';
-import { SharedMap } from '@fluidframework/map';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { applyInsertNodeOperation } from './applier';
 import { applyInsertTextOperation } from './applier/insert-text';
 import { applyRemoveTextOperation } from './applier/remove-text';
-import {applySplitNodeOperation} from "./applier/split-node";
+import { applySplitNodeOperation } from './applier/split-node';
+import { FluidNodeChildren } from '../types';
 
 const applyMergeNodeOperation = (
   op: MergeNodeOperation,
-  root: SharedObjectSequence<IFluidHandle<SharedMap>>,
+  root: FluidNodeChildren,
   runtime: IFluidDataStoreRuntime,
 ) => Promise.resolve();
 const applyMoveNodeOperation = (
   op: MoveNodeOperation,
-  root: SharedObjectSequence<IFluidHandle<SharedMap>>,
+  root: FluidNodeChildren,
   runtime: IFluidDataStoreRuntime,
 ) => Promise.resolve();
 const applyRemoveNodeOperation = (
   op: RemoveNodeOperation,
-  root: SharedObjectSequence<IFluidHandle<SharedMap>>,
+  root: FluidNodeChildren,
   runtime: IFluidDataStoreRuntime,
 ) => Promise.resolve();
 const applySetNodeOperation = (
   op: SetNodeOperation,
-  root: SharedObjectSequence<IFluidHandle<SharedMap>>,
+  root: FluidNodeChildren,
   runtime: IFluidDataStoreRuntime,
 ) => Promise.resolve();
 const applySetSelectionOperation = (
   op: SetSelectionOperation,
-  root: SharedObjectSequence<IFluidHandle<SharedMap>>,
+  root: FluidNodeChildren,
   runtime: IFluidDataStoreRuntime,
 ) => Promise.resolve();
 type OperationApplier = {
   [key: string]: (
     op: any,
-    root: SharedObjectSequence<IFluidHandle<SharedMap>>,
+    root: FluidNodeChildren,
     runtime: IFluidDataStoreRuntime,
   ) => Promise<void>;
 };

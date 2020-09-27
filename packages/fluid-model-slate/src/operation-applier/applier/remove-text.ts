@@ -4,10 +4,11 @@ import { IFluidHandle } from '@fluidframework/core-interfaces';
 import { SharedMap } from '@fluidframework/map';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { getNode, getText } from '../node-getter';
+import { FluidNodeChildren } from '../../types';
 
 const applyRemoveTextOperation = async (
   op: RemoveTextOperation,
-  root: SharedObjectSequence<IFluidHandle<SharedMap>>,
+  root: FluidNodeChildren,
   runtime: IFluidDataStoreRuntime,
 ) => {
   const node = await getNode(op.path, root);

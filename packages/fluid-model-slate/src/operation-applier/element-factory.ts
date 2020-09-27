@@ -1,9 +1,9 @@
-import {Node} from 'slate';
-import {IFluidDataStoreRuntime} from '@fluidframework/datastore-definitions';
-import {SharedObjectSequence, SharedString} from '@fluidframework/sequence';
-import {SharedMap} from '@fluidframework/map';
-import {FLUIDNODE_KEYS} from '../interfaces';
-import {IFluidHandle} from "@fluidframework/core-interfaces";
+import { Node } from 'slate';
+import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
+import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
+import { SharedMap } from '@fluidframework/map';
+import { FLUIDNODE_KEYS } from '../interfaces';
+import { FluidNodeHandle } from '../types';
 
 const createSharedString = (text: string, runtime: IFluidDataStoreRuntime) => {
   const shareString = SharedString.create(runtime);
@@ -11,8 +11,11 @@ const createSharedString = (text: string, runtime: IFluidDataStoreRuntime) => {
   return shareString;
 };
 
-const createChildren = (runtime: IFluidDataStoreRuntime, content?: IFluidHandle<SharedMap>[]) => {
-  const sequence = SharedObjectSequence.create<IFluidHandle<SharedMap>>(runtime);
+const createChildren = (
+  runtime: IFluidDataStoreRuntime,
+  content?: FluidNodeHandle[],
+) => {
+  const sequence = SharedObjectSequence.create<FluidNodeHandle>(runtime);
   if (content) {
     sequence.insert(0, content);
   }
@@ -31,24 +34,34 @@ const createNode = (slateNode: Node, runtime: IFluidDataStoreRuntime) => {
   }
 
   if (slateNode.properties) {
-    const properties = slateNode.text ? slateNode.properties as Partial<Text> : slateNode.properties as Partial<Element>;
+    const properties = slateNode.text
+      ? (slateNode.properties as Partial<Text>)
+      : (slateNode.properties as Partial<Element>);
     for (let key in properties) {
       const property = createSharedString(properties[key], runtime);
-      node.set(key, property.handle)
+      node.set(key, property.handle);
     }
   }
 
   return node;
 };
 
-const applyProperties = <T extends Text | Element >(properties: Partial<T>, node: SharedMap, runtime: IFluidDataStoreRuntime) => {
+const applyProperties = <T extends Text | Element>(
+  properties: Partial<T>,
+  node: SharedMap,
+  runtime: IFluidDataStoreRuntime,
+) => {
   Object.keys(properties).forEach(k => {
     const property = createSharedString(properties[k], runtime);
-    node.set(k, property.handle)
-  })
-}
+    node.set(k, property.handle);
+  });
+};
 
-const createNodeWithChildren = (children: IFluidHandle<SharedMap>[], properties: Partial<Element>, runtime: IFluidDataStoreRuntime) => {
+const createNodeWithChildren = (
+  children: FluidNodeHandle[],
+  properties: Partial<Element>,
+  runtime: IFluidDataStoreRuntime,
+) => {
   const node = SharedMap.create(runtime);
   node.set(FLUIDNODE_KEYS.CHILDREN, createChildren(runtime, children).handle);
   if (properties) {

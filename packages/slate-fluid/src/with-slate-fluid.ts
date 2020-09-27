@@ -12,8 +12,8 @@ const withSlateFluid = <T extends Editor, U extends BaseFluidModel<Operation>>(
     // model.apply(op as any);
     editor.operations.forEach(op => {
       // model.apply(op as any);
-      console.log(op)
-    })
+      console.log(op);
+    });
     onChange();
   };
 

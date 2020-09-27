@@ -7,12 +7,13 @@ import {
 } from '@fluidframework/sequence';
 import { SharedMap } from '@fluidframework/map';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
-import {Operation} from 'slate'
+import { Operation } from 'slate';
 import uuid from 'uuid';
 
 import { getNode } from '../../src/operation-applier/node-getter';
 import { operationApplier } from '../../src/operation-applier';
 import { FLUIDNODE_KEYS } from '../../src/interfaces';
+import { FluidNodeChildren, FluidNodeHandle } from '../../src/types';
 
 SharedString.create = runtime =>
   new SharedString(runtime, uuid.v4(), SharedStringFactory.Attributes);
@@ -28,13 +29,9 @@ SharedObjectSequence.create = runtime =>
 describe('operation applier', () => {
   const mockRuntime: mocks.MockFluidDataStoreRuntime = new mocks.MockFluidDataStoreRuntime();
 
-  const applyOp = async (splitTextOp: Operation, root: SharedObjectSequence<IFluidHandle<SharedMap>>) => {
-    await operationApplier[splitTextOp.type](
-        splitTextOp,
-        root,
-        mockRuntime,
-    );
-  }
+  const applyOp = async (splitTextOp: Operation, root: FluidNodeChildren) => {
+    await operationApplier[splitTextOp.type](splitTextOp, root, mockRuntime);
+  };
 
   const initNode = (childrenNode?: SharedMap[]) => {
     const node = new SharedMap(
@@ -44,21 +41,21 @@ describe('operation applier', () => {
     );
 
     if (childrenNode) {
-      const childSequence = new SharedObjectSequence<IFluidHandle<SharedMap>>(
-          mockRuntime,
-          uuid.v4(),
-          SharedObjectSequenceFactory.Attributes,
+      const childSequence = new SharedObjectSequence<FluidNodeHandle>(
+        mockRuntime,
+        uuid.v4(),
+        SharedObjectSequenceFactory.Attributes,
       );
       childSequence.insert(
-          0,
-          childrenNode.map((v, i) => <IFluidHandle<SharedMap>>v.handle),
+        0,
+        childrenNode.map(v => <FluidNodeHandle>v.handle),
       );
       node.set(FLUIDNODE_KEYS.CHILDREN, childSequence.handle);
     } else {
       const text = new SharedString(
-          mockRuntime,
-          uuid.v4(),
-          SharedStringFactory.Attributes,
+        mockRuntime,
+        uuid.v4(),
+        SharedStringFactory.Attributes,
       );
       text.insertText(0, 'This default text');
       node.set(FLUIDNODE_KEYS.TEXT, text.handle);
@@ -68,32 +65,34 @@ describe('operation applier', () => {
   };
 
   const initEditorRoot = () => {
-    const root = new SharedObjectSequence<IFluidHandle<SharedMap>>(
+    const root = new SharedObjectSequence<FluidNodeHandle>(
       mockRuntime,
       uuid.v4(),
       SharedObjectSequenceFactory.Attributes,
     );
     const node_0_0 = initNode();
     const node_0 = initNode([node_0_0]);
-    root.insert(0, [<IFluidHandle<SharedMap>>node_0.handle]);
+    root.insert(0, [<FluidNodeHandle>node_0.handle]);
     return root;
   };
 
   const getNodeText = async (
-    root: SharedObjectSequence<IFluidHandle<SharedMap>>,
+    root: FluidNodeChildren,
     path: number[],
   ): Promise<string> => {
     return await getNodeProperties(root, path, FLUIDNODE_KEYS.TEXT);
   };
 
-  const getNodeProperties = async (root: SharedObjectSequence<IFluidHandle<SharedMap>>, path: number[], key: string) => {
+  const getNodeProperties = async (
+    root: FluidNodeChildren,
+    path: number[],
+    key: string,
+  ) => {
     const resultNode = await getNode(path, root);
-    const valueHandle = resultNode.get<IFluidHandle<SharedString>>(
-        key,
-    );
+    const valueHandle = resultNode.get<IFluidHandle<SharedString>>(key);
     const expectValueShareString = await valueHandle.get();
     return expectValueShareString.getText();
-  }
+  };
 
   describe('insert node operation', () => {
     it('should insert a element to path when apply a insert node op', async () => {
@@ -170,15 +169,19 @@ describe('operation applier', () => {
         type: 'split_node',
         position: 2,
         properties: {
-          type: 'block-quote'
-        }
+          type: 'block-quote',
+        },
       } as Operation;
 
       await applyOp(splitTextOp, root);
 
       const expectText1 = await getNodeText(root, [0, 0]);
       const expectText2 = await getNodeText(root, [0, 1]);
-      const expectType = await getNodeProperties(root, [0, 1], FLUIDNODE_KEYS.TYPE);
+      const expectType = await getNodeProperties(
+        root,
+        [0, 1],
+        FLUIDNODE_KEYS.TYPE,
+      );
 
       expect(expectText1).toEqual('Th');
       expect(expectText2).toEqual('is default text');
@@ -192,14 +195,14 @@ describe('operation applier', () => {
         path: [0, 0],
         type: 'split_node',
         position: 2,
-        properties: {}
+        properties: {},
       } as Operation;
 
       const splitTextOp2 = {
         path: [0],
         type: 'split_node',
         position: 1,
-        properties: {}
+        properties: {},
       } as Operation;
 
       await applyOp(splitTextOp1, root);
@@ -219,7 +222,7 @@ describe('operation applier', () => {
         path: [0, 0],
         type: 'split_node',
         position: 2,
-        properties: {}
+        properties: {},
       } as Operation;
 
       const splitTextOp2 = {
@@ -227,14 +230,18 @@ describe('operation applier', () => {
         type: 'split_node',
         position: 1,
         properties: {
-          type: 'block-quote'
-        }
+          type: 'block-quote',
+        },
       } as Operation;
 
       await applyOp(splitTextOp1, root);
       await applyOp(splitTextOp2, root);
 
-      const expectType = await getNodeProperties(root, [1], FLUIDNODE_KEYS.TYPE);
+      const expectType = await getNodeProperties(
+        root,
+        [1],
+        FLUIDNODE_KEYS.TYPE,
+      );
 
       expect(expectType).toEqual('block-quote');
     });

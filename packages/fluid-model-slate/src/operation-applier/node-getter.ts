@@ -1,11 +1,12 @@
-import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
+import { SharedString } from '@fluidframework/sequence';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
 import { SharedMap } from '@fluidframework/map';
 import { FLUIDNODE_KEYS } from '../interfaces';
+import { FluidNodeChildren } from '../types';
 
 const getNode = async (
   path: number[],
-  root: SharedObjectSequence<IFluidHandle<SharedMap>>,
+  root: FluidNodeChildren,
 ): Promise<SharedMap> => {
   const [index, ...rest] = path;
 
@@ -22,12 +23,10 @@ const getNode = async (
   return await getNode(rest, nextChildren);
 };
 
-const getChildren = async (
-  node: SharedMap,
-): Promise<SharedObjectSequence<IFluidHandle<SharedMap>>> => {
-  const childrenHandle = <
-    IFluidHandle<SharedObjectSequence<IFluidHandle<SharedMap>>>
-  >node.get(FLUIDNODE_KEYS.CHILDREN);
+const getChildren = async (node: SharedMap): Promise<FluidNodeChildren> => {
+  const childrenHandle = <IFluidHandle<FluidNodeChildren>>(
+    node.get(FLUIDNODE_KEYS.CHILDREN)
+  );
   const children = await childrenHandle.get();
   return children;
 };
@@ -38,8 +37,15 @@ const getText = async (node: SharedMap): Promise<SharedString> => {
   return text;
 };
 
-const getParent = async (path: number[], root: SharedObjectSequence<IFluidHandle<SharedMap>>): Promise<SharedObjectSequence<IFluidHandle<SharedMap>>> => {
-  return path.length === 1 ? root : (await getNode(path.slice(0, -1), root)).get(FLUIDNODE_KEYS.CHILDREN).get()
-}
+const getParent = async (
+  path: number[],
+  root: FluidNodeChildren,
+): Promise<FluidNodeChildren> => {
+  return path.length === 1
+    ? root
+    : (await getNode(path.slice(0, -1), root))
+        .get(FLUIDNODE_KEYS.CHILDREN)
+        .get();
+};
 
 export { getNode, getChildren, getText, getParent };

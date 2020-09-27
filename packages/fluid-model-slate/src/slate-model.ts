@@ -2,15 +2,15 @@ import { BaseFluidModel } from '@solidoc/fluid-model-base';
 import { SharedMap } from '@fluidframework/map';
 import { SharedObjectSequence } from '@fluidframework/sequence';
 import { DataObjectFactory } from '@fluidframework/aqueduct';
-import { IFluidHandle } from '@fluidframework/core-interfaces';
 import { FLUIDNODE_KEYS } from './interfaces';
 import { addEventListenerHandler } from './event-handler';
 import { slateOpHandler } from './slate-op-handler';
 import { Operation } from 'slate';
 import { operationApplier } from './operation-applier/operation-applier';
+import { FluidNodeChildren, FluidNodeHandle } from './types';
 
 class SlateFluidModel extends BaseFluidModel<Operation> {
-  private fluidNodeSequence!: SharedObjectSequence<IFluidHandle<SharedMap>>;
+  private fluidNodeSequence!: FluidNodeChildren;
   private fluidNode!: SharedMap;
 
   public static get Name() {
@@ -60,9 +60,7 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     this.fluidNode.set(FLUIDNODE_KEYS.TEXT, 'text-test1111');
 
     this.fluidNodeSequence = SharedObjectSequence.create(this.runtime);
-    this.fluidNodeSequence.insert(0, [
-      <IFluidHandle<SharedMap>>this.fluidNode.handle,
-    ]);
+    this.fluidNodeSequence.insert(0, [<FluidNodeHandle>this.fluidNode.handle]);
 
     this.root.set(FLUIDNODE_KEYS.ID, '');
 

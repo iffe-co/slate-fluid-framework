@@ -1,20 +1,23 @@
-import {SplitNodeOperation} from 'slate';
-import {SharedObjectSequence, SharedString} from '@fluidframework/sequence';
-import {IFluidHandle} from '@fluidframework/core-interfaces';
-import {SharedMap} from '@fluidframework/map';
-import {IFluidDataStoreRuntime} from '@fluidframework/datastore-definitions';
-import {getChildren, getNode, getParent, getText} from '../node-getter';
-import {createNode, createNodeWithChildren} from "../element-factory";
-import {FLUIDNODE_KEYS} from "../../interfaces";
+import { SplitNodeOperation } from 'slate';
+import { SharedMap } from '@fluidframework/map';
+import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
+import { getChildren, getNode, getParent, getText } from '../node-getter';
+import { createNode, createNodeWithChildren } from '../element-factory';
+import { FLUIDNODE_KEYS } from '../../interfaces';
+import { FluidNodeChildren, FluidNodeHandle } from '../../types';
 
-function addNewNodeIntoParent(newNode: SharedMap, path: number[], parent: SharedObjectSequence<IFluidHandle<SharedMap>>) {
+function addNewNodeIntoParent(
+  newNode: SharedMap,
+  path: number[],
+  parent: FluidNodeChildren,
+) {
   const [index] = path.slice(-1);
-  parent.insert(index + 1, [<IFluidHandle<SharedMap>>newNode.handle])
+  parent.insert(index + 1, [<FluidNodeHandle>newNode.handle]);
 }
 
 const applySplitNodeOperation = async (
   op: SplitNodeOperation,
-  root: SharedObjectSequence<IFluidHandle<SharedMap>>,
+  root: FluidNodeChildren,
   runtime: IFluidDataStoreRuntime,
 ) => {
   const node = await getNode(op.path, root);
@@ -25,14 +28,21 @@ const applySplitNodeOperation = async (
     const originText = text.getText();
     const after = originText.slice(op.position);
     text.removeText(op.position, originText.length);
-    const newNode = createNode({text: after, properties: op.properties}, runtime)
+    const newNode = createNode(
+      { text: after, properties: op.properties },
+      runtime,
+    );
     addNewNodeIntoParent(newNode, op.path, parent);
   } else {
     const children = await getChildren(node);
-    const after = children.getRange(op.position)
-    const newNode = createNodeWithChildren(after, op.properties as Partial<Element>, runtime)
+    const after = children.getRange(op.position);
+    const newNode = createNodeWithChildren(
+      after,
+      op.properties as Partial<Element>,
+      runtime,
+    );
     addNewNodeIntoParent(newNode, op.path, parent);
-    children.remove(op.position, children.getLength())
+    children.remove(op.position, children.getLength());
   }
 };
 
