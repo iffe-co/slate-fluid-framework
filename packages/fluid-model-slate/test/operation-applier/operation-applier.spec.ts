@@ -83,13 +83,17 @@ describe('operation applier', () => {
     root: SharedObjectSequence<IFluidHandle<SharedMap>>,
     path: number[],
   ): Promise<string> => {
-    const resultNode = await getNode(path, root);
-    const textHandle = resultNode.get<IFluidHandle<SharedString>>(
-      FLUIDNODE_KEYS.TEXT,
-    );
-    const expectShareString = await textHandle.get();
-    return expectShareString.getText();
+    return await getNodeProperties(root, path, FLUIDNODE_KEYS.TEXT);
   };
+
+  const getNodeProperties = async (root: SharedObjectSequence<IFluidHandle<SharedMap>>, path: number[], key: string) => {
+    const resultNode = await getNode(path, root);
+    const valueHandle = resultNode.get<IFluidHandle<SharedString>>(
+        key,
+    );
+    const expectValueShareString = await valueHandle.get();
+    return expectValueShareString.getText();
+  }
 
   describe('insert node operation', () => {
     it('should insert a element to path when apply a insert node op', async () => {
@@ -158,24 +162,29 @@ describe('operation applier', () => {
   });
 
   describe('split node operation', () => {
-    it('should split text node when split op target was a text ', async () => {
+    it('should split text node and apply properties when split op target was a text ', async () => {
       const root = initEditorRoot();
 
       const splitTextOp = {
         path: [0, 0],
         type: 'split_node',
         position: 2,
-        properties: {}
+        properties: {
+          type: 'block-quote'
+        }
       } as Operation;
 
       await applyOp(splitTextOp, root);
 
       const expectText1 = await getNodeText(root, [0, 0]);
       const expectText2 = await getNodeText(root, [0, 1]);
+      const expectType = await getNodeProperties(root, [0, 1], FLUIDNODE_KEYS.TYPE);
 
       expect(expectText1).toEqual('Th');
       expect(expectText2).toEqual('is default text');
+      expect(expectType).toEqual('block-quote');
     });
+
     it('should move node when split node path was not the foot node', async () => {
       const root = initEditorRoot();
 
@@ -201,6 +210,33 @@ describe('operation applier', () => {
 
       expect(expectText1).toEqual('Th');
       expect(expectText2).toEqual('is default text');
+    });
+
+    it('should apply node style when move node with style', async () => {
+      const root = initEditorRoot();
+
+      const splitTextOp1 = {
+        path: [0, 0],
+        type: 'split_node',
+        position: 2,
+        properties: {}
+      } as Operation;
+
+      const splitTextOp2 = {
+        path: [0],
+        type: 'split_node',
+        position: 1,
+        properties: {
+          type: 'block-quote'
+        }
+      } as Operation;
+
+      await applyOp(splitTextOp1, root);
+      await applyOp(splitTextOp2, root);
+
+      const expectType = await getNodeProperties(root, [1], FLUIDNODE_KEYS.TYPE);
+
+      expect(expectType).toEqual('block-quote');
     });
   });
 });

@@ -5,12 +5,16 @@ const withSlateFluid = <T extends Editor, U extends BaseFluidModel<Operation>>(
   editor: T,
   model: U,
 ) => {
-  const { apply } = editor;
+  const { /*apply,*/ onChange } = editor;
 
-  editor.apply = (op: Operation) => {
-    console.log(op);
+  editor.onChange = () => {
+    console.log(editor.operations);
     // model.apply(op as any);
-    apply(op);
+    editor.operations.forEach(op => {
+      // model.apply(op as any);
+      console.log(op)
+    })
+    onChange();
   };
 
   // model.subscribe('id');
