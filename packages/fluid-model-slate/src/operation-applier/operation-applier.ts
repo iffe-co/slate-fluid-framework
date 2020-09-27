@@ -11,6 +11,7 @@ import { applyInsertTextOperation } from './applier/insert-text';
 import { applyRemoveTextOperation } from './applier/remove-text';
 import { applySplitNodeOperation } from './applier/split-node';
 import { FluidNodeChildren } from '../types';
+import { applySetNodeOperation } from './applier/set-node';
 
 const applyMergeNodeOperation = (
   op: MergeNodeOperation,
@@ -24,11 +25,6 @@ const applyMoveNodeOperation = (
 ) => Promise.resolve();
 const applyRemoveNodeOperation = (
   op: RemoveNodeOperation,
-  root: FluidNodeChildren,
-  runtime: IFluidDataStoreRuntime,
-) => Promise.resolve();
-const applySetNodeOperation = (
-  op: SetNodeOperation,
   root: FluidNodeChildren,
   runtime: IFluidDataStoreRuntime,
 ) => Promise.resolve();

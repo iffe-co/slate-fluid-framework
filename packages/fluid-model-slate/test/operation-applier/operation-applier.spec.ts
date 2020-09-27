@@ -87,8 +87,12 @@ describe('operation applier', () => {
     root: FluidNodeChildren,
     path: number[],
     key: string,
+    isHandleProperty: boolean = true,
   ) => {
     const resultNode = await getNode(path, root);
+    if (!isHandleProperty) {
+      return resultNode.get(key);
+    }
     const valueHandle = resultNode.get<IFluidHandle<SharedString>>(key);
     const expectValueShareString = await valueHandle.get();
     return expectValueShareString.getText();
@@ -244,6 +248,34 @@ describe('operation applier', () => {
       );
 
       expect(expectType).toEqual('block-quote');
+    });
+  });
+
+  describe('set node operation', () => {
+    it('should set node properties when set node', async () => {
+      const root = initEditorRoot();
+
+      const setNode = {
+        path: [0],
+        type: 'set_node',
+        properties: {
+          titalic: undefined,
+        },
+        newProperties: {
+          titalic: true,
+        },
+      } as Operation;
+
+      await applyOp(setNode, root);
+
+      const expectTitalic = await getNodeProperties(
+        root,
+        [0],
+        FLUIDNODE_KEYS.TITALIC,
+        false,
+      );
+
+      expect(expectTitalic).toEqual(true);
     });
   });
 });

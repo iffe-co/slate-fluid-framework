@@ -70,4 +70,4 @@ const createNodeWithChildren = (
   return node;
 };
 
-export { createNode, createNodeWithChildren };
+export { createNode, createNodeWithChildren, createSharedString };

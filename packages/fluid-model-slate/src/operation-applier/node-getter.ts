@@ -1,8 +1,11 @@
-import { SharedString } from '@fluidframework/sequence';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
 import { SharedMap } from '@fluidframework/map';
 import { FLUIDNODE_KEYS } from '../interfaces';
-import { FluidNodeChildren } from '../types';
+import {
+  FluidNodeChildren,
+  FluidNodeProperty,
+  FluidNodePropertyHandle,
+} from '../types';
 
 const getNode = async (
   path: number[],
@@ -31,8 +34,8 @@ const getChildren = async (node: SharedMap): Promise<FluidNodeChildren> => {
   return children;
 };
 
-const getText = async (node: SharedMap): Promise<SharedString> => {
-  const textHandle = <IFluidHandle<SharedString>>node.get(FLUIDNODE_KEYS.TEXT);
+const getText = async (node: SharedMap): Promise<FluidNodeProperty> => {
+  const textHandle = <FluidNodePropertyHandle>node.get(FLUIDNODE_KEYS.TEXT);
   const text = await textHandle.get();
   return text;
 };

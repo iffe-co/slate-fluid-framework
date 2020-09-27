@@ -54,6 +54,7 @@ enum FLUIDNODE_KEYS {
   TYPE = 'type',
   CHILDREN = 'children',
   TEXT = 'text',
+  TITALIC = 'titalic',
 }
 
 export { FluidEditor, FluidNode, FLUIDNODE_KEYS };
