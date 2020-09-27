@@ -304,5 +304,38 @@ describe('operation applier', () => {
       const expectText1 = await getNodeText(root, [0, 0]);
       expect(expectText1).toEqual('This default text');
     });
+
+    it('should merge not text node when target was not text node', async () => {
+      const root = initEditorRoot();
+
+      const splitTextOp1 = {
+        path: [0, 0],
+        type: 'split_node',
+        position: 2,
+        properties: {},
+      } as Operation;
+
+      const splitTextOp2 = {
+        path: [0],
+        type: 'split_node',
+        position: 1,
+        properties: {},
+      } as Operation;
+
+      await applyOp(splitTextOp1, root);
+      await applyOp(splitTextOp2, root);
+
+      const mergeNodeOp = {
+        path: [1],
+        type: 'merge_node'
+      } as Operation;
+
+      await applyOp(mergeNodeOp, root);
+
+      const expectText1 = await getNodeText(root, [0, 0]);
+      const expectText2 = await getNodeText(root, [0, 1]);
+      expect(expectText1).toEqual('Th');
+      expect(expectText2).toEqual('is default text');
+    });
   });
 });
