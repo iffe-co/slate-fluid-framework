@@ -51,16 +51,13 @@ const getParent = async (
         .get();
 };
 
-const getPrevious = async (
-    path: number[],
-    root: FluidNodeChildren,
-) => {
+const getPrevious = async (path: number[], root: FluidNodeChildren) => {
   if (path.length === 0 || path[path.length - 1] <= 0) {
-    throw `Cannot get the previous path of a root path [${path}], because it has no previous index.`
+    throw `Cannot get the previous path of a root path [${path}], because it has no previous index.`;
   }
 
-  const prevPath =  [...path.slice(0, -1), path[path.length - 1] - 1]
-  return await getNode(prevPath, root)
-}
+  const prevPath = [...path.slice(0, -1), path[path.length - 1] - 1];
+  return await getNode(prevPath, root);
+};
 
 export { getNode, getChildren, getText, getParent, getPrevious };
