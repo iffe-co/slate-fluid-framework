@@ -94,11 +94,34 @@ class OperationActor {
     return expectValueShareString.getText();
   }
 
-  public insertNode = (path: number[], text: string = 'The first node') => {
+  private async internalCheckNodeExist(path: number[]) {
+    try {
+      await getNode(path, this.root)
+    } catch (err) {
+      if (err.message === 'Target node not exist!') {
+        return false
+      }
+      throw err
+    }
+    return true;
+  }
+
+  public insertTextNode = (path: number[], text: string = 'The first node') => {
     const op = {
       type: 'insert_node',
       path,
       node: { text },
+    } as Operation;
+
+    this.actions.push(op);
+    return this;
+  };
+
+  public insertSequenceNode = (path: number[]) => {
+    const op = {
+      type: 'insert_node',
+      path,
+      node: { children: [] },
     } as Operation;
 
     this.actions.push(op);
@@ -147,6 +170,12 @@ class OperationActor {
     return this;
   };
 
+  public moveNode = (from: number[], to: number[]) => {
+    const op = { type: 'move_node', path: from, newPath: to } as Operation;
+    this.actions.push(op);
+    return this
+  }
+
   public execute = async () => {
     for (let action of this.actions) {
       await this.applyOp(action);
@@ -170,6 +199,11 @@ class OperationActor {
     );
     return this;
   };
+
+  public isNodeExist = (path: number[]) => {
+    this.valuesPromises.push(this.internalCheckNodeExist(path));
+    return this
+  }
 
   public values = async () => {
     const values = await Promise.all(this.valuesPromises);

@@ -25,7 +25,7 @@ describe('operation applier', () => {
   describe('insert node operation', () => {
     it('should insert a element to path when apply a insert node op', async () => {
       const operationActor = await initOperationActor()
-        .insertNode([0, 1], 'The first node')
+        .insertTextNode([0, 1], 'The first node')
         .execute();
 
       const [expectText] = await operationActor.getNodeText([0, 1]).values();
@@ -148,6 +148,39 @@ describe('operation applier', () => {
 
       expect(expectText1).toEqual('Th');
       expect(expectText2).toEqual('is default text');
+    });
+  });
+
+  describe('move node operation', () => {
+    it('should delete origin node when move node', async () => {
+      const operationActor = await initOperationActor()
+          .splitNode([0, 0], 2, {})
+          .splitNode([0], 1, {})
+          .moveNode([1, 0], [0, 0])
+          .execute();
+
+      const [splitNodeExistAfterMove] = await operationActor
+          .isNodeExist([1, 0])
+          .values()
+
+      expect(splitNodeExistAfterMove).toEqual(false)
+    });
+
+    it('should move origin node to target path when move node', async () => {
+      const operationActor = await initOperationActor()
+          .splitNode([0, 0], 3, {})
+          .splitNode([0], 1, {})
+          .insertSequenceNode([0])
+          .moveNode([1, 0], [2, 0])
+          .execute();
+
+      const [splitNodeExistAfterMove, targetNodeText] = await operationActor
+          .isNodeExist([1, 0])
+          .getNodeText([2, 0])
+          .values()
+
+      expect(splitNodeExistAfterMove).toEqual(false)
+      expect(targetNodeText).toEqual('s default text')
     });
   });
 });

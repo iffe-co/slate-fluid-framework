@@ -12,12 +12,8 @@ import { applySplitNodeOperation } from './applier/split-node';
 import { FluidNodeChildren } from '../types';
 import { applySetNodeOperation } from './applier/set-node';
 import { applyMergeNodeOperation } from './applier/merge-node';
+import {applyMoveNodeOperation} from "./applier/move-node";
 
-const applyMoveNodeOperation = (
-  op: MoveNodeOperation,
-  root: FluidNodeChildren,
-  runtime: IFluidDataStoreRuntime,
-) => Promise.resolve();
 const applyRemoveNodeOperation = (
   op: RemoveNodeOperation,
   root: FluidNodeChildren,

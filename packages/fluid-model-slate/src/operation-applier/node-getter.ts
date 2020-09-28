@@ -18,7 +18,13 @@ const getNode = async (
   }
 
   if (rest.length === 0) {
-    return await root.getRange(index, index + 1)[0].get();
+    const [targetNode] = root.getRange(index, index + 1);
+
+    if (!targetNode) {
+      throw new Error('Target node not exist!')
+    }
+
+    return await targetNode.get();
   }
 
   const map = await root.getRange(index, index + 1)[0].get();
