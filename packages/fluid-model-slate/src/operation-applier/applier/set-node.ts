@@ -2,7 +2,6 @@ import { SetNodeOperation } from 'slate';
 import { SharedMap } from '@fluidframework/map';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { getNode } from '../node-getter';
-import { createSharedString } from '../node-factory';
 import { FluidNodeChildren, FluidNodeHandle } from '../../types';
 
 function addNewNodeIntoParent(
@@ -22,12 +21,7 @@ const applySetNodeOperation = async (
   const node = await getNode(op.path, root);
   const { newProperties } = op;
   Object.keys(newProperties).forEach(k => {
-    if (typeof newProperties[k] == 'string') {
-      const value = createSharedString(newProperties[k] as string, runtime);
-      node.set(k, value.handle);
-    } else {
-      node.set(k, newProperties[k]);
-    }
+    node.set(k, newProperties[k]);
   });
 };
 

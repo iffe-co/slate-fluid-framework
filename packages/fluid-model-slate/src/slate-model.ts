@@ -8,6 +8,7 @@ import { slateOpHandler } from './slate-op-handler';
 import { Operation } from 'slate';
 import { operationApplier } from './operation-applier/operation-applier';
 import { FluidNodeChildren, FluidNodeHandle } from './types';
+import { registerOperationReceiver } from './dds-event-processor/binder';
 
 class SlateFluidModel extends BaseFluidModel<Operation> {
   private fluidNodeSequence!: FluidNodeChildren;
@@ -26,6 +27,10 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
 
   subscribe = () => {
     throw new Error('Method not implemented.');
+  };
+
+  onModelChanged = (callback: (op: Operation) => void) => {
+    registerOperationReceiver(callback);
   };
 
   unsubscribe = (): void => {
