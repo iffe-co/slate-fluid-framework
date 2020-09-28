@@ -10,7 +10,7 @@ const applyInsertNodeOperation = async (
   runtime: IFluidDataStoreRuntime,
 ) => {
   const parent = await getParent(op.path, root);
-  const index = op.path[op.path.length - 1]
+  const index = op.path[op.path.length - 1];
   const element = createNode(op.node, runtime);
   parent.insert(index, [<FluidNodeHandle>element.handle]);
 };

@@ -21,7 +21,7 @@ const getNode = async (
     const [targetNode] = root.getRange(index, index + 1);
 
     if (!targetNode) {
-      throw new Error('Target node not exist!')
+      throw new Error('Target node not exist!');
     }
 
     return await targetNode.get();

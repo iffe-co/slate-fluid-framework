@@ -35,16 +35,20 @@ describe('operation applier', () => {
 
     it('should insert into specific position when target path was in exist path', async () => {
       const operationActor = await initOperationActor()
-          .insertTextNode([0, 1], 'Insert a node1')
-          .insertTextNode([0, 1], 'Insert a node2')
-          .insertTextNode([0, 1], 'Insert a node3')
-          .execute();
+        .insertTextNode([0, 1], 'Insert a node1')
+        .insertTextNode([0, 1], 'Insert a node2')
+        .insertTextNode([0, 1], 'Insert a node3')
+        .execute();
 
-      const [expectNode3,expectNode2,expectNode1] = await operationActor
-          .getNodeText([0, 1])
-          .getNodeText([0, 2])
-          .getNodeText([0, 3])
-          .values();
+      const [
+        expectNode3,
+        expectNode2,
+        expectNode1,
+      ] = await operationActor
+        .getNodeText([0, 1])
+        .getNodeText([0, 2])
+        .getNodeText([0, 3])
+        .values();
 
       expect(expectNode3).toEqual('Insert a node3');
       expect(expectNode2).toEqual('Insert a node2');
@@ -53,12 +57,10 @@ describe('operation applier', () => {
 
     it('should insert root path when path length === 1', async () => {
       const operationActor = await initOperationActor()
-          .insertTextNode([0], 'This text was insert to root path')
-          .execute();
+        .insertTextNode([0], 'This text was insert to root path')
+        .execute();
 
-      const [expectRootText] = await operationActor
-          .getNodeText([0])
-          .values();
+      const [expectRootText] = await operationActor.getNodeText([0]).values();
 
       expect(expectRootText).toEqual('This text was insert to root path');
     });
@@ -184,48 +186,46 @@ describe('operation applier', () => {
   describe('move node operation', () => {
     it('should delete origin node when move node', async () => {
       const operationActor = await initOperationActor()
-          .splitNode([0, 0], 2, {})
-          .splitNode([0], 1, {})
-          .moveNode([1, 0], [0, 0])
-          .execute();
+        .splitNode([0, 0], 2, {})
+        .splitNode([0], 1, {})
+        .moveNode([1, 0], [0, 0])
+        .execute();
 
       const [splitNodeExistAfterMove] = await operationActor
-          .isNodeExist([1, 0])
-          .values()
+        .isNodeExist([1, 0])
+        .values();
 
-      expect(splitNodeExistAfterMove).toEqual(false)
+      expect(splitNodeExistAfterMove).toEqual(false);
     });
 
     it('should move origin node to target path when move node', async () => {
       const operationActor = await initOperationActor()
-          .splitNode([0, 0], 3, {})
-          .splitNode([0], 1, {})
-          .insertSequenceNode([0])
-          .moveNode([1, 0], [2, 0])
-          .execute();
+        .splitNode([0, 0], 3, {})
+        .splitNode([0], 1, {})
+        .insertSequenceNode([0])
+        .moveNode([1, 0], [2, 0])
+        .execute();
 
-      const [splitNodeExistAfterMove, targetNodeText] = await operationActor
-          .isNodeExist([1, 0])
-          .getNodeText([2, 0])
-          .values()
+      const [
+        splitNodeExistAfterMove,
+        targetNodeText,
+      ] = await operationActor.isNodeExist([1, 0]).getNodeText([2, 0]).values();
 
-      expect(splitNodeExistAfterMove).toEqual(false)
-      expect(targetNodeText).toEqual('s default text')
+      expect(splitNodeExistAfterMove).toEqual(false);
+      expect(targetNodeText).toEqual('s default text');
     });
 
     it('should move to true path when original path was end before target path', async () => {
       const operationActor = await initOperationActor()
-          .insertSequenceNode([1])
-          .insertTextNode([1, 0], 'original text node')
-          .insertSequenceNode([1, 1])
-          .moveNode([1, 0], [1, 1, 0])
-          .execute()
+        .insertSequenceNode([1])
+        .insertTextNode([1, 0], 'original text node')
+        .insertSequenceNode([1, 1])
+        .moveNode([1, 0], [1, 1, 0])
+        .execute();
 
-      const [expectText] = await operationActor
-          .getNodeText([1, 0, 0])
-          .values()
+      const [expectText] = await operationActor.getNodeText([1, 0, 0]).values();
 
-      expect(expectText).toEqual('original text node')
+      expect(expectText).toEqual('original text node');
     });
   });
 });

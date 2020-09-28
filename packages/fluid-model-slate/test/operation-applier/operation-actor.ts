@@ -96,12 +96,12 @@ class OperationActor {
 
   private async internalCheckNodeExist(path: number[]) {
     try {
-      await getNode(path, this.root)
+      await getNode(path, this.root);
     } catch (err) {
       if (err.message === 'Target node not exist!') {
-        return false
+        return false;
       }
-      throw err
+      throw err;
     }
     return true;
   }
@@ -173,8 +173,8 @@ class OperationActor {
   public moveNode = (from: number[], to: number[]) => {
     const op = { type: 'move_node', path: from, newPath: to } as Operation;
     this.actions.push(op);
-    return this
-  }
+    return this;
+  };
 
   public execute = async () => {
     for (let action of this.actions) {
@@ -202,8 +202,8 @@ class OperationActor {
 
   public isNodeExist = (path: number[]) => {
     this.valuesPromises.push(this.internalCheckNodeExist(path));
-    return this
-  }
+    return this;
+  };
 
   public values = async () => {
     const values = await Promise.all(this.valuesPromises);
