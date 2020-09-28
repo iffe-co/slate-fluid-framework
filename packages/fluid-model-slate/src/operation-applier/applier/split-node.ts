@@ -2,7 +2,7 @@ import { SplitNodeOperation } from 'slate';
 import { SharedMap } from '@fluidframework/map';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { getChildren, getNode, getParent, getText } from '../node-getter';
-import { createNode, createNodeWithChildren } from '../element-factory';
+import { createNode, createNodeWithChildren } from '../node-factory';
 import { FLUIDNODE_KEYS } from '../../interfaces';
 import { FluidNodeChildren, FluidNodeHandle } from '../../types';
 

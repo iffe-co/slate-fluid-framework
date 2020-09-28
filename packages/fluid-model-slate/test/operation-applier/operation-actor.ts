@@ -25,9 +25,10 @@ SharedObjectSequence.create = runtime =>
     SharedObjectSequenceFactory.Attributes,
   );
 
+const mockRuntime: mocks.MockFluidDataStoreRuntime = new mocks.MockFluidDataStoreRuntime();
+
 class OperationActor {
   private readonly root: SharedObjectSequence<FluidNodeHandle>;
-  private readonly mockRuntime: mocks.MockFluidDataStoreRuntime = new mocks.MockFluidDataStoreRuntime();
   private actions: Operation[] = [];
   private valuesPromises: Promise<any>[] = [];
   constructor() {
@@ -35,7 +36,7 @@ class OperationActor {
   }
   private initEditorRoot = () => {
     const root = new SharedObjectSequence<FluidNodeHandle>(
-      this.mockRuntime,
+      mockRuntime,
       uuid.v4(),
       SharedObjectSequenceFactory.Attributes,
     );
@@ -48,13 +49,13 @@ class OperationActor {
   private initNode = (childrenNode?: SharedMap[]) => {
     const node = new SharedMap(
       uuid.v4(),
-      this.mockRuntime,
+      mockRuntime,
       SharedMap.getFactory().attributes,
     );
 
     if (childrenNode) {
       const childSequence = new SharedObjectSequence<FluidNodeHandle>(
-        this.mockRuntime,
+        mockRuntime,
         uuid.v4(),
         SharedObjectSequenceFactory.Attributes,
       );
@@ -65,7 +66,7 @@ class OperationActor {
       node.set(FLUIDNODE_KEYS.CHILDREN, childSequence.handle);
     } else {
       const text = new SharedString(
-        this.mockRuntime,
+        mockRuntime,
         uuid.v4(),
         SharedStringFactory.Attributes,
       );
@@ -77,7 +78,7 @@ class OperationActor {
   };
 
   private applyOp = async (op: Operation) => {
-    await operationApplier[op.type](op, this.root, this.mockRuntime);
+    await operationApplier[op.type](op, this.root, mockRuntime);
   };
 
   private async internalGetNodeProperties(

@@ -1,4 +1,4 @@
-import { RemoveNodeOperation, SetSelectionOperation } from 'slate';
+import { SetSelectionOperation } from 'slate';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { applyInsertNodeOperation } from './applier';
 import { applyInsertTextOperation } from './applier/insert-text';
@@ -15,6 +15,7 @@ const applySetSelectionOperation = (
   root: FluidNodeChildren,
   runtime: IFluidDataStoreRuntime,
 ) => Promise.resolve();
+
 type OperationApplier = {
   [key: string]: (
     op: any,

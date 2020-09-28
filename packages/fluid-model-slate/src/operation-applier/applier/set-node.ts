@@ -1,8 +1,8 @@
-import { SetNodeOperation, SplitNodeOperation } from 'slate';
+import { SetNodeOperation } from 'slate';
 import { SharedMap } from '@fluidframework/map';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { getNode } from '../node-getter';
-import { createSharedString } from '../element-factory';
+import { createSharedString } from '../node-factory';
 import { FluidNodeChildren, FluidNodeHandle } from '../../types';
 
 function addNewNodeIntoParent(

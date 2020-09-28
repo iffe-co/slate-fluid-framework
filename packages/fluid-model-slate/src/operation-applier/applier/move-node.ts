@@ -1,10 +1,10 @@
 import { MoveNodeOperation, RemoveTextOperation } from 'slate';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
-import { getNode, getParent, getText } from '../node-getter';
+import { getNode, getParent } from '../node-getter';
 import { FluidNodeChildren, FluidNodeHandle } from '../../types';
 import { Path } from '../../types/path';
 
-const transformTruePath = (originPath: number[], targetPath: number[]) => {
+const transformToTruePath = (originPath: number[], targetPath: number[]) => {
   if (Path.equals(originPath, targetPath)) {
     return targetPath;
   }
@@ -31,7 +31,7 @@ const applyMoveNodeOperation = async (
   const index = path[path.length - 1];
   parent.remove(index, index + 1);
 
-  const truePath = transformTruePath(path, targetPath);
+  const truePath = transformToTruePath(path, targetPath);
   const targetParent = await getParent(truePath, root);
   const targetIndex = truePath[truePath.length - 1];
   targetParent.insert(targetIndex, [<FluidNodeHandle>node.handle]);
