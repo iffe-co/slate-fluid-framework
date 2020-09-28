@@ -29,7 +29,7 @@ const applyMoveNodeOperation = async (
   parent.remove(index, index + 1)
 
   const truePath = transformTruePath(path, targetPath)
-  const targetParent = await getParent(targetPath, root)
+  const targetParent = await getParent(truePath, root)
   const targetIndex = truePath[truePath.length - 1]
   targetParent.insert(targetIndex, [<FluidNodeHandle>node.handle])
 };

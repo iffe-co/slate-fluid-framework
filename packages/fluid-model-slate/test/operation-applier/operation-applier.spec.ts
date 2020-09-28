@@ -23,14 +23,44 @@ SharedObjectSequence.create = runtime =>
 
 describe('operation applier', () => {
   describe('insert node operation', () => {
-    it('should insert a element to path when apply a insert node op', async () => {
+    it('should insert a node to path when apply a insert node op', async () => {
       const operationActor = await initOperationActor()
-        .insertTextNode([0, 1], 'The first node')
+        .insertTextNode([0, 1], 'Insert a node')
         .execute();
 
       const [expectText] = await operationActor.getNodeText([0, 1]).values();
 
-      expect(expectText).toEqual('The first node');
+      expect(expectText).toEqual('Insert a node');
+    });
+
+    it('should insert into specific position when target path was in exist path', async () => {
+      const operationActor = await initOperationActor()
+          .insertTextNode([0, 1], 'Insert a node1')
+          .insertTextNode([0, 1], 'Insert a node2')
+          .insertTextNode([0, 1], 'Insert a node3')
+          .execute();
+
+      const [expectNode3,expectNode2,expectNode1] = await operationActor
+          .getNodeText([0, 1])
+          .getNodeText([0, 2])
+          .getNodeText([0, 3])
+          .values();
+
+      expect(expectNode3).toEqual('Insert a node3');
+      expect(expectNode2).toEqual('Insert a node2');
+      expect(expectNode1).toEqual('Insert a node1');
+    });
+
+    it('should insert root path when path length === 1', async () => {
+      const operationActor = await initOperationActor()
+          .insertTextNode([0], 'This text was insert to root path')
+          .execute();
+
+      const [expectRootText] = await operationActor
+          .getNodeText([0])
+          .values();
+
+      expect(expectRootText).toEqual('This text was insert to root path');
     });
   });
 
@@ -181,6 +211,21 @@ describe('operation applier', () => {
 
       expect(splitNodeExistAfterMove).toEqual(false)
       expect(targetNodeText).toEqual('s default text')
+    });
+
+    it('should move to true path when original path was end before target path', async () => {
+      const operationActor = await initOperationActor()
+          .insertSequenceNode([1])
+          .insertTextNode([1, 0], 'original text node')
+          .insertSequenceNode([1, 1])
+          .moveNode([1, 0], [1, 1, 0])
+          .execute()
+
+      const [expectText] = await operationActor
+          .getNodeText([1, 0, 0])
+          .values()
+
+      expect(expectText).toEqual('original text node')
     });
   });
 });
