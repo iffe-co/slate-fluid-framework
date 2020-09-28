@@ -202,7 +202,7 @@ describe('operation applier', () => {
       const operationActor = await initOperationActor()
         .splitNode([0, 0], 3, {})
         .splitNode([0], 1, {})
-        .insertSequenceNode([0])
+        .insertSequenceNode([2])
         .moveNode([1, 0], [2, 0])
         .execute();
 
@@ -226,6 +226,23 @@ describe('operation applier', () => {
       const [expectText] = await operationActor.getNodeText([1, 0, 0]).values();
 
       expect(expectText).toEqual('original text node');
+    });
+  });
+
+  describe('remove node operation', () => {
+    it('should remove target node', async () => {
+      const operationActor = await initOperationActor()
+        .splitNode([0, 0], 3, {})
+        .removeNode([0, 1])
+        .execute();
+
+      const [
+        textAfterSplit,
+        theSecondNodeHasBeenRemove,
+      ] = await operationActor.getNodeText([0, 0]).isNodeExist([0, 1]).values();
+
+      expect(textAfterSplit).toEqual('Thi');
+      expect(theSecondNodeHasBeenRemove).toEqual(false);
     });
   });
 });

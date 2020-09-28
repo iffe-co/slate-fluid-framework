@@ -1,9 +1,4 @@
-import {
-  MergeNodeOperation,
-  MoveNodeOperation,
-  RemoveNodeOperation,
-  SetSelectionOperation,
-} from 'slate';
+import { RemoveNodeOperation, SetSelectionOperation } from 'slate';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { applyInsertNodeOperation } from './applier';
 import { applyInsertTextOperation } from './applier/insert-text';
@@ -13,12 +8,8 @@ import { FluidNodeChildren } from '../types';
 import { applySetNodeOperation } from './applier/set-node';
 import { applyMergeNodeOperation } from './applier/merge-node';
 import { applyMoveNodeOperation } from './applier/move-node';
+import { applyRemoveNodeOperation } from './applier/remove-node';
 
-const applyRemoveNodeOperation = (
-  op: RemoveNodeOperation,
-  root: FluidNodeChildren,
-  runtime: IFluidDataStoreRuntime,
-) => Promise.resolve();
 const applySetSelectionOperation = (
   op: SetSelectionOperation,
   root: FluidNodeChildren,

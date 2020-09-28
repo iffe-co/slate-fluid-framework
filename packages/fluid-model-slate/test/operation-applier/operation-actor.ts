@@ -176,6 +176,12 @@ class OperationActor {
     return this;
   };
 
+  public removeNode = (path: number[]) => {
+    const op = { type: 'remove_node', path } as Operation;
+    this.actions.push(op);
+    return this;
+  };
+
   public execute = async () => {
     for (let action of this.actions) {
       await this.applyOp(action);
