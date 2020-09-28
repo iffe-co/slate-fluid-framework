@@ -15,7 +15,7 @@ describe('dds event processor', () => {
         sendMessage,
       } = await buildNetSharedMap();
       registerOperationReceiver((op: Operation) => {
-        expect(op.type).toEqual('set_node1');
+        expect(op.type).toEqual('set_node');
         expect((op as any).properties.key).toEqual('new value');
         expect((op as any).newProperties.key).toEqual('new value');
       });

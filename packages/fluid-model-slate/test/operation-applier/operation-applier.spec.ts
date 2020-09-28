@@ -5,7 +5,7 @@ import {
   SharedStringFactory,
 } from '@fluidframework/sequence';
 import { SharedMap } from '@fluidframework/map';
-import uuid from 'uuid';
+const uuid = require('uuid');
 
 import { FLUIDNODE_KEYS } from '../../src/interfaces';
 import { initOperationActor } from './operation-actor';

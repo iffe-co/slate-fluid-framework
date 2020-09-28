@@ -4,8 +4,8 @@ import {
   SharedString,
   SharedStringFactory,
 } from '@fluidframework/sequence';
-import { FluidNodeChildren, FluidNodeHandle } from '../../src/types';
-import uuid from 'uuid';
+import { FluidNodeHandle } from '../../src/types';
+const uuid = require('uuid');
 import * as mocks from '@fluidframework/test-runtime-utils';
 import { SharedMap } from '@fluidframework/map';
 import { FLUIDNODE_KEYS } from '../../src/interfaces';

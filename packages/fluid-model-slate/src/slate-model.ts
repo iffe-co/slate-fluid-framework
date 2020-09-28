@@ -87,7 +87,7 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     ]);
 
     //注册event-handler
-    addEventListenerHandler(this.fluidNode, this.fluidNodeSequence);
+    // addEventListenerHandler(this.fluidNode, this.fluidNodeSequence);
   };
 }
 
