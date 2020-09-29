@@ -28,7 +28,7 @@ SharedObjectSequence.create = runtime =>
 const mockRuntime: mocks.MockFluidDataStoreRuntime = new mocks.MockFluidDataStoreRuntime();
 
 class OperationActor {
-  private readonly root: SharedObjectSequence<FluidNodeHandle>;
+  public readonly root: SharedObjectSequence<FluidNodeHandle>;
   private actions: Operation[] = [];
   private valuesPromises: Promise<any>[] = [];
   constructor() {
@@ -188,6 +188,11 @@ class OperationActor {
       await this.applyOp(action);
     }
     this.actions = [];
+    return this;
+  };
+
+  public getNode = (path: number[]) => {
+    this.valuesPromises.push(getNode(path, this.root));
     return this;
   };
 

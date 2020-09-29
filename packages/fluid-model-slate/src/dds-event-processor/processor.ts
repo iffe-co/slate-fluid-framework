@@ -1,26 +1,58 @@
 import { IValueChanged } from '@fluidframework/map';
 import { ISequencedDocumentMessage } from '@fluidframework/protocol-definitions';
-import { FluidNode } from '../types';
+import { FluidNode, FluidNodeChildren } from '../types';
 import { FLUIDNODE_KEYS } from '../interfaces';
 import { createSetNodeOperation } from './slate-operation-factory';
 import { Operation } from 'slate';
+import { Path } from '../types/path';
+import { getChildren } from '../operation-applier/node-getter';
 
 const noChangedKey = [FLUIDNODE_KEYS.TEXT, FLUIDNODE_KEYS.CHILDREN];
 
-function processFluidNodeValueChangedEvent(
+async function getPathFromRoot(
+  node: FluidNode,
+  root: FluidNodeChildren,
+  path: Path = [],
+): Promise<Path | undefined> {
+  for (let i = 0; i < root.getLength(); i++) {
+    const [nodeHandle] = root.getRange(i, i + 1);
+    const needCheckNode = await nodeHandle.get();
+    const isTextNode = !needCheckNode.get(FLUIDNODE_KEYS.CHILDREN);
+    if (isTextNode) {
+      if (needCheckNode.id === (node.handle as any).path) {
+        return [...path, i];
+      } else {
+        continue;
+      }
+    } else {
+      const children = await getChildren(needCheckNode);
+
+      const res = await getPathFromRoot(node, children, [...path, i]);
+      if (!res) {
+        continue;
+      } else {
+        return res;
+      }
+    }
+  }
+  return undefined;
+}
+
+async function processFluidNodeValueChangedEvent(
   event: IValueChanged,
   local: boolean,
   op: ISequencedDocumentMessage,
   target: FluidNode,
-): Operation | undefined {
+  root: FluidNodeChildren,
+): Promise<Operation | undefined> {
   if (local) {
     return;
   }
   const type = op.contents.type;
   if (type === 'set' && !noChangedKey.includes(event.key as FLUIDNODE_KEYS)) {
-    const path: number[] = [];
-    const properties = { key: target.get(event.key) };
-    const newProperties = { key: target.get(event.key) };
+    const path = (await getPathFromRoot(target, root)) || [];
+    const properties = { [event.key]: target.get(event.key) };
+    const newProperties = { [event.key]: target.get(event.key) };
     const op = createSetNodeOperation(path, properties, newProperties);
     return op;
   }

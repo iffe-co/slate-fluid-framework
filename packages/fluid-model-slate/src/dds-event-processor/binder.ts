@@ -11,20 +11,21 @@ const registerOperationReceiver = (receiver: OperationReceiver) =>
   operationTransmitter.push(receiver);
 const broadcastOp = (op: Operation) => operationTransmitter.forEach(t => t(op));
 
-function bindFluidNodeEvent(fluidNode: FluidNode) {
+function bindFluidNodeEvent(fluidNode: FluidNode, root: FluidNodeChildren) {
   fluidNode.on(
     'valueChanged',
-    (
+    async (
       event: IValueChanged,
       local: boolean,
       op: ISequencedDocumentMessage,
       target: FluidNode,
     ) => {
-      const slateOp = processFluidNodeValueChangedEvent(
+      const slateOp = await processFluidNodeValueChangedEvent(
         event,
         local,
         op,
         target,
+        root,
       );
       if (slateOp) {
         broadcastOp(slateOp);
