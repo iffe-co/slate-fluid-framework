@@ -3,7 +3,10 @@ import { IValueChanged } from '@fluidframework/map';
 import { ISequencedDocumentMessage } from '@fluidframework/protocol-definitions';
 import { SequenceDeltaEvent } from '@fluidframework/sequence';
 import { Operation } from 'slate';
-import { processFluidNodeValueChangedEvent } from './processor';
+import {
+  processFluidNodeValueChangedEvent,
+  processFluidTextValueChangedEvent,
+} from './processor';
 
 type OperationReceiver = (op: Operation) => void;
 const operationTransmitter: OperationReceiver[] = [];
@@ -34,10 +37,18 @@ function bindFluidNodeEvent(fluidNode: FluidNode, root: FluidNodeChildren) {
   );
 }
 
-function fluidNodePropertyEventBinder(fluidNodeProperty: FluidNodeProperty) {
+function fluidNodePropertyEventBinder(
+  fluidNodeProperty: FluidNodeProperty,
+  root: FluidNodeChildren,
+) {
   fluidNodeProperty.on(
     'sequenceDelta',
-    (event: SequenceDeltaEvent, target: FluidNodeProperty) => {},
+    (event: SequenceDeltaEvent, target: FluidNodeProperty) => {
+      const slateOps = processFluidTextValueChangedEvent(event, target, root);
+      if (slateOps) {
+        slateOps.forEach(broadcastOp);
+      }
+    },
   );
 }
 

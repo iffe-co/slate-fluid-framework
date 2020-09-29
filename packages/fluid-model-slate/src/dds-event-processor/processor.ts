@@ -1,11 +1,16 @@
 import { IValueChanged } from '@fluidframework/map';
 import { ISequencedDocumentMessage } from '@fluidframework/protocol-definitions';
-import { FluidNode, FluidNodeChildren } from '../types';
+import { FluidNode, FluidNodeChildren, FluidNodeProperty } from '../types';
 import { FLUIDNODE_KEYS } from '../interfaces';
-import { createSetNodeOperation } from './slate-operation-factory';
+import {
+  createInsertTextOperation,
+  createSetNodeOperation,
+} from './slate-operation-factory';
 import { Operation } from 'slate';
 import { Path } from '../types/path';
 import { getChildren } from '../operation-applier/node-getter';
+import { SequenceDeltaEvent } from '@fluidframework/sequence';
+import { MergeTreeDeltaType, TextSegment } from '@fluidframework/merge-tree';
 
 const noChangedKey = [FLUIDNODE_KEYS.TEXT, FLUIDNODE_KEYS.CHILDREN];
 
@@ -59,4 +64,38 @@ async function processFluidNodeValueChangedEvent(
   return;
 }
 
-export { processFluidNodeValueChangedEvent };
+function checkEventType(event: SequenceDeltaEvent) {
+  if (!event.ranges.every(r => r.segment.type === TextSegment.type)) {
+    throw new Error('This processor is only support "SharedString" type');
+  }
+}
+
+function process(event: SequenceDeltaEvent) {
+  return event.ranges.map(r => {
+    if ((r.operation as number) === MergeTreeDeltaType.INSERT) {
+      const segment = (r.segment as unknown) as TextSegment;
+      return createInsertTextOperation([], segment.text, r.position);
+    }
+    if ((r.operation as number) === MergeTreeDeltaType.REMOVE) {
+      const segment = (r.segment as unknown) as TextSegment;
+      return createInsertTextOperation([], segment.text, r.position);
+    }
+
+    console.log(event.opArgs, event.ranges);
+    throw new Error('Not implement event processor');
+  });
+}
+
+function processFluidTextValueChangedEvent(
+  event: SequenceDeltaEvent,
+  target: FluidNodeProperty,
+  root: FluidNodeChildren,
+): Operation[] | undefined {
+  if (event.isLocal) {
+    return;
+  }
+  checkEventType(event);
+  return process(event);
+}
+
+export { processFluidNodeValueChangedEvent, processFluidTextValueChangedEvent };
