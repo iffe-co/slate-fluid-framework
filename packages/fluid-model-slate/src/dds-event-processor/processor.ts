@@ -4,6 +4,7 @@ import { FluidNode, FluidNodeChildren, FluidNodeProperty } from '../types';
 import { FLUIDNODE_KEYS } from '../interfaces';
 import {
   createInsertTextOperation,
+  createRemoveTextOperation,
   createSetNodeOperation,
 } from './slate-operation-factory';
 import { Operation } from 'slate';
@@ -78,7 +79,7 @@ function process(event: SequenceDeltaEvent) {
     }
     if ((r.operation as number) === MergeTreeDeltaType.REMOVE) {
       const segment = (r.segment as unknown) as TextSegment;
-      return createInsertTextOperation([], segment.text, r.position);
+      return createRemoveTextOperation([], segment.text, r.position);
     }
 
     console.log(event.opArgs, event.ranges);

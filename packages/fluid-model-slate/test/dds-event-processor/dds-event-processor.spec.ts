@@ -89,7 +89,7 @@ describe('dds event processor', () => {
   });
 
   describe('shared string value changed event', () => {
-    it('should trigger operation with insert text op when SharedString insert text', async () => {
+    it('should trigger operation receiver with insert text op when SharedString insert text', async () => {
       const {
         maps: [str1, str2],
         sendMessage,
@@ -107,6 +107,30 @@ describe('dds event processor', () => {
         text: 'text',
         path: [],
         type: 'insert_text',
+      });
+    });
+
+    it('should trigger operation receiver with remove text op when SharedString remove text', async () => {
+      const {
+        maps: [str1, str2],
+        sendMessage,
+      } = await buildNetSharedString();
+
+      str2.insertText(0, 'text');
+      sendMessage();
+
+      fluidNodePropertyEventBinder(str1, initOperationActor().root);
+
+      str2.removeText(1, 3);
+      sendMessage();
+
+      await receiverPromise;
+
+      expect(operationReceiverMock).toBeCalledWith({
+        offset: 1,
+        text: 'ex',
+        path: [],
+        type: 'remove_text',
       });
     });
   });
