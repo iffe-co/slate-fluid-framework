@@ -11,6 +11,19 @@ import {
   SharedString,
   SharedStringFactory,
 } from '@fluidframework/sequence';
+import {
+  ISharedObject,
+  SharedObject,
+} from '@fluidframework/shared-object-base';
+import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
+import { ISharedObjectEvents } from '@fluidframework/shared-object-base/src/types';
+import { ISharedMapEvents } from '@fluidframework/map/src/interfaces';
+import {
+  FluidNode,
+  FluidNodeChildren,
+  FluidNodeProperty,
+} from '../../src/types';
+import { IFluidHandle } from '@fluidframework/core-interfaces';
 const uuid = require('uuid');
 
 SharedString.create = runtime =>
@@ -24,38 +37,60 @@ SharedObjectSequence.create = runtime =>
     SharedObjectSequenceFactory.Attributes,
   );
 
-const buildNetSharedMap = async () => {
-  const mockedRuntime = new MockFluidDataStoreRuntime();
-  const factory = new MapFactory();
-  const map = SharedMap.create(mockedRuntime);
-  mockedRuntime.local = true;
-
-  // Load a new SharedMap in connected state from the snapshot of the first one.
-  const containerRuntimeFactory = new MockContainerRuntimeFactory();
-  const mockRuntime2 = new MockFluidDataStoreRuntime();
-  const containerRuntime2 = containerRuntimeFactory.createContainerRuntime(
-    mockRuntime2,
+const buildNetSharedMap = () =>
+  buildNetSharedDds(runtime => SharedMap.create(runtime));
+const buildNetSharedString = () =>
+  buildNetSharedDds(runtime => SharedString.create(runtime));
+const buildNetSharedObjectSequence = () =>
+  buildNetSharedDds(runtime =>
+    SharedObjectSequence.create<IFluidHandle<SharedMap>>(runtime),
   );
-  const services2 = MockSharedObjectServices.createFromTree(map.snapshot());
-  services2.deltaConnection = containerRuntime2.createDeltaConnection();
 
-  const map2 = SharedMap.create(mockRuntime2);
-  await map2.load('branchId1', services2);
+type ISharedType =
+  | SharedMap
+  | SharedString
+  | SharedObjectSequence<IFluidHandle<SharedMap>>;
 
-  // Now connect the first SharedMap
-  mockedRuntime.local = false;
+const buildNetSharedDds = async <T extends ISharedType>(
+  ddsCreator: (runtime: IFluidDataStoreRuntime) => T,
+) => {
+  const dataStoreRuntime1 = new MockFluidDataStoreRuntime();
+  const sharedString = ddsCreator(dataStoreRuntime1);
+  const containerRuntimeFactory = new MockContainerRuntimeFactory();
+
+  // Connect the first SharedString.
+  dataStoreRuntime1.local = false;
   const containerRuntime1 = containerRuntimeFactory.createContainerRuntime(
-    mockedRuntime,
+    dataStoreRuntime1,
   );
   const services1 = {
     deltaConnection: containerRuntime1.createDeltaConnection(),
-    objectStorage: new MockStorage(undefined),
+    objectStorage: new MockStorage(),
   };
-  map.connect(services1);
+  sharedString.initializeLocal();
+  sharedString.connect(services1);
+
+  // Create and connect a second SharedString.
+  const dataStoreRuntime2 = new MockFluidDataStoreRuntime();
+  const containerRuntime2 = containerRuntimeFactory.createContainerRuntime(
+    dataStoreRuntime2,
+  );
+  const services2 = {
+    deltaConnection: containerRuntime2.createDeltaConnection(),
+    objectStorage: new MockStorage(),
+  };
+  const sharedString2 = ddsCreator(dataStoreRuntime2);
+  sharedString2.initializeLocal();
+  sharedString2.connect(services2);
+
   return {
-    maps: [map, map2],
+    maps: [sharedString, sharedString2],
     sendMessage: () => containerRuntimeFactory.processAllMessages(),
   };
 };
 
-export { buildNetSharedMap };
+export {
+  buildNetSharedMap,
+  buildNetSharedString,
+  buildNetSharedObjectSequence,
+};
