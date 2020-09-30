@@ -31,6 +31,17 @@ describe('dds event processor', () => {
     });
   });
 
+  const getMockerAndAwaiter = (): [jest.Mock, Promise<any>] => {
+    const operationReceiverMock = jest.fn();
+    const receiverPromise = new Promise((resolve, reject) => {
+      registerOperationReceiver(op => {
+        operationReceiverMock(op);
+        resolve();
+      });
+    });
+    return [operationReceiverMock, receiverPromise];
+  };
+
   describe('shared map value changed event', () => {
     afterEach(() => {
       operationReceiverMock.mockRestore();
@@ -175,6 +186,7 @@ describe('dds event processor', () => {
     });
 
     it('should trigger operation receiver with op twice when SharedString replace text', async () => {
+      const [operationReceiverMock, receiverPromise] = getMockerAndAwaiter();
       const {
         maps: [str1, str2],
         sendMessage,

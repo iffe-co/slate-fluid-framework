@@ -4,8 +4,8 @@ import { ISequencedDocumentMessage } from '@fluidframework/protocol-definitions'
 import { SequenceDeltaEvent } from '@fluidframework/sequence';
 import { Operation } from 'slate';
 import {
-  processFluidNodeValueChangedEvent,
-  processFluidTextValueChangedEvent,
+  sequenceDeltaEventProcessor,
+  nodeValueChangedEventProcessor,
 } from './processor';
 
 type OperationReceiver = (op: Operation) => void;
@@ -23,7 +23,7 @@ function bindFluidNodeEvent(fluidNode: FluidNode, root: FluidNodeChildren) {
       op: ISequencedDocumentMessage,
       target: FluidNode,
     ) => {
-      const slateOp = await processFluidNodeValueChangedEvent(
+      const slateOp = await nodeValueChangedEventProcessor(
         event,
         local,
         op,
@@ -44,11 +44,7 @@ function fluidNodePropertyEventBinder(
   fluidNodeProperty.on(
     'sequenceDelta',
     async (event: SequenceDeltaEvent, target: FluidNodeProperty) => {
-      const slateOps = await processFluidTextValueChangedEvent(
-        event,
-        target,
-        root,
-      );
+      const slateOps = await sequenceDeltaEventProcessor(event, target, root);
       if (slateOps) {
         slateOps.forEach(broadcastOp);
       }
