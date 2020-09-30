@@ -43,8 +43,12 @@ function fluidNodePropertyEventBinder(
 ) {
   fluidNodeProperty.on(
     'sequenceDelta',
-    (event: SequenceDeltaEvent, target: FluidNodeProperty) => {
-      const slateOps = processFluidTextValueChangedEvent(event, target, root);
+    async (event: SequenceDeltaEvent, target: FluidNodeProperty) => {
+      const slateOps = await processFluidTextValueChangedEvent(
+        event,
+        target,
+        root,
+      );
       if (slateOps) {
         slateOps.forEach(broadcastOp);
       }

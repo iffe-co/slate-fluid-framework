@@ -1,6 +1,11 @@
 import { IValueChanged } from '@fluidframework/map';
 import { ISequencedDocumentMessage } from '@fluidframework/protocol-definitions';
-import { FluidNode, FluidNodeChildren, FluidNodeProperty } from '../types';
+import {
+  FluidNode,
+  FluidNodeChildren,
+  FluidNodeProperty,
+  FluidNodePropertyHandle,
+} from '../types';
 import { FLUIDNODE_KEYS } from '../interfaces';
 import {
   createInsertTextOperation,
@@ -44,6 +49,36 @@ async function getPathFromRoot(
   return undefined;
 }
 
+async function getTextPathFromRoot(
+  text: FluidNodeProperty,
+  root: FluidNodeChildren,
+  path: Path = [],
+): Promise<Path | undefined> {
+  for (let i = 0; i < root.getLength(); i++) {
+    const [nodeHandle] = root.getRange(i, i + 1);
+    const needCheckNode = await nodeHandle.get();
+    const isTextNode = !needCheckNode.get(FLUIDNODE_KEYS.CHILDREN);
+    if (isTextNode) {
+      const id = needCheckNode.get(FLUIDNODE_KEYS.TEXT).path;
+      if (id === (text.handle as any).path) {
+        return [...path, i];
+      } else {
+        continue;
+      }
+    } else {
+      const children = await getChildren(needCheckNode);
+
+      const res = await getTextPathFromRoot(text, children, [...path, i]);
+      if (!res) {
+        continue;
+      } else {
+        return res;
+      }
+    }
+  }
+  return undefined;
+}
+
 async function processFluidNodeValueChangedEvent(
   event: IValueChanged,
   local: boolean,
@@ -71,15 +106,15 @@ function checkEventType(event: SequenceDeltaEvent) {
   }
 }
 
-function process(event: SequenceDeltaEvent) {
+function process(event: SequenceDeltaEvent, path: number[]) {
   return event.ranges.map(r => {
     if ((r.operation as number) === MergeTreeDeltaType.INSERT) {
       const segment = (r.segment as unknown) as TextSegment;
-      return createInsertTextOperation([], segment.text, r.position);
+      return createInsertTextOperation(path, segment.text, r.position);
     }
     if ((r.operation as number) === MergeTreeDeltaType.REMOVE) {
       const segment = (r.segment as unknown) as TextSegment;
-      return createRemoveTextOperation([], segment.text, r.position);
+      return createRemoveTextOperation(path, segment.text, r.position);
     }
 
     console.log(event.opArgs, event.ranges);
@@ -87,16 +122,17 @@ function process(event: SequenceDeltaEvent) {
   });
 }
 
-function processFluidTextValueChangedEvent(
+async function processFluidTextValueChangedEvent(
   event: SequenceDeltaEvent,
   target: FluidNodeProperty,
   root: FluidNodeChildren,
-): Operation[] | undefined {
+): Promise<Operation[] | undefined> {
   if (event.isLocal) {
     return;
   }
   checkEventType(event);
-  return process(event);
+  const path = (await getTextPathFromRoot(target, root)) || [];
+  return process(event, path);
 }
 
 export { processFluidNodeValueChangedEvent, processFluidTextValueChangedEvent };

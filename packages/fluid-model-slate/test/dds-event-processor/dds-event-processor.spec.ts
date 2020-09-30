@@ -8,10 +8,14 @@ import {
   buildNetSharedMap,
   buildNetSharedString,
 } from './networked-dds-builder';
-import { initOperationActor } from '../operation-applier/operation-actor';
+import {
+  initOperationActor,
+  mockRuntime,
+} from '../operation-applier/operation-actor';
 import { FLUIDNODE_KEYS } from '../../src/interfaces';
 import { getChildren } from '../../src/operation-applier/node-getter';
 import { FluidNodeHandle } from '../../src/types';
+import { SharedMap } from '@fluidframework/map';
 
 describe('dds event processor', () => {
   let operationReceiverMock: jest.Mock;
@@ -132,6 +136,78 @@ describe('dds event processor', () => {
         path: [],
         type: 'remove_text',
       });
+    });
+
+    it('should trigger operation receiver with correct path when SharedString insert text', async () => {
+      const {
+        maps: [str1, str2],
+        sendMessage,
+      } = await buildNetSharedString();
+      const map = SharedMap.create(mockRuntime);
+      map.set(FLUIDNODE_KEYS.TEXT, str1.handle);
+
+      const operationActor = await initOperationActor()
+        .insertSequenceNode([0, 1])
+        .execute();
+      const [node_0_1] = await operationActor.getNode([0, 1]).values();
+      const children = await getChildren(node_0_1);
+      children.insert(0, [<FluidNodeHandle>map.handle]);
+
+      fluidNodePropertyEventBinder(str1, operationActor.root);
+
+      str2.insertText(0, 'test path text');
+      sendMessage();
+
+      await receiverPromise;
+
+      const [textAfterInsert] = await operationActor
+        .getNodeText([0, 1, 0])
+        .values();
+
+      expect(operationReceiverMock).toBeCalledWith({
+        offset: 0,
+        text: 'test path text',
+        path: [0, 1, 0],
+        type: 'insert_text',
+      });
+
+      expect(textAfterInsert).toEqual('test path text');
+    });
+
+    it('should trigger operation receiver with op twice when SharedString replace text', async () => {
+      const {
+        maps: [str1, str2],
+        sendMessage,
+      } = await buildNetSharedString();
+
+      str2.insertText(0, 'text');
+      sendMessage();
+
+      fluidNodePropertyEventBinder(str1, initOperationActor().root);
+
+      str2.replaceText(1, 3, 'gg');
+      sendMessage();
+
+      await receiverPromise;
+      expect(operationReceiverMock).toBeCalledTimes(2);
+      expect(operationReceiverMock.mock.calls).toEqual([
+        [
+          {
+            offset: 3,
+            path: [],
+            text: 'gg',
+            type: 'insert_text',
+          },
+        ],
+        [
+          {
+            offset: 1,
+            path: [],
+            text: 'ex',
+            type: 'remove_text',
+          },
+        ],
+      ]);
     });
   });
 });

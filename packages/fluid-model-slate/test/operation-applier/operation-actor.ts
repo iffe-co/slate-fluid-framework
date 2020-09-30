@@ -25,7 +25,7 @@ SharedObjectSequence.create = runtime =>
     SharedObjectSequenceFactory.Attributes,
   );
 
-const mockRuntime: mocks.MockFluidDataStoreRuntime = new mocks.MockFluidDataStoreRuntime();
+export const mockRuntime: mocks.MockFluidDataStoreRuntime = new mocks.MockFluidDataStoreRuntime();
 
 class OperationActor {
   public readonly root: SharedObjectSequence<FluidNodeHandle>;
