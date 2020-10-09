@@ -4,26 +4,10 @@ import {
   MockStorage,
 } from '@fluidframework/test-runtime-utils';
 import { SharedMap } from '@fluidframework/map';
-import {
-  SharedObjectSequence,
-  SharedObjectSequenceFactory,
-  SharedString,
-  SharedStringFactory,
-} from '@fluidframework/sequence';
+import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
-const uuid = require('uuid');
-
-SharedString.create = runtime =>
-  new SharedString(runtime, uuid.v4(), SharedStringFactory.Attributes);
-SharedMap.create = runtime =>
-  new SharedMap(uuid.v4(), runtime, SharedMap.getFactory().attributes);
-SharedObjectSequence.create = runtime =>
-  new SharedObjectSequence(
-    runtime,
-    uuid.v4(),
-    SharedObjectSequenceFactory.Attributes,
-  );
+import { mockDdsCreate } from '../operation-applier/mocker';
 
 const buildNetSharedMap = () =>
   buildNetSharedDds(runtime => SharedMap.create(runtime));
@@ -42,6 +26,7 @@ type ISharedType =
 const buildNetSharedDds = async <T extends ISharedType>(
   ddsCreator: (runtime: IFluidDataStoreRuntime) => T,
 ) => {
+  mockDdsCreate();
   const dataStoreRuntime1 = new MockFluidDataStoreRuntime();
   const sharedString = ddsCreator(dataStoreRuntime1);
   const containerRuntimeFactory = new MockContainerRuntimeFactory();

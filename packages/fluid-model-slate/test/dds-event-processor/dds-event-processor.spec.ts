@@ -1,5 +1,6 @@
 import {
   bindFluidNodeEvent,
+  fluidNodeChildrenEventBinder,
   fluidNodePropertyEventBinder,
   registerOperationReceiver,
 } from '../../src/dds-event-processor/binder';
@@ -8,14 +9,13 @@ import {
   buildNetSharedMap,
   buildNetSharedString,
 } from './networked-dds-builder';
-import {
-  initOperationActor,
-  mockRuntime,
-} from '../operation-applier/operation-actor';
+import { initOperationActor } from '../operation-applier/operation-actor';
 import { FLUIDNODE_KEYS } from '../../src/interfaces';
 import { getChildren } from '../../src/operation-applier/node-getter';
 import { FluidNodeHandle } from '../../src/types';
 import { SharedMap } from '@fluidframework/map';
+import { buildE2eSharedObjectSequence } from './e2e-dds-builder';
+import { mockRuntime, restoreDdsCreate } from '../operation-applier/mocker';
 
 describe('dds event processor', () => {
   let operationReceiverMock: jest.Mock;
@@ -220,6 +220,47 @@ describe('dds event processor', () => {
           },
         ],
       ]);
+    });
+  });
+
+  describe('shared object sequence value changed event', () => {
+    it('should trigger operation receiver with insert node when insert a new children', async () => {
+      restoreDdsCreate();
+      const [operationReceiverMock, receiverPromise] = getMockerAndAwaiter();
+
+      const {
+        dds: [seq1, seq2],
+        runtime: [rt1, rt2],
+        syncDds,
+      } = await buildE2eSharedObjectSequence();
+
+      let operationActor = initOperationActor(rt2);
+      const root = operationActor.root;
+
+      const seqNode01 = SharedMap.create(rt2);
+      seqNode01.set(FLUIDNODE_KEYS.CHILDREN, seq2.handle);
+
+      root.insert(1, [<FluidNodeHandle>seqNode01.handle]);
+
+      fluidNodeChildrenEventBinder(seq1, operationActor.root);
+
+      const node = SharedMap.create(rt2);
+      node.set(FLUIDNODE_KEYS.TITALIC, true);
+
+      seq2.insert(0, [<FluidNodeHandle>node.handle]);
+      await syncDds(2);
+
+      await receiverPromise;
+
+      const node01 = await seq1.getRange(0, 1)[0].get();
+
+      expect(node01.get(FLUIDNODE_KEYS.TITALIC)).toBeTruthy();
+
+      expect(operationReceiverMock).toBeCalledWith({
+        path: [1, 0],
+        node: { [FLUIDNODE_KEYS.TITALIC]: true },
+        type: 'insert_node',
+      });
     });
   });
 });

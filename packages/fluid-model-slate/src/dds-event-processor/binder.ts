@@ -4,9 +4,10 @@ import { ISequencedDocumentMessage } from '@fluidframework/protocol-definitions'
 import { SequenceDeltaEvent } from '@fluidframework/sequence';
 import { Operation } from 'slate';
 import {
-  sequenceDeltaEventProcessor,
+  textSequenceDeltaEventProcessor,
   nodeValueChangedEventProcessor,
 } from './processor';
+import { childrenSequenceDeltaEventProcessor } from './processor/children-value-changed-event-processor';
 
 type OperationReceiver = (op: Operation) => void;
 const operationTransmitter: OperationReceiver[] = [];
@@ -44,7 +45,11 @@ function fluidNodePropertyEventBinder(
   fluidNodeProperty.on(
     'sequenceDelta',
     async (event: SequenceDeltaEvent, target: FluidNodeProperty) => {
-      const slateOps = await sequenceDeltaEventProcessor(event, target, root);
+      const slateOps = await textSequenceDeltaEventProcessor(
+        event,
+        target,
+        root,
+      );
       if (slateOps) {
         slateOps.forEach(broadcastOp);
       }
@@ -52,10 +57,22 @@ function fluidNodePropertyEventBinder(
   );
 }
 
-function fluidNodeChildrenEventBinder(fluidNodeChildren: FluidNodeChildren) {
+function fluidNodeChildrenEventBinder(
+  fluidNodeChildren: FluidNodeChildren,
+  root: FluidNodeChildren,
+) {
   fluidNodeChildren.on(
-    'fluidNodeChildren',
-    (event: SequenceDeltaEvent, target: FluidNodeChildren) => {},
+    'sequenceDelta',
+    async (event: SequenceDeltaEvent, target: FluidNodeChildren) => {
+      const slateOps = await childrenSequenceDeltaEventProcessor(
+        event,
+        target,
+        root,
+      );
+      if (slateOps) {
+        slateOps.forEach(broadcastOp);
+      }
+    },
   );
 }
 

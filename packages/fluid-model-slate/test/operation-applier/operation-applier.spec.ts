@@ -1,27 +1,15 @@
-import {
-  SharedObjectSequence,
-  SharedObjectSequenceFactory,
-  SharedString,
-  SharedStringFactory,
-} from '@fluidframework/sequence';
-import { SharedMap } from '@fluidframework/map';
-const uuid = require('uuid');
-
 import { FLUIDNODE_KEYS } from '../../src/interfaces';
 import { initOperationActor } from './operation-actor';
-
-SharedString.create = runtime =>
-  new SharedString(runtime, uuid.v4(), SharedStringFactory.Attributes);
-SharedMap.create = runtime =>
-  new SharedMap(uuid.v4(), runtime, SharedMap.getFactory().attributes);
-SharedObjectSequence.create = runtime =>
-  new SharedObjectSequence(
-    runtime,
-    uuid.v4(),
-    SharedObjectSequenceFactory.Attributes,
-  );
+import { mockDdsCreate, restoreDdsCreate } from './mocker';
 
 describe('operation applier', () => {
+  beforeEach(() => {
+    mockDdsCreate();
+  });
+
+  afterEach(() => {
+    restoreDdsCreate();
+  });
   describe('insert node operation', () => {
     it('should insert a node to path when apply a insert node op', async () => {
       const operationActor = await initOperationActor()

@@ -62,7 +62,7 @@ function process(event: SequenceDeltaEvent, path: number[]) {
   });
 }
 
-async function sequenceDeltaEventProcessor(
+async function textSequenceDeltaEventProcessor(
   event: SequenceDeltaEvent,
   target: FluidNodeProperty,
   root: FluidNodeChildren,
@@ -75,4 +75,4 @@ async function sequenceDeltaEventProcessor(
   return process(event, path);
 }
 
-export { sequenceDeltaEventProcessor };
+export { textSequenceDeltaEventProcessor };

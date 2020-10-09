@@ -5,38 +5,34 @@ import {
   SharedStringFactory,
 } from '@fluidframework/sequence';
 import { FluidNodeHandle } from '../../src/types';
-const uuid = require('uuid');
-import * as mocks from '@fluidframework/test-runtime-utils';
 import { SharedMap } from '@fluidframework/map';
 import { FLUIDNODE_KEYS } from '../../src/interfaces';
 import { Node, Operation } from 'slate';
 import { operationApplier } from '../../src/operation-applier';
 import { getNode } from '../../src/operation-applier/node-getter';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
+import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
+import { mockDdsCreate, mockRuntime } from './mocker';
 
-SharedString.create = runtime =>
-  new SharedString(runtime, uuid.v4(), SharedStringFactory.Attributes);
-SharedMap.create = runtime =>
-  new SharedMap(uuid.v4(), runtime, SharedMap.getFactory().attributes);
-SharedObjectSequence.create = runtime =>
-  new SharedObjectSequence(
-    runtime,
-    uuid.v4(),
-    SharedObjectSequenceFactory.Attributes,
-  );
-
-export const mockRuntime: mocks.MockFluidDataStoreRuntime = new mocks.MockFluidDataStoreRuntime();
+const uuid = require('uuid');
 
 class OperationActor {
   public readonly root: SharedObjectSequence<FluidNodeHandle>;
   private actions: Operation[] = [];
   private valuesPromises: Promise<any>[] = [];
-  constructor() {
+  private readonly mockRuntime: IFluidDataStoreRuntime;
+  constructor(private readonly runtime?: IFluidDataStoreRuntime) {
+    this.mockRuntime = runtime || mockRuntime;
+
+    if (!runtime) {
+      mockDdsCreate();
+    }
+
     this.root = this.initEditorRoot();
   }
   private initEditorRoot = () => {
     const root = new SharedObjectSequence<FluidNodeHandle>(
-      mockRuntime,
+      this.mockRuntime,
       uuid.v4(),
       SharedObjectSequenceFactory.Attributes,
     );
@@ -49,13 +45,13 @@ class OperationActor {
   private initNode = (childrenNode?: SharedMap[]) => {
     const node = new SharedMap(
       uuid.v4(),
-      mockRuntime,
+      this.mockRuntime,
       SharedMap.getFactory().attributes,
     );
 
     if (childrenNode) {
       const childSequence = new SharedObjectSequence<FluidNodeHandle>(
-        mockRuntime,
+        this.mockRuntime,
         uuid.v4(),
         SharedObjectSequenceFactory.Attributes,
       );
@@ -66,7 +62,7 @@ class OperationActor {
       node.set(FLUIDNODE_KEYS.CHILDREN, childSequence.handle);
     } else {
       const text = new SharedString(
-        mockRuntime,
+        this.mockRuntime,
         uuid.v4(),
         SharedStringFactory.Attributes,
       );
@@ -78,7 +74,7 @@ class OperationActor {
   };
 
   private applyOp = async (op: Operation) => {
-    await operationApplier[op.type](op, this.root, mockRuntime);
+    await operationApplier[op.type](op, this.root, this.mockRuntime);
   };
 
   private async internalGetNodeProperties(
@@ -224,4 +220,9 @@ class OperationActor {
   };
 }
 
-export const initOperationActor = () => new OperationActor();
+/**
+ * by default, the doc tree for 'actor', only has a [0, 0] node and [0, 0] node is a text node
+ * @param runtime
+ */
+export const initOperationActor = (runtime?: IFluidDataStoreRuntime) =>
+  new OperationActor(runtime);
