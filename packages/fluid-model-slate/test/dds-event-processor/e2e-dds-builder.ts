@@ -1,3 +1,5 @@
+import { IUrlResolver } from '@fluidframework/driver-definitions';
+
 Object.defineProperty(window, 'performance', {
   value: undefined,
   writable: false,
@@ -15,7 +17,10 @@ import {
   SharedString,
 } from '@fluidframework/sequence';
 import { requestFluidObject } from '@fluidframework/runtime-utils';
-import { LocalDeltaConnectionServer } from '@fluidframework/server-local-server';
+import {
+  ILocalDeltaConnectionServer,
+  LocalDeltaConnectionServer,
+} from '@fluidframework/server-local-server';
 import { SharedMap } from '@fluidframework/map';
 import {
   createAndAttachContainer,
@@ -31,19 +36,17 @@ import { IChannelFactory } from '@fluidframework/datastore-definitions';
 
 const uuid = require('uuid');
 
-const documentId = 'localServerTest';
-const documentLoadUrl = `fluid-test://localhost/${documentId}`;
 const stringId = 'stringKey';
 const codeDetails: IFluidCodeDetails = {
   package: 'localServerTestPackage',
   config: {},
 };
 
-const deltaConnectionServer = LocalDeltaConnectionServer.create();
-const urlResolver = new LocalResolver();
-
 async function createContainer(
   factory: IFluidDataStoreFactory,
+  documentId: string,
+  deltaConnectionServer: ILocalDeltaConnectionServer,
+  urlResolver: IUrlResolver,
 ): Promise<IContainer> {
   const loader: ILoader = createLocalLoader(
     [[codeDetails, factory]],
@@ -55,6 +58,9 @@ async function createContainer(
 
 async function loadContainer(
   factory: IFluidDataStoreFactory,
+  documentLoadUrl: string,
+  deltaConnectionServer: ILocalDeltaConnectionServer,
+  urlResolver: IUrlResolver,
 ): Promise<IContainer> {
   const loader: ILoader = createLocalLoader(
     [[codeDetails, factory]],
@@ -73,17 +79,34 @@ type ISharedType =
 async function buildE2eSharedDds<T extends ISharedType>(
   ddsFactory: IChannelFactory,
 ) {
+  let documentId = uuid.v4();
+  const documentLoadUrl = `fluid-test://localhost/${documentId}`;
+
+  const deltaConnectionServer = LocalDeltaConnectionServer.create();
+  const urlResolver = new LocalResolver();
+
   const factory = new TestFluidObjectFactory([
     [stringId, ddsFactory],
     [uuid.v4(), SharedMap.getFactory()],
+    [uuid.v4(), SharedString.getFactory()],
   ]);
-  const container1 = await createContainer(factory);
+  const container1 = await createContainer(
+    factory,
+    documentId,
+    deltaConnectionServer,
+    urlResolver,
+  );
   const dataObject1 = await requestFluidObject<ITestFluidObject>(
     container1,
     'default',
   );
   const dds1 = await dataObject1.getSharedObject<T>(stringId);
-  const container2 = await loadContainer(factory);
+  const container2 = await loadContainer(
+    factory,
+    documentLoadUrl,
+    deltaConnectionServer,
+    urlResolver,
+  );
   const dataObject2 = await requestFluidObject<ITestFluidObject>(
     container2,
     'default',
@@ -107,6 +130,7 @@ async function buildE2eSharedDds<T extends ISharedType>(
         await opProcessingController.process(dataObject2.runtime.deltaManager);
       }
     },
+    close: async () => await deltaConnectionServer.webSocketServer.close(),
   };
 }
 

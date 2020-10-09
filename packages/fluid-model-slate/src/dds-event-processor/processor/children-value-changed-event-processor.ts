@@ -55,7 +55,7 @@ async function convertSharedMapToSlateOp(node: SharedMap) {
   const op = {};
   for (let key of node.keys()) {
     if (key === FLUIDNODE_KEYS.TEXT || key === FLUIDNODE_KEYS.CHILDREN) {
-      op[key] = await propertyProcessor[key];
+      op[key] = await propertyProcessor[key](node.get(key));
     } else {
       op[key] = node.get(key);
     }
@@ -67,10 +67,11 @@ async function process(
   event: SequenceDeltaEvent,
   path: number[],
 ): Promise<Operation[]> {
-  // @ts-ignore
   const {
     op: {
+      // @ts-ignore
       pos1: position,
+      // @ts-ignore
       seg: { items },
       type,
     },
