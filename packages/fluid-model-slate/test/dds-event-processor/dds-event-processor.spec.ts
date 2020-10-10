@@ -394,5 +394,45 @@ describe('dds event processor', () => {
 
       await close();
     });
+
+    it('should trigger operation receiver with multiple op when remove range node', async () => {
+      const {
+        rt2,
+        seq1,
+        syncDds,
+        seq2,
+        close,
+        receiverPromise,
+        operationReceiverMock,
+      } = await setUpTest();
+
+      const node = SharedMap.create(rt2);
+      node.set(FLUIDNODE_KEYS.TITALIC, true);
+      const node2 = SharedMap.create(rt2);
+      node2.set(FLUIDNODE_KEYS.TITALIC, true);
+
+      seq2.insert(0, [<FluidNodeHandle>node.handle, <FluidNodeHandle>node2.handle]);
+      await syncDds(2);
+
+      await receiverPromise;
+
+      seq2.remove(0, 2);
+
+      await syncDds(2);
+
+      await receiverPromise;
+
+      expect(operationReceiverMock).toHaveBeenNthCalledWith(3, {
+        path: [1, 0],
+        type: 'remove_node',
+      });
+
+      expect(operationReceiverMock).toHaveBeenNthCalledWith(4, {
+        path: [1, 1],
+        type: 'remove_node',
+      });
+
+      await close();
+    });
   });
 });
