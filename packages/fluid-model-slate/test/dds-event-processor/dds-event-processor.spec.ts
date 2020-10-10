@@ -19,23 +19,6 @@ import { mockRuntime, restoreDdsCreate } from '../operation-applier/mocker';
 import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
 
 describe('dds event processor', () => {
-  let operationReceiverMock: jest.Mock;
-  let receiverPromise: Promise<void>;
-
-  beforeEach(() => {
-    operationReceiverMock = jest.fn();
-    receiverPromise = new Promise((resolve, reject) => {
-      registerOperationReceiver(op => {
-        operationReceiverMock(op);
-        resolve();
-      });
-    });
-  });
-
-  afterEach(() => {
-    operationReceiverMock.mockRestore();
-  });
-
   const getMockerAndAwaiter = (): [jest.Mock, Promise<any>] => {
     const operationReceiverMock = jest.fn();
     const receiverPromise = new Promise((resolve, reject) => {
@@ -49,6 +32,7 @@ describe('dds event processor', () => {
 
   describe('shared map value changed event', () => {
     it('should trigger operation receiver with set node op when obtain a set SharedMap op', async () => {
+      const [operationReceiverMock, receiverPromise] = getMockerAndAwaiter();
       const {
         maps: [map, map2],
         sendMessage,
@@ -71,6 +55,8 @@ describe('dds event processor', () => {
     });
 
     it('should trigger operation receiver with correct path when obtain a set SharedMap op', async () => {
+      const [operationReceiverMock, receiverPromise] = getMockerAndAwaiter();
+
       const {
         maps: [map, map2],
         sendMessage,
@@ -106,6 +92,8 @@ describe('dds event processor', () => {
 
   describe('shared string value changed event', () => {
     it('should trigger operation receiver with insert text op when SharedString insert text', async () => {
+      const [operationReceiverMock, receiverPromise] = getMockerAndAwaiter();
+
       const {
         maps: [str1, str2],
         sendMessage,
@@ -127,6 +115,8 @@ describe('dds event processor', () => {
     });
 
     it('should trigger operation receiver with remove text op when SharedString remove text', async () => {
+      const [operationReceiverMock, receiverPromise] = getMockerAndAwaiter();
+
       const {
         maps: [str1, str2],
         sendMessage,
@@ -151,6 +141,8 @@ describe('dds event processor', () => {
     });
 
     it('should trigger operation receiver with correct path when SharedString insert text', async () => {
+      const [operationReceiverMock, receiverPromise] = getMockerAndAwaiter();
+
       const {
         maps: [str1, str2],
         sendMessage,
@@ -253,11 +245,21 @@ describe('dds event processor', () => {
         rt2,
         syncDds,
         close,
+        operationReceiverMock,
+        receiverPromise,
       };
     };
 
     it('should trigger operation receiver with insert node when insert a new children', async () => {
-      const { rt2, seq1, syncDds, seq2, close } = await setUpTest();
+      const {
+        rt2,
+        seq1,
+        syncDds,
+        seq2,
+        close,
+        receiverPromise,
+        operationReceiverMock,
+      } = await setUpTest();
 
       const node = SharedMap.create(rt2);
       node.set(FLUIDNODE_KEYS.TITALIC, true);
@@ -281,7 +283,15 @@ describe('dds event processor', () => {
     });
 
     it('should trigger operation receiver with correct op when insert text node', async () => {
-      const { rt2, seq1, syncDds, seq2, close } = await setUpTest();
+      const {
+        rt2,
+        seq1,
+        syncDds,
+        seq2,
+        close,
+        receiverPromise,
+        operationReceiverMock,
+      } = await setUpTest();
 
       const node = SharedMap.create(rt2);
       const text = SharedString.create(rt2);
@@ -304,7 +314,15 @@ describe('dds event processor', () => {
     });
 
     it('should trigger operation receiver with correct op when insert tree node', async () => {
-      const { rt2, seq1, syncDds, seq2, close } = await setUpTest();
+      const {
+        rt2,
+        seq1,
+        syncDds,
+        seq2,
+        close,
+        receiverPromise,
+        operationReceiverMock,
+      } = await setUpTest();
 
       const node = SharedMap.create(rt2);
       const text = SharedString.create(rt2);
@@ -339,6 +357,39 @@ describe('dds event processor', () => {
           ],
         },
         type: 'insert_node',
+      });
+
+      await close();
+    });
+
+    it('should trigger operation receiver with correct op when remove a node', async () => {
+      const {
+        rt2,
+        seq1,
+        syncDds,
+        seq2,
+        close,
+        receiverPromise,
+        operationReceiverMock,
+      } = await setUpTest();
+
+      const node = SharedMap.create(rt2);
+      node.set(FLUIDNODE_KEYS.TITALIC, true);
+
+      seq2.insert(0, [<FluidNodeHandle>node.handle]);
+      await syncDds(2);
+
+      await receiverPromise;
+
+      seq2.remove(0, 1);
+
+      await syncDds(2);
+
+      await receiverPromise;
+
+      expect(operationReceiverMock).toHaveBeenNthCalledWith(2, {
+        path: [1, 0],
+        type: 'remove_node',
       });
 
       await close();

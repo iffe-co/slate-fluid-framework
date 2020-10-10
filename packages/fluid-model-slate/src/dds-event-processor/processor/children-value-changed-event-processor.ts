@@ -2,11 +2,15 @@ import { SequenceDeltaEvent, SharedString } from '@fluidframework/sequence';
 import { FluidNodeChildren, FluidNodeHandle } from '../../types';
 import { Operation } from 'slate';
 import { FLUIDNODE_KEYS } from '../../interfaces';
-import { createInsertNodeOperation } from '../slate-operation-factory';
+import {
+  createInsertNodeOperation,
+  createRemoveNodeOperation,
+} from '../slate-operation-factory';
 import { Path } from '../../types/path';
 import { getChildren } from '../../operation-applier/node-getter';
 import { SharedMap } from '@fluidframework/map';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
+import { MergeTreeDeltaType } from '@fluidframework/merge-tree';
 
 async function getPathFromRoot(
   target: FluidNodeChildren,
@@ -63,7 +67,7 @@ async function convertSharedMapToSlateOp(node: SharedMap) {
   return op;
 }
 
-async function process(
+async function insertNodeOpProcessor(
   event: SequenceDeltaEvent,
   path: number[],
 ): Promise<Operation[]> {
@@ -73,7 +77,6 @@ async function process(
       pos1: position,
       // @ts-ignore
       seg: { items },
-      type,
     },
   } = event.opArgs;
 
@@ -86,6 +89,24 @@ async function process(
   );
 }
 
+async function removeNodeOpProcessor(
+  event: SequenceDeltaEvent,
+  path: number[],
+): Promise<Operation[]> {
+  const {
+    op: {
+      // @ts-ignore
+      pos1: start,
+      // @ts-ignore
+      pos2: end,
+    },
+  } = event.opArgs;
+
+  return Array.from(new Array(end - start))
+    .map((_, i) => start + i)
+    .map(i => createRemoveNodeOperation([...path, i]));
+}
+
 async function childrenSequenceDeltaEventProcessor(
   event: SequenceDeltaEvent,
   target: FluidNodeChildren,
@@ -95,7 +116,14 @@ async function childrenSequenceDeltaEventProcessor(
     return;
   }
   const path = (await getPathFromRoot(target, root)) || [];
-  return process(event, path);
+
+  if (event.opArgs.op.type === MergeTreeDeltaType.REMOVE.valueOf()) {
+    return removeNodeOpProcessor(event, path);
+  }
+  if (event.opArgs.op.type === MergeTreeDeltaType.INSERT.valueOf()) {
+    return insertNodeOpProcessor(event, path);
+  }
+  throw new Error(`Not support operation: ${event.opArgs.op}`);
 }
 
 export { childrenSequenceDeltaEventProcessor };

@@ -28,3 +28,7 @@ export function createRemoveTextOperation(
 export function createInsertNodeOperation(path: Path, opData: any): Operation {
   return { type: 'insert_node', path, node: opData };
 }
+
+export function createRemoveNodeOperation(path: Path): Operation {
+  return { type: 'remove_node', path } as Operation;
+}
