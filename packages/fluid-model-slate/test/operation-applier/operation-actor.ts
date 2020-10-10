@@ -114,6 +114,17 @@ class OperationActor {
     return this;
   };
 
+  public insertNode = (path: number[], node: any) => {
+    const op = {
+      type: 'insert_node',
+      path,
+      node,
+    } as Operation;
+
+    this.actions.push(op);
+    return this;
+  };
+
   public insertSequenceNode = (path: number[]) => {
     const op = {
       type: 'insert_node',

@@ -52,6 +52,47 @@ describe('operation applier', () => {
 
       expect(expectRootText).toEqual('This text was insert to root path');
     });
+
+    it('should insert node with multiple children when insert node op with children property', async () => {
+      const operationActor = await initOperationActor()
+        .insertNode([0, 1], {
+          children: [
+            {
+              text: 'first node text',
+            },
+            {
+              text: 'second node text',
+              code: true,
+            },
+            {
+              children: [
+                {
+                  text: 'third node text',
+                },
+              ],
+            },
+          ],
+          type: 'paragraph',
+        })
+        .execute();
+
+      const [
+        expectText1,
+        expectText2,
+        expectText3,
+        code,
+      ] = await operationActor
+        .getNodeText([0, 1, 0])
+        .getNodeText([0, 1, 1])
+        .getNodeText([0, 1, 2, 0])
+        .getNodeProperties([0, 1, 1], 'code')
+        .values();
+
+      expect(expectText1).toEqual('first node text');
+      expect(expectText2).toEqual('second node text');
+      expect(expectText3).toEqual('third node text');
+      expect(code).toBeTruthy();
+    });
   });
 
   describe('insert text operation', () => {
