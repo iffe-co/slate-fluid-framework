@@ -28,10 +28,7 @@ const applySplitNodeOperation = async (
     const originText = text.getText();
     const after = originText.slice(op.position);
     text.removeText(op.position, originText.length);
-    const newNode = createNode(
-      { text: after, properties: op.properties },
-      runtime,
-    );
+    const newNode = createNode({ text: after, ...op.properties }, runtime);
     addNewNodeIntoParent(newNode, op.path, parent);
   } else {
     const children = await getChildren(node);

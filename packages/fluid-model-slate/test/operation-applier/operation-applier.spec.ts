@@ -135,7 +135,7 @@ describe('operation applier', () => {
         .execute();
 
       const [expectTitalic] = await operationActor
-        .getNodeProperties([0], FLUIDNODE_KEYS.TITALIC, false)
+        .getNodeProperties([0], FLUIDNODE_KEYS.TITALIC)
         .values();
 
       expect(expectTitalic).toEqual(true);

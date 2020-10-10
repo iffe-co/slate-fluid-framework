@@ -22,26 +22,32 @@ const createChildren = (
   return sequence;
 };
 
+function buildChildren(runtime: IFluidDataStoreRuntime, childrenOp: Node[]) {
+  const children = createChildren(runtime);
+  const childrenHandles = childrenOp.map(c => createNode(c, runtime).handle);
+  children.insert(0, <FluidNodeHandle[]>childrenHandles);
+  return children;
+}
+
 const createNode = (slateNode: Node, runtime: IFluidDataStoreRuntime) => {
   const node = SharedMap.create(runtime);
 
   if (slateNode.text) {
     const text = createSharedString(slateNode.text as string, runtime);
     node.set(FLUIDNODE_KEYS.TEXT, text.handle);
+  } else if (slateNode.children) {
+    const children = buildChildren(runtime, slateNode.children as Node[]);
+    node.set(FLUIDNODE_KEYS.CHILDREN, children.handle);
   } else {
     const children = createChildren(runtime);
     node.set(FLUIDNODE_KEYS.CHILDREN, children.handle);
   }
 
-  if (slateNode.properties) {
-    const properties = slateNode.text
-      ? (slateNode.properties as Partial<Text>)
-      : (slateNode.properties as Partial<Element>);
-    for (let key in properties) {
-      const property = createSharedString(properties[key], runtime);
-      node.set(key, property.handle);
-    }
-  }
+  Object.keys(slateNode)
+    .filter(k => k !== 'children' && k !== 'text')
+    .forEach(k => {
+      node.set(k, slateNode[k]);
+    });
 
   return node;
 };
@@ -52,8 +58,7 @@ const applyProperties = <T extends Text | Element>(
   runtime: IFluidDataStoreRuntime,
 ) => {
   Object.keys(properties).forEach(k => {
-    const property = createSharedString(properties[k], runtime);
-    node.set(k, property.handle);
+    node.set(k, properties[k]);
   });
 };
 

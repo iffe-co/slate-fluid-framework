@@ -193,14 +193,14 @@ class OperationActor {
   };
 
   public getNodeText = (path: number[]) => {
-    this.getNodeProperties(path, FLUIDNODE_KEYS.TEXT);
+    this.getNodeProperties(path, FLUIDNODE_KEYS.TEXT, true);
     return this;
   };
 
   public getNodeProperties = (
     path: number[],
     key: string,
-    isHandleProperty: boolean = true,
+    isHandleProperty: boolean = false,
   ) => {
     this.valuesPromises.push(
       this.internalGetNodeProperties(path, isHandleProperty, key),
