@@ -16,7 +16,7 @@ import { FluidNodeHandle } from '../../src/types';
 import { SharedMap } from '@fluidframework/map';
 import { buildE2eSharedObjectSequence } from './e2e-dds-builder';
 import { mockRuntime, restoreDdsCreate } from '../operation-applier/mocker';
-import { SharedString } from '@fluidframework/sequence';
+import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
 
 describe('dds event processor', () => {
   let operationReceiverMock: jest.Mock;
@@ -297,6 +297,47 @@ describe('dds event processor', () => {
       expect(operationReceiverMock).toBeCalledWith({
         path: [1, 0],
         node: { [FLUIDNODE_KEYS.TEXT]: 'hello world' },
+        type: 'insert_node',
+      });
+
+      await close();
+    });
+
+    it('should trigger operation receiver with correct op when insert tree node', async () => {
+      const { rt2, seq1, syncDds, seq2, close } = await setUpTest();
+
+      const node = SharedMap.create(rt2);
+      const text = SharedString.create(rt2);
+      text.insertText(0, 'hello world');
+      node.set(FLUIDNODE_KEYS.TEXT, text.handle);
+
+      const children = SharedObjectSequence.create(rt2);
+      const childrenNode = SharedMap.create(rt2);
+      const childrenText = SharedString.create(rt2);
+      childrenText.insertText(0, 'children hello world');
+      childrenNode.set(FLUIDNODE_KEYS.TEXT, childrenText.handle);
+      children.insert(0, [childrenNode.handle]);
+      node.set(FLUIDNODE_KEYS.CHILDREN, children.handle);
+
+      node.set(FLUIDNODE_KEYS.TYPE, 'paragraph');
+
+      seq2.insert(0, [<FluidNodeHandle>node.handle]);
+
+      await syncDds(2);
+
+      await receiverPromise;
+
+      expect(operationReceiverMock).toBeCalledWith({
+        path: [1, 0],
+        node: {
+          [FLUIDNODE_KEYS.TEXT]: 'hello world',
+          [FLUIDNODE_KEYS.TYPE]: 'paragraph',
+          [FLUIDNODE_KEYS.CHILDREN]: [
+            {
+              [FLUIDNODE_KEYS.TEXT]: 'children hello world',
+            },
+          ],
+        },
         type: 'insert_node',
       });
 
