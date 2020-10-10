@@ -102,9 +102,17 @@ async function removeNodeOpProcessor(
     },
   } = event.opArgs;
 
-  return Array.from(new Array(end - start))
-    .map((_, i) => start + i)
-    .map(i => createRemoveNodeOperation([...path, i]));
+  //TODO: next line just wanner get the remove node value from event, the '0' item is the tricky value
+  const { items } = (event.deltaArgs.deltaSegments[0].segment as unknown) as {
+    items: IFluidHandle<SharedMap>[];
+  };
+  return Promise.all(
+    items.map(async (handle, i) => {
+      const node = (await handle.get()) as SharedMap;
+      let nodeData = await convertSharedMapToSlateOp(node);
+      return createRemoveNodeOperation([...path, start + i], nodeData);
+    }),
+  );
 }
 
 async function childrenSequenceDeltaEventProcessor(

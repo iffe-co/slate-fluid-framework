@@ -388,6 +388,9 @@ describe('dds event processor', () => {
       await receiverPromise;
 
       expect(operationReceiverMock).toHaveBeenNthCalledWith(2, {
+        node: {
+          [FLUIDNODE_KEYS.TITALIC]: true,
+        },
         path: [1, 0],
         type: 'remove_node',
       });
@@ -407,28 +410,43 @@ describe('dds event processor', () => {
       } = await setUpTest();
 
       const node = SharedMap.create(rt2);
-      node.set(FLUIDNODE_KEYS.TITALIC, true);
+      node.set(FLUIDNODE_KEYS.TYPE, 'node1');
       const node2 = SharedMap.create(rt2);
-      node2.set(FLUIDNODE_KEYS.TITALIC, true);
+      node2.set(FLUIDNODE_KEYS.TYPE, 'node2');
+      const node3 = SharedMap.create(rt2);
+      node3.set(FLUIDNODE_KEYS.TYPE, 'node3');
+      const node4 = SharedMap.create(rt2);
+      node4.set(FLUIDNODE_KEYS.TYPE, 'node4');
 
-      seq2.insert(0, [<FluidNodeHandle>node.handle, <FluidNodeHandle>node2.handle]);
+      seq2.insert(0, [
+        <FluidNodeHandle>node.handle,
+        <FluidNodeHandle>node2.handle,
+        <FluidNodeHandle>node3.handle,
+        <FluidNodeHandle>node4.handle,
+      ]);
       await syncDds(2);
 
       await receiverPromise;
 
-      seq2.remove(0, 2);
+      seq2.remove(1, 3);
 
       await syncDds(2);
 
       await receiverPromise;
 
-      expect(operationReceiverMock).toHaveBeenNthCalledWith(3, {
-        path: [1, 0],
+      expect(operationReceiverMock).toHaveBeenNthCalledWith(5, {
+        node: {
+          [FLUIDNODE_KEYS.TYPE]: 'node2',
+        },
+        path: [1, 1],
         type: 'remove_node',
       });
 
-      expect(operationReceiverMock).toHaveBeenNthCalledWith(4, {
-        path: [1, 1],
+      expect(operationReceiverMock).toHaveBeenNthCalledWith(6, {
+        node: {
+          [FLUIDNODE_KEYS.TYPE]: 'node3',
+        },
+        path: [1, 2],
         type: 'remove_node',
       });
 
