@@ -19,5 +19,5 @@ import { SlateFluidModel } from '@solidoc/fluid-model-slate';
  */
 export const FluidContainer = new ContainerRuntimeFactoryWithDefaultDataStore(
   SlateFluidModel.Name,
-  new Map([SlateFluidModel.factory.registryEntry]),
+  new Map([SlateFluidModel.factory.registryEntry as any]),
 );

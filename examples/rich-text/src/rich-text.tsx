@@ -22,7 +22,7 @@ const RichTextExample = () => {
   const initialValue = [
     {
       type: 'paragraph',
-      children: [{ text: 'This is editable ' }],
+      children: [{ text: '' }],
     },
   ];
 
@@ -35,7 +35,7 @@ const RichTextExample = () => {
   );
 
   const onChanged = value => {
-    console.log(value);
+    // console.log(value);
     setValue(value);
     // model.doc.set('value', value)
   };

@@ -1,3 +1,3 @@
-export * from './binder'
-export * from './processor'
-export * from './slate-operation-factory'
+export * from './binder';
+export * from './processor';
+export * from './slate-operation-factory';

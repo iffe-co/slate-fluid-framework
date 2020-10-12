@@ -1,7 +1,9 @@
+import { Operation } from 'slate';
+
 interface IBaseFluidModel<T> {
-  subscribe(id: string): any; //TODO subscribe需要在确定
+  subscribe(callback: (op: Operation) => void): any; //TODO subscribe需要在确定
   unsubscribe(id: string): void;
-  apply(op: T): void;
+  apply(op: T): Promise<void>;
   fetch(): any;
 }
 

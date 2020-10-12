@@ -1,33 +1,39 @@
 import { BaseFluidModel } from '@solidoc/fluid-model-base';
 import { SharedMap } from '@fluidframework/map';
-import { SharedObjectSequence } from '@fluidframework/sequence';
-import { DataObjectFactory } from '@fluidframework/aqueduct';
+import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
+import { DataObjectFactory, IDataObjectProps } from '@fluidframework/aqueduct';
 import { FLUIDNODE_KEYS } from './interfaces';
-import { addEventListenerHandler } from './event-handler';
 import { slateOpHandler } from './slate-op-handler';
 import { Operation } from 'slate';
 import { operationApplier } from './operation-applier/operation-applier';
 import { FluidNodeChildren, FluidNodeHandle } from './types';
 import { registerOperationReceiver } from './dds-event-processor/binder';
+import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 
 class SlateFluidModel extends BaseFluidModel<Operation> {
-  private fluidNodeSequence!: FluidNodeChildren;
-  private fluidNode!: SharedMap;
+  public fluidNodeSequence!: FluidNodeChildren;
+
+  public constructor(props: IDataObjectProps) {
+    super(props);
+    this.runtime = props.runtime;
+  }
+
+  public runtime: IFluidDataStoreRuntime;
 
   public static get Name() {
-    return 'name';
+    return 'slate-fluid-model';
   }
 
   public static readonly factory = new DataObjectFactory(
     SlateFluidModel.Name,
     SlateFluidModel,
-    [SharedMap.getFactory(), SharedObjectSequence.getFactory()],
+    [
+      SharedMap.getFactory(),
+      SharedObjectSequence.getFactory(),
+      SharedString.getFactory(),
+    ],
     {},
   );
-
-  subscribe = () => {
-    throw new Error('Method not implemented.');
-  };
 
   onModelChanged = (callback: (op: Operation) => void) => {
     registerOperationReceiver(callback);
@@ -47,7 +53,11 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
   };
 
   applyOperation = (op: Operation) => {
-    operationApplier[op.type](op, this.fluidNodeSequence, this.runtime);
+    const applier = operationApplier[op.type];
+    if (applier) {
+      console.log(op);
+      applier(op, this.fluidNodeSequence, this.runtime).then();
+    }
   };
 
   /**
@@ -59,13 +69,19 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
   protected initializingFirstTime = async <S = undefined>(
     props?: S,
   ): Promise<void> => {
-    this.fluidNode = SharedMap.create(this.runtime);
-    this.fluidNode.set(FLUIDNODE_KEYS.ID, 'id=1234');
-    this.fluidNode.set(FLUIDNODE_KEYS.TYPE, 'text');
-    this.fluidNode.set(FLUIDNODE_KEYS.TEXT, 'text-test1111');
+    const text = SharedString.create(this.runtime);
+
+    const initNode = SharedMap.create(this.runtime);
+    initNode.set(FLUIDNODE_KEYS.TEXT, text.handle);
+
+    const initChildren = SharedObjectSequence.create(this.runtime);
+    initChildren.insert(0, [initNode.handle]);
+
+    const childrenNode = SharedMap.create(this.runtime);
+    childrenNode.set(FLUIDNODE_KEYS.CHILDREN, initChildren.handle);
 
     this.fluidNodeSequence = SharedObjectSequence.create(this.runtime);
-    this.fluidNodeSequence.insert(0, [<FluidNodeHandle>this.fluidNode.handle]);
+    this.fluidNodeSequence.insert(0, [<FluidNodeHandle>childrenNode.handle]);
 
     this.root.set(FLUIDNODE_KEYS.ID, '');
 

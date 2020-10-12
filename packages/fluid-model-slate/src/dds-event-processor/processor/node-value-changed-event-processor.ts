@@ -1,5 +1,5 @@
 import { FLUIDNODE_KEYS } from '../../interfaces';
-import { FluidNode, FluidNodeChildren, FluidNodeProperty } from '../../types';
+import { FluidNode, FluidNodeChildren } from '../../types';
 import { Path } from '../../types/path';
 import { getChildren } from '../../operation-applier/node-getter';
 import { IValueChanged } from '@fluidframework/map';

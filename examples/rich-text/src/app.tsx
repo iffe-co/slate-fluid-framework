@@ -218,8 +218,9 @@ const App = () => {
 
   console.log(id, isNew);
 
-  const context = useExampleData(id, isNew);
+  const [context, context2] = useExampleData(id, isNew);
   console.log('context', context);
+  console.log('context2', context2);
   const [error] = useState<Error | undefined>();
   const [stacktrace] = useState<string | undefined>();
   const [showTabs, setShowTabs] = useState<boolean>();
@@ -278,11 +279,17 @@ const App = () => {
           </Warning>
         ) : (
           <ExampleContent>
-            {context ? (
-              <FluidContext.Provider value={context}>
-                {' '}
-                <Component />{' '}
-              </FluidContext.Provider>
+            {context && context2 ? (
+              <div>
+                <FluidContext.Provider value={context}>
+                  {' '}
+                  <Component />{' '}
+                </FluidContext.Provider>
+                <FluidContext.Provider value={context2}>
+                  {' '}
+                  <Component />{' '}
+                </FluidContext.Provider>
+              </div>
             ) : (
               <div />
             )}
