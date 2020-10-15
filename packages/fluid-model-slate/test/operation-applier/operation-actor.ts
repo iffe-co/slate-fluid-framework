@@ -74,7 +74,8 @@ class OperationActor {
   };
 
   private applyOp = async (op: Operation) => {
-    await operationApplier[op.type](op, this.root, this.mockRuntime);
+    const executable = await operationApplier[op.type](op, this.root, this.mockRuntime);
+    executable()
   };
 
   private async internalGetNodeProperties(

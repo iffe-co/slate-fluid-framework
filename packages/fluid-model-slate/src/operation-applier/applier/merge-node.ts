@@ -32,19 +32,25 @@ const applyMergeNodeOperation = async (
   if (isTextNode(node) && isTextNode(prevNode)) {
     const prevText = await getText(prevNode);
     const text = await getText(node);
-    prevText.insertText(prevText.getLength(), text.getText());
+    return () => {
+      prevText.insertText(prevText.getLength(), text.getText());
+      parent.remove(index, index + 1);
+    };
   }
 
   if (!isTextNode(node) && !isTextNode(prevNode)) {
     const prevChildren = await getChildren(prevNode);
     const children = await getChildren(node);
-    prevChildren.insert(
-      prevChildren.getLength(),
-      children.getRange(0, children.getLength()),
-    );
-  }
 
-  parent.remove(index, index + 1);
+    return () => {
+      prevChildren.insert(
+        prevChildren.getLength(),
+        children.getRange(0, children.getLength()),
+      );
+      parent.remove(index, index + 1);
+    };
+  }
+  throw new Error(`Invalid node type at path [${path}]`);
 };
 
 export { applyMergeNodeOperation };

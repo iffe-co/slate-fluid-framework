@@ -20,8 +20,8 @@ async function getTextPathFromRoot(
     const needCheckNode = await nodeHandle.get();
     const isTextNode = !needCheckNode.get(FLUIDNODE_KEYS.CHILDREN);
     if (isTextNode) {
-      const id = needCheckNode.get(FLUIDNODE_KEYS.TEXT).path;
-      if (id === (text.handle as any).path) {
+      const id = needCheckNode.get(FLUIDNODE_KEYS.TEXT).absolutePath;
+      if (id === (text.handle as any).absolutePath) {
         return [...path, i];
       } else {
         continue;

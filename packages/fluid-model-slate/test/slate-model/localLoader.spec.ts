@@ -52,7 +52,7 @@ describe("LocalLoader", () => {
             await deltaConnectionServer.webSocketServer.close();
         });
 
-        it("late open / early close", async () => {
+        it.skip("late open / early close", async () => {
             const container1 = await createContainer(SlateFluidModel.factory);
             const dataObject1 = await requestFluidObject<SlateFluidModel>(container1, "default");
 

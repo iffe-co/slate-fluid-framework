@@ -11,7 +11,9 @@ const applyRemoveNodeOperation = async (
   const { path } = op;
   const parent = await getParent(path, root);
   const index = path[path.length - 1];
-  parent.remove(index, index + 1);
+  return () => {
+    parent.remove(index, index + 1);
+  };
 };
 
 export { applyRemoveNodeOperation };

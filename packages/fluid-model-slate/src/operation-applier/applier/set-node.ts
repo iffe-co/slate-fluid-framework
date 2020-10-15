@@ -10,9 +10,11 @@ const applySetNodeOperation = async (
 ) => {
   const node = await getNode(op.path, root);
   const { newProperties } = op;
-  Object.keys(newProperties).forEach(k => {
-    node.set(k, newProperties[k]);
-  });
+  return () => {
+    Object.keys(newProperties).forEach(k => {
+      node.set(k, newProperties[k]);
+    });
+  };
 };
 
 export { applySetNodeOperation };

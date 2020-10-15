@@ -4,22 +4,6 @@ import { getNode, getParent } from '../node-getter';
 import { FluidNodeChildren, FluidNodeHandle } from '../../types';
 import { Path } from '../../types/path';
 
-const transformToTruePath = (originPath: number[], targetPath: number[]) => {
-  if (Path.equals(originPath, targetPath)) {
-    return targetPath;
-  }
-  const copy = targetPath.slice();
-
-  if (
-    Path.endsBefore(originPath, targetPath) &&
-    originPath.length < targetPath.length
-  ) {
-    copy[originPath.length - 1] -= 1;
-  }
-
-  return copy;
-};
-
 const applyMoveNodeOperation = async (
   op: MoveNodeOperation,
   root: FluidNodeChildren,
@@ -29,12 +13,12 @@ const applyMoveNodeOperation = async (
   const node = await getNode(path, root);
   const parent = await getParent(path, root);
   const index = path[path.length - 1];
-  parent.remove(index, index + 1);
-
-  const truePath = transformToTruePath(path, targetPath);
-  const targetParent = await getParent(truePath, root);
-  const targetIndex = truePath[truePath.length - 1];
-  targetParent.insert(targetIndex, [<FluidNodeHandle>node.handle]);
+  const targetParent = await getParent(targetPath, root);
+  const targetIndex = targetPath[targetPath.length - 1];
+  return () => {
+    parent.remove(index, index + 1);
+    targetParent.insert(targetIndex, [<FluidNodeHandle>node.handle]);
+  };
 };
 
 export { applyMoveNodeOperation };

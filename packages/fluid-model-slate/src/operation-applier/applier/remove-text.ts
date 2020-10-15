@@ -10,7 +10,9 @@ const applyRemoveTextOperation = async (
 ) => {
   const node = await getNode(op.path, root);
   const text = await getText(node);
-  text.removeText(op.offset, op.offset + op.text.length);
+  return () => {
+    text.removeText(op.offset, op.offset + op.text.length);
+  };
 };
 
 export { applyRemoveTextOperation };

@@ -27,19 +27,23 @@ const applySplitNodeOperation = async (
     const text = await getText(node);
     const originText = text.getText();
     const after = originText.slice(op.position);
-    text.removeText(op.position, originText.length);
-    const newNode = createNode({ text: after, ...op.properties }, runtime);
-    addNewNodeIntoParent(newNode, op.path, parent);
+    return () => {
+      text.removeText(op.position, originText.length);
+      const newNode = createNode({ text: after, ...op.properties }, runtime);
+      addNewNodeIntoParent(newNode, op.path, parent);
+    };
   } else {
     const children = await getChildren(node);
     const after = children.getRange(op.position);
-    const newNode = createNodeWithChildren(
-      after,
-      op.properties as Partial<Element>,
-      runtime,
-    );
-    addNewNodeIntoParent(newNode, op.path, parent);
-    children.remove(op.position, children.getLength());
+    return () => {
+      const newNode = createNodeWithChildren(
+        after,
+        op.properties as Partial<Element>,
+        runtime,
+      );
+      addNewNodeIntoParent(newNode, op.path, parent);
+      children.remove(op.position, children.getLength());
+    };
   }
 };
 

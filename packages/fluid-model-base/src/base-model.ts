@@ -13,7 +13,7 @@ abstract class BaseFluidModel<T>
 
   abstract onModelChanged(callback: (op: Operation) => void): void;
 
-  abstract apply(op: T): Promise<void>;
+  abstract apply(op: T[]): Promise<void>;
   abstract fetch(): any;
 }
 

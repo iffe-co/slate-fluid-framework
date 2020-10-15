@@ -14,14 +14,14 @@ const applySetSelectionOperation = (
   op: SetSelectionOperation,
   root: FluidNodeChildren,
   runtime: IFluidDataStoreRuntime,
-) => Promise.resolve();
+) => Promise.resolve(() => {});
 
 type OperationApplier = {
   [key: string]: (
     op: any,
     root: FluidNodeChildren,
     runtime: IFluidDataStoreRuntime,
-  ) => Promise<void>;
+  ) => Promise<Function>;
 };
 
 const operationApplier: OperationApplier = {

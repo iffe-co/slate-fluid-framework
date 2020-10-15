@@ -10,7 +10,9 @@ const applyInsertTextOperation = async (
 ) => {
   const node = await getNode(op.path, root);
   const text = await getText(node);
-  text.insertText(op.offset, op.text);
+  return () => {
+    text.insertText(op.offset, op.text);
+  };
 };
 
 export { applyInsertTextOperation };
