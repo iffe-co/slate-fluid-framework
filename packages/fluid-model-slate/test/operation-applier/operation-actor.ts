@@ -13,6 +13,7 @@ import { getNode } from '../../src/operation-applier/node-getter';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { mockDdsCreate, mockRuntime } from './mocker';
+import {addChildrenToCache, addNodeToCache, addTextToCache} from "../../src/dds-cache";
 
 const uuid = require('uuid');
 
@@ -28,14 +29,11 @@ class OperationActor {
       mockDdsCreate();
     }
 
+    this.addAllDDSToCache();
     this.root = this.initEditorRoot();
   }
   private initEditorRoot = () => {
-    const root = new SharedObjectSequence<FluidNodeHandle>(
-      this.mockRuntime,
-      uuid.v4(),
-      SharedObjectSequenceFactory.Attributes,
-    );
+    const root = SharedObjectSequence.create<FluidNodeHandle>(this.mockRuntime);
     const node_0_0 = this.initNode();
     const node_0 = this.initNode([node_0_0]);
     root.insert(0, [<FluidNodeHandle>node_0.handle]);
@@ -43,29 +41,17 @@ class OperationActor {
   };
 
   private initNode = (childrenNode?: SharedMap[]) => {
-    const node = new SharedMap(
-      uuid.v4(),
-      this.mockRuntime,
-      SharedMap.getFactory().attributes,
-    );
+    const node =  SharedMap.create(this.mockRuntime);
 
     if (childrenNode) {
-      const childSequence = new SharedObjectSequence<FluidNodeHandle>(
-        this.mockRuntime,
-        uuid.v4(),
-        SharedObjectSequenceFactory.Attributes,
-      );
+      const childSequence = SharedObjectSequence.create<FluidNodeHandle>(this.mockRuntime);
       childSequence.insert(
         0,
         childrenNode.map(v => <FluidNodeHandle>v.handle),
       );
       node.set(FLUIDNODE_KEYS.CHILDREN, childSequence.handle);
     } else {
-      const text = new SharedString(
-        this.mockRuntime,
-        uuid.v4(),
-        SharedStringFactory.Attributes,
-      );
+      const text = SharedString.create(this.mockRuntime);
       text.insertText(0, 'This default text');
       node.set(FLUIDNODE_KEYS.TEXT, text.handle);
     }
@@ -230,6 +216,29 @@ class OperationActor {
     this.valuesPromises = [];
     return values;
   };
+
+  private addAllDDSToCache() {
+    const createMap = SharedMap.create
+    SharedMap.create = (rt, id?: string) => {
+      const map = createMap(rt, id)
+      addNodeToCache(map)
+      return map
+    }
+
+    const createSeq = SharedObjectSequence.create
+    SharedObjectSequence.create = <T>(rt: any, id?: string) => {
+      const seq = createSeq<T>(rt, id)
+      addChildrenToCache(seq as any)
+      return seq
+    }
+
+    const createString = SharedString.create
+    SharedString.create = (rt, id?: string) => {
+      const string = createString(rt, id)
+      addTextToCache(string)
+      return string
+    }
+  }
 }
 
 /**

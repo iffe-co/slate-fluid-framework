@@ -6,6 +6,7 @@ import {
   FluidNodeProperty,
   FluidNodePropertyHandle,
 } from '../types';
+import { getNodeFromCache } from '../dds-cache';
 
 const getNode = async (
   path: number[],
@@ -27,7 +28,8 @@ const getNode = async (
     return await targetNode.get();
   }
 
-  const map = await root.getRange(index, index + 1)[0].get();
+  const mapHandle = root.getRange(index, index + 1)[0];
+  const map = getNodeFromCache(mapHandle.absolutePath);
   let nextChildren = await map.get(FLUIDNODE_KEYS.CHILDREN).get();
   return await getNode(rest, nextChildren);
 };

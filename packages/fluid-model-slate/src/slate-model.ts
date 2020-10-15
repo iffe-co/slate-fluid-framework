@@ -3,13 +3,17 @@ import { SharedMap } from '@fluidframework/map';
 import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
 import { DataObjectFactory, IDataObjectProps } from '@fluidframework/aqueduct';
 import { FLUIDNODE_KEYS } from './interfaces';
-import { slateOpHandler } from './slate-op-handler';
 import { Operation } from 'slate';
 import { operationApplier } from './operation-applier/operation-applier';
-import { FluidNodeChildren, FluidNodeHandle } from './types';
+import { FluidNodeHandle } from './types';
 import { registerOperationReceiver } from './dds-event-processor/binder';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
+import {
+  addChildrenToCache,
+  addNodeToCache,
+  addTextToCache,
+} from './dds-cache';
 
 class SlateFluidModel extends BaseFluidModel<Operation> {
   public fluidNodeSequence!: SharedObjectSequence<IFluidHandle<SharedMap>>;
@@ -71,16 +75,22 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     props?: S,
   ): Promise<void> => {
     const text = SharedString.create(this.runtime);
+    addTextToCache(text);
 
     const initNode = SharedMap.create(this.runtime);
     initNode.set(FLUIDNODE_KEYS.TEXT, text.handle);
+    addNodeToCache(initNode);
 
-    const initChildren = SharedObjectSequence.create(this.runtime);
-    initChildren.insert(0, [initNode.handle]);
+    const initChildren = SharedObjectSequence.create<FluidNodeHandle>(
+      this.runtime,
+    );
+    initChildren.insert(0, [<FluidNodeHandle>initNode.handle]);
+    addChildrenToCache(initChildren);
 
     const childrenNode = SharedMap.create(this.runtime);
     childrenNode.set(FLUIDNODE_KEYS.CHILDREN, initChildren.handle);
     childrenNode.set(FLUIDNODE_KEYS.TEXT, 'initChildren.handle');
+    addNodeToCache(childrenNode);
 
     this.fluidNodeSequence = SharedObjectSequence.create(this.runtime);
     this.fluidNodeSequence.insert(0, [<FluidNodeHandle>childrenNode.handle]);

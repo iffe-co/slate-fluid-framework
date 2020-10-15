@@ -4,10 +4,16 @@ import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
 import { SharedMap } from '@fluidframework/map';
 import { FLUIDNODE_KEYS } from '../interfaces';
 import { FluidNodeHandle } from '../types';
+import {
+  addChildrenToCache,
+  addNodeToCache,
+  addTextToCache,
+} from '../dds-cache';
 
 const createSharedString = (text: string, runtime: IFluidDataStoreRuntime) => {
   const shareString = SharedString.create(runtime);
   shareString.insertText(0, text);
+  addTextToCache(shareString);
   return shareString;
 };
 
@@ -19,6 +25,7 @@ const createChildren = (
   if (content) {
     sequence.insert(0, content);
   }
+  addChildrenToCache(sequence);
   return sequence;
 };
 
@@ -31,6 +38,7 @@ function buildChildren(runtime: IFluidDataStoreRuntime, childrenOp: Node[]) {
 
 const createNode = (slateNode: Node, runtime: IFluidDataStoreRuntime) => {
   const node = SharedMap.create(runtime);
+  addNodeToCache(node);
 
   if (slateNode.text) {
     const text = createSharedString(slateNode.text as string, runtime);
@@ -68,6 +76,8 @@ const createNodeWithChildren = (
   runtime: IFluidDataStoreRuntime,
 ) => {
   const node = SharedMap.create(runtime);
+  addNodeToCache(node);
+
   node.set(FLUIDNODE_KEYS.CHILDREN, createChildren(runtime, children).handle);
   if (properties) {
     applyProperties<Element>(properties, node, runtime);
