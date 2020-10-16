@@ -12,15 +12,15 @@ import { FLUIDNODE_KEYS } from '../../interfaces';
 
 const isTextNode = (node: FluidNode) => node.has(FLUIDNODE_KEYS.TEXT);
 
-const applyMergeNodeOperation = async (
+const applyMergeNodeOperation = (
   op: MergeNodeOperation,
   root: FluidNodeChildren,
   runtime: IFluidDataStoreRuntime,
 ) => {
   const { path } = op;
-  const node = await getNode(path, root);
-  const prevNode = await getPrevious(path, root);
-  const parent = await getParent(path, root);
+  const node = getNode(path, root);
+  const prevNode = getPrevious(path, root);
+  const parent = getParent(path, root);
   const index = path[path.length - 1];
 
   if (isTextNode(node) !== isTextNode(prevNode)) {
@@ -30,25 +30,23 @@ const applyMergeNodeOperation = async (
   }
 
   if (isTextNode(node) && isTextNode(prevNode)) {
-    const prevText = await getText(prevNode);
-    const text = await getText(node);
-    return () => {
-      prevText.insertText(prevText.getLength(), text.getText());
-      parent.remove(index, index + 1);
-    };
+    const prevText = getText(prevNode);
+    const text = getText(node);
+    prevText.insertText(prevText.getLength(), text.getText());
+    parent.remove(index, index + 1);
+    return;
   }
 
   if (!isTextNode(node) && !isTextNode(prevNode)) {
-    const prevChildren = await getChildren(prevNode);
-    const children = await getChildren(node);
+    const prevChildren = getChildren(prevNode);
+    const children = getChildren(node);
 
-    return () => {
-      prevChildren.insert(
-        prevChildren.getLength(),
-        children.getRange(0, children.getLength()),
-      );
-      parent.remove(index, index + 1);
-    };
+    prevChildren.insert(
+      prevChildren.getLength(),
+      children.getRange(0, children.getLength()),
+    );
+    parent.remove(index, index + 1);
+    return;
   }
   throw new Error(`Invalid node type at path [${path}]`);
 };

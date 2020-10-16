@@ -1,38 +1,28 @@
-import { IUrlResolver } from '@fluidframework/driver-definitions';
+import {IUrlResolver} from '@fluidframework/driver-definitions';
+import {IContainer, IFluidCodeDetails, ILoader,} from '@fluidframework/container-definitions';
+import {LocalResolver} from '@fluidframework/local-driver';
+import {SharedObjectSequence, SharedString,} from '@fluidframework/sequence';
+import {requestFluidObject} from '@fluidframework/runtime-utils';
+import {ILocalDeltaConnectionServer, LocalDeltaConnectionServer,} from '@fluidframework/server-local-server';
+import {SharedMap} from '@fluidframework/map';
+import {
+  createAndAttachContainer,
+  createLocalLoader,
+  ITestFluidObject,
+  OpProcessingController,
+  TestFluidObjectFactory,
+} from '@fluidframework/test-utils';
+
+import {IFluidDataStoreFactory} from '@fluidframework/runtime-definitions';
+import {IFluidHandle} from '@fluidframework/core-interfaces';
+import {IChannelFactory} from '@fluidframework/datastore-definitions';
+import {addChildrenToCache, addNodeToCache, addTextToCache} from "../../src/dds-cache";
+import {FluidNodeHandle} from "../../src/types";
 
 Object.defineProperty(window, 'performance', {
   value: undefined,
   writable: false,
 });
-
-import {
-  IContainer,
-  IFluidCodeDetails,
-  ILoader,
-} from '@fluidframework/container-definitions';
-import { LocalResolver } from '@fluidframework/local-driver';
-import {
-  SharedObjectSequence,
-  SharedObjectSequenceFactory,
-  SharedString,
-} from '@fluidframework/sequence';
-import { requestFluidObject } from '@fluidframework/runtime-utils';
-import {
-  ILocalDeltaConnectionServer,
-  LocalDeltaConnectionServer,
-} from '@fluidframework/server-local-server';
-import { SharedMap } from '@fluidframework/map';
-import {
-  createAndAttachContainer,
-  createLocalLoader,
-  OpProcessingController,
-  ITestFluidObject,
-  TestFluidObjectFactory,
-} from '@fluidframework/test-utils';
-
-import { IFluidDataStoreFactory } from '@fluidframework/runtime-definitions';
-import { IFluidHandle } from '@fluidframework/core-interfaces';
-import { IChannelFactory } from '@fluidframework/datastore-definitions';
 
 const uuid = require('uuid');
 
@@ -67,7 +57,7 @@ async function loadContainer(
     deltaConnectionServer,
     urlResolver,
   );
-  return loader.resolve({ url: documentLoadUrl });
+  return loader.resolve({url: documentLoadUrl});
 }
 
 type ISharedType =
@@ -76,8 +66,20 @@ type ISharedType =
   | SharedObjectSequence<IFluidHandle<SharedMap>>
   | SharedObjectSequence<string>;
 
+const addDDSToCache = (dds: ISharedType) => {
+  if (dds instanceof SharedString) {
+    addTextToCache(dds)
+  }
+  if (dds instanceof SharedMap) {
+    addNodeToCache(dds)
+  }
+  if (dds instanceof SharedObjectSequence) {
+    addChildrenToCache(dds as SharedObjectSequence<FluidNodeHandle>)
+  }
+}
+
 async function buildE2eSharedDds<T extends ISharedType>(
-  ddsFactory: IChannelFactory,
+    ddsFactory: IChannelFactory,
 ) {
   let documentId = uuid.v4();
   const documentLoadUrl = `fluid-test://localhost/${documentId}`;
@@ -101,6 +103,8 @@ async function buildE2eSharedDds<T extends ISharedType>(
     'default',
   );
   const dds1 = await dataObject1.getSharedObject<T>(stringId);
+  addDDSToCache(dds1)
+
   const container2 = await loadContainer(
     factory,
     documentLoadUrl,
@@ -112,6 +116,8 @@ async function buildE2eSharedDds<T extends ISharedType>(
     'default',
   );
   const dds2 = await dataObject2.getSharedObject<T>(stringId);
+  addDDSToCache(dds2)
+
   const opProcessingController = new OpProcessingController(
     deltaConnectionServer,
   );
@@ -125,10 +131,10 @@ async function buildE2eSharedDds<T extends ISharedType>(
     dds: [dds1, dds2],
     runtime: [dataObject1.runtime, dataObject2.runtime],
     syncDds: async (times: number) => {
-      for (let i = 0; i < times; i++) {
-        await opProcessingController.process(dataObject1.runtime.deltaManager);
-        await opProcessingController.process(dataObject2.runtime.deltaManager);
-      }
+        for (let i = 0; i < times; i++) {
+            await opProcessingController.process(dataObject1.runtime.deltaManager);
+            await opProcessingController.process(dataObject2.runtime.deltaManager);
+        }
     },
     close: async () => await deltaConnectionServer.webSocketServer.close(),
   };
@@ -140,7 +146,7 @@ const buildE2eSharedString = () =>
   buildE2eSharedDds<SharedString>(SharedString.getFactory());
 const buildE2eSharedObjectSequence = () =>
   buildE2eSharedDds<SharedObjectSequence<IFluidHandle<SharedMap>>>(
-    SharedObjectSequence.getFactory(),
+      SharedObjectSequence.getFactory(),
   );
 
 export {

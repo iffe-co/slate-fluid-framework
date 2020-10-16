@@ -3,16 +3,14 @@ import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { getNode, getText } from '../node-getter';
 import { FluidNodeChildren } from '../../types';
 
-const applyInsertTextOperation = async (
+const applyInsertTextOperation = (
   op: InsertTextOperation,
   root: FluidNodeChildren,
   runtime: IFluidDataStoreRuntime,
 ) => {
-  const node = await getNode(op.path, root);
-  const text = await getText(node);
-  return () => {
-    text.insertText(op.offset, op.text);
-  };
+  const node = getNode(op.path, root);
+  const text = getText(node);
+  text.insertText(op.offset, op.text);
 };
 
 export { applyInsertTextOperation };

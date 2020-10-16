@@ -14,6 +14,7 @@ import {
   addNodeToCache,
   addTextToCache,
 } from './dds-cache';
+import { addEventListenerHandler } from './event-handler';
 
 class SlateFluidModel extends BaseFluidModel<Operation> {
   public fluidNodeSequence!: SharedObjectSequence<IFluidHandle<SharedMap>>;
@@ -57,12 +58,9 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
   };
 
   applyOperation = async (ops: Operation[]) => {
-    const executable = await Promise.all(
-      ops.map(op =>
-        operationApplier[op.type](op, this.fluidNodeSequence, this.runtime),
-      ),
+    ops.forEach(op =>
+      operationApplier[op.type](op, this.fluidNodeSequence, this.runtime),
     );
-    executable.forEach(e => e());
   };
 
   /**
@@ -111,10 +109,6 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     [this.fluidNodeSequence] = await Promise.all([
       this.root.get(FLUIDNODE_KEYS.CHILDREN).get(),
     ]);
-
-    const nodeHandle = await this.fluidNodeSequence.getRange(0, 1)[0];
-    const a = await nodeHandle.get();
-    console.log(a.get('text'));
     return super.initializingFromExisting();
   }
 
@@ -123,7 +117,7 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
    */
   protected hasInitialized = async (): Promise<void> => {
     //注册event-handler
-    // await addEventListenerHandler(this.fluidNodeSequence);
+    addEventListenerHandler(this.fluidNodeSequence);
   };
 }
 

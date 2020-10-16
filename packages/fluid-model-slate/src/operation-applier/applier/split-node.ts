@@ -15,35 +15,31 @@ function addNewNodeIntoParent(
   parent.insert(index + 1, [<FluidNodeHandle>newNode.handle]);
 }
 
-const applySplitNodeOperation = async (
+const applySplitNodeOperation = (
   op: SplitNodeOperation,
   root: FluidNodeChildren,
   runtime: IFluidDataStoreRuntime,
 ) => {
-  const node = await getNode(op.path, root);
-  const parent = await getParent(op.path, root);
+  const node = getNode(op.path, root);
+  const parent = getParent(op.path, root);
 
   if (node.has(FLUIDNODE_KEYS.TEXT)) {
-    const text = await getText(node);
+    const text = getText(node);
     const originText = text.getText();
     const after = originText.slice(op.position);
-    return () => {
-      text.removeText(op.position, originText.length);
-      const newNode = createNode({ text: after, ...op.properties }, runtime);
-      addNewNodeIntoParent(newNode, op.path, parent);
-    };
+    text.removeText(op.position, originText.length);
+    const newNode = createNode({ text: after, ...op.properties }, runtime);
+    addNewNodeIntoParent(newNode, op.path, parent);
   } else {
-    const children = await getChildren(node);
+    const children = getChildren(node);
     const after = children.getRange(op.position);
-    return () => {
-      const newNode = createNodeWithChildren(
-        after,
-        op.properties as Partial<Element>,
-        runtime,
-      );
-      addNewNodeIntoParent(newNode, op.path, parent);
-      children.remove(op.position, children.getLength());
-    };
+    const newNode = createNodeWithChildren(
+      after,
+      op.properties as Partial<Element>,
+      runtime,
+    );
+    addNewNodeIntoParent(newNode, op.path, parent);
+    children.remove(op.position, children.getLength());
   }
 };
 

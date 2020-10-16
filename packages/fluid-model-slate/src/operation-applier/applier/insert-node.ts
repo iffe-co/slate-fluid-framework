@@ -4,17 +4,15 @@ import { getParent } from '../node-getter';
 import { createNode } from '../node-factory';
 import { FluidNodeChildren, FluidNodeHandle } from '../../types';
 
-const applyInsertNodeOperation = async (
+const applyInsertNodeOperation = (
   op: InsertNodeOperation,
   root: FluidNodeChildren,
   runtime: IFluidDataStoreRuntime,
 ) => {
-  const parent = await getParent(op.path, root);
-  return () => {
-    const index = op.path[op.path.length - 1];
-    const node = createNode(op.node, runtime);
-    parent.insert(index, [<FluidNodeHandle>node.handle]);
-  };
+  const parent = getParent(op.path, root);
+  const index = op.path[op.path.length - 1];
+  const node = createNode(op.node, runtime);
+  parent.insert(index, [<FluidNodeHandle>node.handle]);
 };
 
 export { applyInsertNodeOperation };

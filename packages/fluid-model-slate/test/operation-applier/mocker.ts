@@ -6,6 +6,7 @@ import {
   SharedStringFactory,
 } from '@fluidframework/sequence';
 import { SharedMap } from '@fluidframework/map';
+import {addChildrenToCache, addNodeToCache, addTextToCache} from "../../src/dds-cache";
 const uuid = require('uuid');
 
 export const mockRuntime: mocks.MockFluidDataStoreRuntime = new mocks.MockFluidDataStoreRuntime();
@@ -15,6 +16,29 @@ const originalDdsCreate = {
   sharedMap: SharedMap.create,
   sharedObjectSequence: SharedObjectSequence.create,
 };
+
+const mockInsertDDSIntoCache = () => {
+  const createSeq = SharedObjectSequence.create
+  SharedObjectSequence.create = <T>(rt: any, id?: string) => {
+    const seq = createSeq<T>(rt, id)
+    addChildrenToCache(seq as any)
+    return seq
+  }
+
+  const createMap = SharedMap.create
+  SharedMap.create = (rt, id?: string) => {
+    const map = createMap(rt, id)
+    addNodeToCache(map)
+    return map
+  }
+
+  const createString = SharedString.create
+  SharedString.create = (rt, id?: string) => {
+    const string = createString(rt, id)
+    addTextToCache(string)
+    return string
+  }
+}
 export const mockDdsCreate = () => {
   SharedString.create = runtime =>
     new SharedString(runtime, uuid.v4(), SharedStringFactory.Attributes);
@@ -26,10 +50,13 @@ export const mockDdsCreate = () => {
       uuid.v4(),
       SharedObjectSequenceFactory.Attributes,
     );
+
+  mockInsertDDSIntoCache()
 };
 
 export const restoreDdsCreate = () => {
   SharedString.create = originalDdsCreate.shareString;
   SharedMap.create = originalDdsCreate.sharedMap;
   SharedObjectSequence.create = originalDdsCreate.sharedObjectSequence;
+  mockInsertDDSIntoCache()
 };

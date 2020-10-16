@@ -20,7 +20,7 @@ const uuid = require('uuid');
 class OperationActor {
   public readonly root: SharedObjectSequence<FluidNodeHandle>;
   private actions: Operation[] = [];
-  private valuesPromises: Promise<any>[] = [];
+  private valuesPromises: (Promise<any> | any)[] = [];
   private readonly mockRuntime: IFluidDataStoreRuntime;
   constructor(private readonly runtime?: IFluidDataStoreRuntime) {
     this.mockRuntime = runtime || mockRuntime;
@@ -60,8 +60,7 @@ class OperationActor {
   };
 
   private applyOp = async (op: Operation) => {
-    const executable = await operationApplier[op.type](op, this.root, this.mockRuntime);
-    executable()
+    operationApplier[op.type](op, this.root, this.mockRuntime)
   };
 
   private async internalGetNodeProperties(

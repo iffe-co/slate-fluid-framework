@@ -10,36 +10,41 @@ import {
   fluidNodePropertyEventBinder,
 } from './dds-event-processor';
 import { FLUIDNODE_KEYS } from './interfaces';
-const addEventListenerHandler = async (root: FluidNodeChildren) => {
+import {
+  getChildrenFromCacheByHandle,
+  getNodeFromCacheByHandle,
+  getTextFromCacheByHandle,
+} from './dds-cache';
+const addEventListenerHandler = (root: FluidNodeChildren) => {
   fluidNodeChildrenEventBinder(root, root);
   const nodeHandles = root.getRange(0);
   for (let handle of nodeHandles) {
-    await addListenerToNode(handle, root);
+    addListenerToNode(handle, root);
   }
 };
 
-const addListenerToNode = async (
+const addListenerToNode = (
   nodeHandle: FluidNodeHandle,
   root: FluidNodeChildren,
-): Promise<void> => {
-  const node = await nodeHandle.get();
+) => {
+  const node = getNodeFromCacheByHandle(nodeHandle);
   bindFluidNodeEvent(node, root);
   if (node.has(FLUIDNODE_KEYS.CHILDREN)) {
     const childrenHandle = <FluidNodeChildrenHandle>(
       node.get(FLUIDNODE_KEYS.CHILDREN)
     );
-    const children = await childrenHandle.get();
+    const children = getChildrenFromCacheByHandle(childrenHandle);
 
     fluidNodeChildrenEventBinder(children, root);
 
     const nodeHandles = children.getRange(0);
     for (let handle of nodeHandles) {
-      await addListenerToNode(handle, root);
+      addListenerToNode(handle, root);
     }
   }
   if (node.has(FLUIDNODE_KEYS.TEXT)) {
     const textHandle = node.get<FluidNodePropertyHandle>(FLUIDNODE_KEYS.TEXT);
-    const text = await textHandle.get();
+    const text = getTextFromCacheByHandle(textHandle);
     fluidNodePropertyEventBinder(text, root);
   }
 };
