@@ -11,6 +11,7 @@ import { getChildren } from '../../operation-applier/node-getter';
 import { SharedMap } from '@fluidframework/map';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
 import { MergeTreeDeltaType } from '@fluidframework/merge-tree';
+import {addNodeToCache, addNodeWithChildrenToCache} from "../../dds-cache";
 
 async function getPathFromRoot(
   target: FluidNodeChildren,
@@ -83,6 +84,7 @@ async function insertNodeOpProcessor(
   return Promise.all(
     items.map(async (rh: FluidNodeHandle, i: number) => {
       const node = (await rh.get()) as SharedMap;
+      await addNodeWithChildrenToCache(node)
       let nodeData = await convertSharedMapToSlateOp(node);
       return createInsertNodeOperation([...path, i + position], nodeData);
     }),

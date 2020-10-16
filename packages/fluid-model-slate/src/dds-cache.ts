@@ -6,10 +6,30 @@ import {
   FluidNodeProperty,
   FluidNodePropertyHandle,
 } from './types';
+import {FLUIDNODE_KEYS} from "./interfaces";
+import {SharedObjectSequence} from "@fluidframework/sequence";
 
 const nodeCache: { [key: string]: FluidNode } = {};
 const childrenCache: { [key: string]: FluidNodeChildren } = {};
 const textCache: { [key: string]: FluidNodeProperty } = {};
+
+const addNodeWithChildrenToCache = async (node: FluidNode) => {
+  nodeCache[node.id] = node;
+  if (node.has(FLUIDNODE_KEYS.CHILDREN)) {
+    const children = await (node.get<FluidNodeChildrenHandle>(FLUIDNODE_KEYS.CHILDREN).get())
+
+    addChildrenToCache(children)
+
+    await Promise.all([...children.getRange(0)].map(async (handle: FluidNodeHandle) => {
+      const node = await handle.get()
+      await addNodeWithChildrenToCache(node)
+    }))
+  }
+  if (node.has(FLUIDNODE_KEYS.TEXT)) {
+    const text = await node.get(FLUIDNODE_KEYS.TEXT).get()
+    addTextToCache(text)
+  }
+};
 
 const addNodeToCache = (node: FluidNode) => {
   nodeCache[node.id] = node;
@@ -66,4 +86,5 @@ export {
   getChildrenFromCacheByHandle,
   addTextToCache,
   getTextFromCacheByHandle,
+  addNodeWithChildrenToCache,
 };
