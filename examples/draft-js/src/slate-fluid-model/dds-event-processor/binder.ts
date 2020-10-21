@@ -8,7 +8,7 @@ import {
   nodeValueChangedEventProcessor,
 } from './processor';
 import { childrenSequenceDeltaEventProcessor } from './processor/children-value-changed-event-processor';
-import { ddsChangesQueue } from '../DDSChangesQueue';
+import { ddsChangesQueue } from '../dds-changes-queue';
 
 type OperationReceiver = (op: Operation) => void;
 const operationTransmitter: OperationReceiver[] = [];

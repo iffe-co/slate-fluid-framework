@@ -2,7 +2,7 @@ import { Editor, Operation } from 'slate';
 
 type OperationResolver = Promise<Operation[]>;
 
-class DDSChangesQueue {
+class DdsChangesQueue {
   private apply: (op: Operation) => void;
   private editor: Editor;
   private resolverMap: Map<string, OperationResolver[]>;
@@ -62,4 +62,4 @@ class DDSChangesQueue {
   }
 }
 
-export const ddsChangesQueue = new DDSChangesQueue();
+export const ddsChangesQueue = new DdsChangesQueue();

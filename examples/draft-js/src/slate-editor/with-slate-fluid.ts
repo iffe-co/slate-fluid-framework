@@ -1,6 +1,7 @@
 import { Editor } from 'slate';
 import { IFluidDraftJsObject } from '../fluid-object';
-import { ddsChangesQueue } from '../slate-fluid-model/DDSChangesQueue';
+// import { ddsChangesQueue } from '../slate-fluid-model/dds-changes-queue';
+import { ddsChangesQueue } from '@solidoc/fluid-model-slate';
 const uuid = require('uuid').v4();
 
 const withSlateFluid = <T extends Editor>(

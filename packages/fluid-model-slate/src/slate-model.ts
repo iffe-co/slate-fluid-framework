@@ -82,8 +82,6 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
 
   protected async hasInitialized() {
     [this.fluidNodeSequence] = await Promise.all([
-      this.root.get('text').get(),
-      this.root.get('authors').get(),
       this.root.get(FLUIDNODE_KEYS.CHILDREN).get(),
     ]);
 
