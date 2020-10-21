@@ -34,6 +34,6 @@
   },
   "dependencies": {
     "@solidoc/fluid-model-slate": "^0.0.1",
-    "slate": "^0.58.4"
+    "slate": "^0.59.0"
   }
 }

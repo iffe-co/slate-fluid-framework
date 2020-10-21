@@ -109,9 +109,9 @@ async function removeNodeOpProcessor(
   } = event.opArgs;
 
   //TODO: next line just wanner get the remove node value from event, the '0' item is the tricky value
-  const items = event.deltaArgs.deltaSegments.reduce(
+  const items: IFluidHandle<SharedMap>[] = event.deltaArgs.deltaSegments.reduce(
     (p, c) => p.concat(((c.segment as unknown) as Segment).items),
-    [],
+    [] as IFluidHandle<SharedMap>[],
   );
   return Promise.all(
     items.map(async (handle, i) => {
