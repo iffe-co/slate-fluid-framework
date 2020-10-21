@@ -11,7 +11,7 @@ import { getChildren } from '../../operation-applier/node-getter';
 import { SharedMap } from '@fluidframework/map';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
 import { MergeTreeDeltaType } from '@fluidframework/merge-tree';
-import {addNodeToCache, addNodeWithChildrenToCache} from "../../dds-cache";
+import { addNodeWithChildrenToCache } from '../../dds-cache';
 
 async function getPathFromRoot(
   target: FluidNodeChildren,
@@ -71,6 +71,7 @@ async function convertSharedMapToSlateOp(node: SharedMap) {
 async function insertNodeOpProcessor(
   event: SequenceDeltaEvent,
   path: number[],
+  root: FluidNodeChildren,
 ): Promise<Operation[]> {
   const {
     op: {
@@ -80,16 +81,19 @@ async function insertNodeOpProcessor(
       seg: { items },
     },
   } = event.opArgs;
-
   return Promise.all(
     items.map(async (rh: FluidNodeHandle, i: number) => {
       const node = (await rh.get()) as SharedMap;
-      await addNodeWithChildrenToCache(node)
       let nodeData = await convertSharedMapToSlateOp(node);
+      await addNodeWithChildrenToCache(node, root);
       return createInsertNodeOperation([...path, i + position], nodeData);
     }),
   );
 }
+
+type Segment = {
+  items: IFluidHandle<SharedMap>[];
+};
 
 async function removeNodeOpProcessor(
   event: SequenceDeltaEvent,
@@ -105,35 +109,45 @@ async function removeNodeOpProcessor(
   } = event.opArgs;
 
   //TODO: next line just wanner get the remove node value from event, the '0' item is the tricky value
-  const { items } = (event.deltaArgs.deltaSegments[0].segment as unknown) as {
-    items: IFluidHandle<SharedMap>[];
-  };
+  const items = event.deltaArgs.deltaSegments.reduce(
+    (p, c) => p.concat(((c.segment as unknown) as Segment).items),
+    [],
+  );
   return Promise.all(
     items.map(async (handle, i) => {
       const node = (await handle.get()) as SharedMap;
       let nodeData = await convertSharedMapToSlateOp(node);
-      return createRemoveNodeOperation([...path, start + i], nodeData);
+      return createRemoveNodeOperation([...path, start], nodeData);
     }),
   );
 }
 
-async function childrenSequenceDeltaEventProcessor(
-  event: SequenceDeltaEvent,
+async function getOperationsPromise(
   target: FluidNodeChildren,
   root: FluidNodeChildren,
-): Promise<Operation[] | undefined> {
-  if (event.isLocal) {
-    return;
-  }
+  event: SequenceDeltaEvent,
+) {
   const path = (await getPathFromRoot(target, root)) || [];
 
   if (event.opArgs.op.type === MergeTreeDeltaType.REMOVE.valueOf()) {
     return removeNodeOpProcessor(event, path);
   }
   if (event.opArgs.op.type === MergeTreeDeltaType.INSERT.valueOf()) {
-    return insertNodeOpProcessor(event, path);
+    return insertNodeOpProcessor(event, path, root);
   }
   throw new Error(`Not support operation: ${event.opArgs.op}`);
+}
+
+function childrenSequenceDeltaEventProcessor(
+  event: SequenceDeltaEvent,
+  target: FluidNodeChildren,
+  root: FluidNodeChildren,
+): Promise<Operation[]> | undefined {
+  if (event.isLocal) {
+    return;
+  }
+
+  return getOperationsPromise(target, root, event);
 }
 
 export { childrenSequenceDeltaEventProcessor };

@@ -10,7 +10,9 @@ const applyRemoveTextOperation = (
 ) => {
   const node = getNode(op.path, root);
   const text = getText(node);
-  text.removeText(op.offset, op.offset + op.text.length);
+  if (op.offset + op.text.length > op.offset) {
+    text.removeText(op.offset, op.offset + op.text.length);
+  }
 };
 
 export { applyRemoveTextOperation };

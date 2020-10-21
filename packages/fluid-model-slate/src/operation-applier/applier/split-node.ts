@@ -27,8 +27,14 @@ const applySplitNodeOperation = (
     const text = getText(node);
     const originText = text.getText();
     const after = originText.slice(op.position);
-    text.removeText(op.position, originText.length);
-    const newNode = createNode({ text: after, ...op.properties }, runtime);
+    if (originText.length > op.position) {
+      text.removeText(op.position, originText.length);
+    }
+    const newNode = createNode(
+      { text: after, ...op.properties },
+      runtime,
+      root,
+    );
     addNewNodeIntoParent(newNode, op.path, parent);
   } else {
     const children = getChildren(node);
@@ -37,6 +43,7 @@ const applySplitNodeOperation = (
       after,
       op.properties as Partial<Element>,
       runtime,
+      root,
     );
     addNewNodeIntoParent(newNode, op.path, parent);
     children.remove(op.position, children.getLength());

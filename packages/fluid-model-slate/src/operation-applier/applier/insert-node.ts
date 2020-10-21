@@ -11,7 +11,7 @@ const applyInsertNodeOperation = (
 ) => {
   const parent = getParent(op.path, root);
   const index = op.path[op.path.length - 1];
-  const node = createNode(op.node, runtime);
+  const node = createNode(op.node, runtime, root);
   parent.insert(index, [<FluidNodeHandle>node.handle]);
 };
 

@@ -5,7 +5,11 @@ import { DataObjectFactory, IDataObjectProps } from '@fluidframework/aqueduct';
 import { FLUIDNODE_KEYS } from './interfaces';
 import { Operation } from 'slate';
 import { operationApplier } from './operation-applier/operation-applier';
-import { FluidNodeHandle } from './types';
+import {
+  FluidNodeChildren,
+  FluidNodeChildrenHandle,
+  FluidNodePropertyHandle,
+} from './types';
 import { registerOperationReceiver } from './dds-event-processor/binder';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
@@ -17,7 +21,12 @@ import {
 import { addEventListenerHandler } from './event-handler';
 
 class SlateFluidModel extends BaseFluidModel<Operation> {
+  unsubscribe(): void {
+    throw new Error('Method not implemented.');
+  }
+  subscribe(callback: (ops: Operation[]) => void): void {}
   public fluidNodeSequence!: SharedObjectSequence<IFluidHandle<SharedMap>>;
+  private initValue: any[] = [];
 
   public constructor(props: IDataObjectProps) {
     super(props);
@@ -40,85 +49,88 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     ],
     {},
   );
-
-  onModelChanged = (callback: (op: Operation) => void) => {
-    registerOperationReceiver(callback);
-  };
-
-  unsubscribe = (): void => {
-    throw new Error('Method not implemented.');
-  };
-
-  apply = async (op: Operation[]) => {
-    await this.applyOperation(op);
-  };
-
-  fetch = (): any => {
-    throw new Error('Method not implemented.');
-  };
-
-  applyOperation = async (ops: Operation[]) => {
+  apply(ops: Operation[]) {
+    ops.forEach(op => console.log(op));
     ops.forEach(op =>
       operationApplier[op.type](op, this.fluidNodeSequence, this.runtime),
     );
-  };
-
-  /**
-   * Called the first time the data store is initialized (new creations with a new
-   * data store runtime)
-   *
-   * @param props - Optional props to be passed in on create
-   */
-  protected initializingFirstTime = async <S = undefined>(
-    props?: S,
-  ): Promise<void> => {
-    const text = SharedString.create(this.runtime);
-    addTextToCache(text);
-
-    const initNode = SharedMap.create(this.runtime);
-    initNode.set(FLUIDNODE_KEYS.TEXT, text.handle);
-    addNodeToCache(initNode);
-
-    const initChildren = SharedObjectSequence.create<FluidNodeHandle>(
-      this.runtime,
-    );
-    initChildren.insert(0, [<FluidNodeHandle>initNode.handle]);
-    addChildrenToCache(initChildren);
-
-    const childrenNode = SharedMap.create(this.runtime);
-    childrenNode.set(FLUIDNODE_KEYS.CHILDREN, initChildren.handle);
-    childrenNode.set(FLUIDNODE_KEYS.TEXT, 'initChildren.handle');
-    addNodeToCache(childrenNode);
-
-    this.fluidNodeSequence = SharedObjectSequence.create(this.runtime);
-    this.fluidNodeSequence.insert(0, [<FluidNodeHandle>childrenNode.handle]);
-
-    this.root.set(FLUIDNODE_KEYS.ID, '');
-
-    this.root.set(FLUIDNODE_KEYS.CHILDREN, this.fluidNodeSequence.handle);
-
-    console.log(123);
-    // await addEventListenerHandler(this.fluidNodeSequence);
-  };
-
-  /**
-   * Called every time but the first time the data store is initialized (creations
-   * with an existing data store runtime)
-   */
-  protected async initializingFromExisting(): Promise<void> {
-    [this.fluidNodeSequence] = await Promise.all([
-      this.root.get(FLUIDNODE_KEYS.CHILDREN).get(),
-    ]);
-    return super.initializingFromExisting();
   }
 
-  /**
-   * Called every time the data store is initialized after create or existing.
-   */
-  protected hasInitialized = async (): Promise<void> => {
-    //注册event-handler
-    addEventListenerHandler(this.fluidNodeSequence);
+  public onModelChanged = (callback: (op: Operation) => void) => {
+    registerOperationReceiver(callback);
   };
+
+  fetch(): any {}
+
+  protected async initializingFirstTime() {
+    const fluidNodeSequence = SharedObjectSequence.create(this.runtime);
+    const node_0 = SharedMap.create(this.runtime);
+    const node_0_children = SharedObjectSequence.create(this.runtime);
+    const node_0_0 = SharedMap.create(this.runtime);
+    const node_0_0_text = SharedString.create(this.runtime);
+
+    node_0.set(FLUIDNODE_KEYS.CHILDREN, node_0_children.handle);
+    node_0_children.insert(0, [node_0_0.handle]);
+    node_0_0.set(FLUIDNODE_KEYS.TEXT, node_0_0_text.handle);
+
+    fluidNodeSequence.insert(0, [node_0.handle]);
+    this.fluidNodeSequence = fluidNodeSequence as SharedObjectSequence<
+      IFluidHandle<SharedMap>
+    >;
+    this.root.set(FLUIDNODE_KEYS.CHILDREN, fluidNodeSequence.handle);
+  }
+
+  protected async hasInitialized() {
+    [this.fluidNodeSequence] = await Promise.all([
+      this.root.get('text').get(),
+      this.root.get('authors').get(),
+      this.root.get(FLUIDNODE_KEYS.CHILDREN).get(),
+    ]);
+
+    await this.addDDSToCacheAndInitCurrentValue();
+    addEventListenerHandler(this.fluidNodeSequence);
+  }
+
+  private async addDDSToCacheAndInitCurrentValue() {
+    this.initValue = await this.toInitSlateValue(this.fluidNodeSequence);
+  }
+
+  public currentSlateValue() {
+    return this.initValue;
+  }
+
+  private async toInitSlateValue(root: FluidNodeChildren) {
+    const slateNodes: any[] = [];
+    const nodeHandles = root.getRange(0);
+    for (let nodeHandle of nodeHandles) {
+      const node = await nodeHandle.get();
+      addNodeToCache(node);
+      const slateNode = {};
+      if (node.has(FLUIDNODE_KEYS.CHILDREN)) {
+        const children = await node
+          .get<FluidNodeChildrenHandle>(FLUIDNODE_KEYS.CHILDREN)
+          .get();
+        addChildrenToCache(children);
+        slateNode[FLUIDNODE_KEYS.CHILDREN] = await this.toInitSlateValue(
+          children,
+        );
+      }
+      if (node.has(FLUIDNODE_KEYS.TEXT)) {
+        const text = await node
+          .get<FluidNodePropertyHandle>(FLUIDNODE_KEYS.TEXT)
+          .get();
+        addTextToCache(text);
+        slateNode[FLUIDNODE_KEYS.TEXT] = text.getText();
+      }
+      [...node.keys()]
+        .filter(k => k !== 'children' && k !== 'text')
+        .forEach(k => {
+          slateNode[k] = node.get(k);
+        });
+      slateNodes.push(slateNode);
+    }
+    return slateNodes;
+  }
 }
 
 export { SlateFluidModel };

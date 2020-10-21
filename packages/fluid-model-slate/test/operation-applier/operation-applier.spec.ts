@@ -167,6 +167,47 @@ describe('operation applier', () => {
 
       expect(expectType).toEqual('block-quote');
     });
+
+    it('should split with flow up node when split node', async () => {
+      const operationActor = await initOperationActor()
+          .insertNode([0, 1], {
+            children: [
+              {
+                text: 'first node text',
+              },
+              {
+                text: 'second node text',
+                code: true,
+              },
+              {
+                children: [
+                  {
+                    text: 'third node text',
+                  },
+                ],
+              },
+            ],
+            type: 'paragraph',
+          })
+          .splitNode([0, 0], 2, { type: 'block-quote' })
+          .splitNode([0], 1, {})
+          .execute();
+
+      const [
+        expectText_0_0,
+        expectText_1_0,
+        expectText_1_1,
+        expectType,
+      ] = await operationActor
+          .getNodeText([0, 0])
+          .getNodeText([1, 0])
+          .getNodeText([1, 1, 0])
+          .values();
+
+      expect(expectText_0_0).toEqual('Th');
+      expect(expectText_1_0).toEqual('is default text');
+      expect(expectText_1_1).toEqual('first node text');
+    })
   });
 
   describe('set node operation', () => {

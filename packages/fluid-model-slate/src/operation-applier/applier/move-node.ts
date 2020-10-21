@@ -2,7 +2,6 @@ import { MoveNodeOperation } from 'slate';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { getNode, getParent } from '../node-getter';
 import { FluidNodeChildren, FluidNodeHandle } from '../../types';
-import { Path } from '../../types/path';
 
 const applyMoveNodeOperation = (
   op: MoveNodeOperation,

@@ -5,15 +5,9 @@ import { Operation } from 'slate';
 abstract class BaseFluidModel<T>
   extends DataObject
   implements IBaseFluidModel<T> {
-  subscribe(callback: (op: Operation) => void) {
-    this.onModelChanged(callback);
-  }
-
+  abstract subscribe(callback: (ops: Operation[]) => void): void;
   abstract unsubscribe(): void;
-
-  abstract onModelChanged(callback: (op: Operation) => void): void;
-
-  abstract apply(op: T[]): Promise<void>;
+  abstract apply(op: T[]): void;
   abstract fetch(): any;
 }
 

@@ -62,17 +62,25 @@ function process(event: SequenceDeltaEvent, path: number[]) {
   });
 }
 
-async function textSequenceDeltaEventProcessor(
+async function getOperationPromise(
   event: SequenceDeltaEvent,
   target: FluidNodeProperty,
   root: FluidNodeChildren,
-): Promise<Operation[] | undefined> {
+) {
+  const path = (await getTextPathFromRoot(target, root)) || [];
+  return process(event, path);
+}
+
+function textSequenceDeltaEventProcessor(
+  event: SequenceDeltaEvent,
+  target: FluidNodeProperty,
+  root: FluidNodeChildren,
+): Promise<Operation[]> | undefined {
   if (event.isLocal) {
     return;
   }
   checkEventType(event);
-  const path = (await getTextPathFromRoot(target, root)) || [];
-  return process(event, path);
+  return getOperationPromise(event, target, root);
 }
 
 export { textSequenceDeltaEventProcessor };

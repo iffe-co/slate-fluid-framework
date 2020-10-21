@@ -8,23 +8,27 @@ import {
   nodeValueChangedEventProcessor,
 } from './processor';
 import { childrenSequenceDeltaEventProcessor } from './processor/children-value-changed-event-processor';
+import { ddsChangesQueue } from '../dds-changes-queue';
 
 type OperationReceiver = (op: Operation) => void;
 const operationTransmitter: OperationReceiver[] = [];
 const registerOperationReceiver = (receiver: OperationReceiver) =>
   operationTransmitter.push(receiver);
-const broadcastOp = (op: Operation) => operationTransmitter.forEach(t => t(op));
 
 function bindFluidNodeEvent(fluidNode: FluidNode, root: FluidNodeChildren) {
+  if (fluidNode.listenerCount('valueChanged') !== 0) {
+    console.log('duplicated bind');
+    return;
+  }
   fluidNode.on(
     'valueChanged',
-    async (
+    (
       event: IValueChanged,
       local: boolean,
       op: ISequencedDocumentMessage,
       target: FluidNode,
     ) => {
-      const slateOp = await nodeValueChangedEventProcessor(
+      const slateOp = nodeValueChangedEventProcessor(
         event,
         local,
         op,
@@ -32,7 +36,7 @@ function bindFluidNodeEvent(fluidNode: FluidNode, root: FluidNodeChildren) {
         root,
       );
       if (slateOp) {
-        broadcastOp(slateOp);
+        ddsChangesQueue.addOperationResolver(Promise.resolve([slateOp]));
       }
     },
   );
@@ -42,16 +46,20 @@ function fluidNodePropertyEventBinder(
   fluidNodeProperty: FluidNodeProperty,
   root: FluidNodeChildren,
 ) {
+  if (fluidNodeProperty.listenerCount('sequenceDelta') !== 0) {
+    console.warn('duplicated bind');
+    return;
+  }
   fluidNodeProperty.on(
     'sequenceDelta',
-    async (event: SequenceDeltaEvent, target: FluidNodeProperty) => {
-      const slateOps = await textSequenceDeltaEventProcessor(
+    (event: SequenceDeltaEvent, target: FluidNodeProperty) => {
+      const slateOpsPromise = textSequenceDeltaEventProcessor(
         event,
         target,
         root,
       );
-      if (slateOps) {
-        slateOps.forEach(broadcastOp);
+      if (slateOpsPromise) {
+        ddsChangesQueue.addOperationResolver(slateOpsPromise);
       }
     },
   );
@@ -61,16 +69,20 @@ function fluidNodeChildrenEventBinder(
   fluidNodeChildren: FluidNodeChildren,
   root: FluidNodeChildren,
 ) {
+  if (fluidNodeChildren.listenerCount('sequenceDelta') !== 0) {
+    console.log('duplicated bind');
+    return;
+  }
   fluidNodeChildren.on(
     'sequenceDelta',
-    async (event: SequenceDeltaEvent, target: FluidNodeChildren) => {
-      const slateOps = await childrenSequenceDeltaEventProcessor(
+    (event: SequenceDeltaEvent, target: FluidNodeChildren) => {
+      const slateOpsPromise = childrenSequenceDeltaEventProcessor(
         event,
         target,
         root,
       );
-      if (slateOps) {
-        slateOps.forEach(broadcastOp);
+      if (slateOpsPromise) {
+        ddsChangesQueue.addOperationResolver(slateOpsPromise);
       }
     },
   );

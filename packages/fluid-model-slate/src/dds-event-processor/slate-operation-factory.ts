@@ -30,5 +30,7 @@ export function createInsertNodeOperation(path: Path, opData: any): Operation {
 }
 
 export function createRemoveNodeOperation(path: Path, opData: any): Operation {
-  return { type: 'remove_node', path, node: opData };
+  let node = { type: 'remove_node', path, node: opData } as Operation;
+  console.log('remove node op: ', node);
+  return node;
 }

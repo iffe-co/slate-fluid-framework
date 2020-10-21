@@ -1,8 +1,6 @@
 import {
   SharedObjectSequence,
-  SharedObjectSequenceFactory,
   SharedString,
-  SharedStringFactory,
 } from '@fluidframework/sequence';
 import { FluidNodeHandle } from '../../src/types';
 import { SharedMap } from '@fluidframework/map';

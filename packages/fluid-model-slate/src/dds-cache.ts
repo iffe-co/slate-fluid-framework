@@ -6,28 +6,41 @@ import {
   FluidNodeProperty,
   FluidNodePropertyHandle,
 } from './types';
-import {FLUIDNODE_KEYS} from "./interfaces";
-import {SharedObjectSequence} from "@fluidframework/sequence";
+import { FLUIDNODE_KEYS } from './interfaces';
+import {
+  bindFluidNodeEvent,
+  fluidNodeChildrenEventBinder,
+  fluidNodePropertyEventBinder,
+} from './dds-event-processor';
 
 const nodeCache: { [key: string]: FluidNode } = {};
 const childrenCache: { [key: string]: FluidNodeChildren } = {};
 const textCache: { [key: string]: FluidNodeProperty } = {};
 
-const addNodeWithChildrenToCache = async (node: FluidNode) => {
-  nodeCache[node.id] = node;
+const addNodeWithChildrenToCache = async (
+  node: FluidNode,
+  root: FluidNodeChildren,
+) => {
+  addNodeToCache(node);
+  bindFluidNodeEvent(node, root);
   if (node.has(FLUIDNODE_KEYS.CHILDREN)) {
-    const children = await (node.get<FluidNodeChildrenHandle>(FLUIDNODE_KEYS.CHILDREN).get())
+    const children = await node
+      .get<FluidNodeChildrenHandle>(FLUIDNODE_KEYS.CHILDREN)
+      .get();
+    fluidNodeChildrenEventBinder(children, root);
+    addChildrenToCache(children);
 
-    addChildrenToCache(children)
-
-    await Promise.all([...children.getRange(0)].map(async (handle: FluidNodeHandle) => {
-      const node = await handle.get()
-      await addNodeWithChildrenToCache(node)
-    }))
+    await Promise.all(
+      [...children.getRange(0)].map(async (handle: FluidNodeHandle) => {
+        const node = await handle.get();
+        await addNodeWithChildrenToCache(node, root);
+      }),
+    );
   }
   if (node.has(FLUIDNODE_KEYS.TEXT)) {
-    const text = await node.get(FLUIDNODE_KEYS.TEXT).get()
-    addTextToCache(text)
+    const text = await node.get(FLUIDNODE_KEYS.TEXT).get();
+    fluidNodePropertyEventBinder(text, root);
+    addTextToCache(text);
   }
 };
 

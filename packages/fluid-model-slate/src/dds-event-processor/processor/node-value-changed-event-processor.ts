@@ -1,22 +1,25 @@
 import { FLUIDNODE_KEYS } from '../../interfaces';
 import { FluidNode, FluidNodeChildren } from '../../types';
 import { Path } from '../../types/path';
-import { getChildren } from '../../operation-applier/node-getter';
 import { IValueChanged } from '@fluidframework/map';
 import { ISequencedDocumentMessage } from '@fluidframework/protocol-definitions';
 import { Operation } from 'slate';
 import { createSetNodeOperation } from '../slate-operation-factory';
+import {
+  getChildrenFromCacheByHandle,
+  getNodeFromCacheByHandle,
+} from '../../dds-cache';
 
 const noChangedKey = [FLUIDNODE_KEYS.TEXT, FLUIDNODE_KEYS.CHILDREN];
 
-async function getPathFromRoot(
+function getPathFromRoot(
   node: FluidNode,
   root: FluidNodeChildren,
   path: Path = [],
-): Promise<Path | undefined> {
+): Path | undefined {
   for (let i = 0; i < root.getLength(); i++) {
     const [nodeHandle] = root.getRange(i, i + 1);
-    const needCheckNode = await nodeHandle.get();
+    const needCheckNode = getNodeFromCacheByHandle(nodeHandle);
     const isTextNode = !needCheckNode.get(FLUIDNODE_KEYS.CHILDREN);
     if (isTextNode) {
       if (needCheckNode.id === (node.handle as any).path) {
@@ -25,9 +28,15 @@ async function getPathFromRoot(
         continue;
       }
     } else {
-      const children = await getChildren(needCheckNode);
+      if (needCheckNode.id === (node.handle as any).path) {
+        return [...path, i];
+      }
 
-      const res = await getPathFromRoot(node, children, [...path, i]);
+      const children = getChildrenFromCacheByHandle(
+        needCheckNode.get(FLUIDNODE_KEYS.CHILDREN),
+      );
+
+      const res = getPathFromRoot(node, children, [...path, i]);
       if (!res) {
         continue;
       } else {
@@ -38,23 +47,22 @@ async function getPathFromRoot(
   return undefined;
 }
 
-async function nodeValueChangedEventProcessor(
+function nodeValueChangedEventProcessor(
   event: IValueChanged,
   local: boolean,
   op: ISequencedDocumentMessage,
   target: FluidNode,
   root: FluidNodeChildren,
-): Promise<Operation | undefined> {
+): Operation | undefined {
   if (local) {
     return;
   }
   const type = op.contents.type;
   if (type === 'set' && !noChangedKey.includes(event.key as FLUIDNODE_KEYS)) {
-    const path = (await getPathFromRoot(target, root)) || [];
-    const properties = { [event.key]: target.get(event.key) };
+    const path = getPathFromRoot(target, root) || [];
+    const properties = { [event.key]: event.previousValue };
     const newProperties = { [event.key]: target.get(event.key) };
-    const op = createSetNodeOperation(path, properties, newProperties);
-    return op;
+    return createSetNodeOperation(path, properties, newProperties);
   }
   return;
 }
