@@ -10,7 +10,6 @@ import { ISequencedClient } from "@fluidframework/protocol-definitions";
 import { SharedMap } from "@fluidframework/map";
 import {SharedObjectSequence, SharedString} from "@fluidframework/sequence";
 import { insertBlockStart, PresenceManager } from "../utils";
-import { Operation } from "slate";
 import {SlateFluidModel} from "@solidoc/fluid-model-slate";
 
 export interface IFluidDraftJsObject {
@@ -18,7 +17,6 @@ export interface IFluidDraftJsObject {
     authors: SharedMap | undefined;
     readonly presenceManager: PresenceManager;
     readonly members: IterableIterator<[string, ISequencedClient]>
-    applyOperations: (op: Operation[]) => void
     on(event: "addMember" | "removeMember", listener: () => void): this;
     off(event: "addMember" | "removeMember", listener: () => void): this;
     currentSlateValue(): any
@@ -41,10 +39,6 @@ export class FluidDraftJsObject extends SlateFluidModel implements IFluidDraftJs
         [SharedMap.getFactory(), SharedString.getFactory(), SharedObjectSequence.getFactory()],
         {},
     );
-
-    public applyOperations = (ops: Operation[]) => {
-        super.apply(ops)
-    };
 
     protected async initializingFirstTime() {
         const text = SharedString.create(this.runtime);

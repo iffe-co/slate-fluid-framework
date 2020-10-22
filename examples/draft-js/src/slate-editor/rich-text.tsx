@@ -5,8 +5,8 @@ import { Editor, Transforms, createEditor, Node } from "slate";
 import { withHistory } from 'slate-history';
 
 import { Button, Icon, Toolbar } from './components';
-import { IFluidDraftJsObject } from "../fluid-object";
-import { withSlateFluid } from "./with-slate-fluid";
+import {FluidDraftJsObject, IFluidDraftJsObject} from "../fluid-object";
+import {withSlateFluid} from "@solidoc/slate-fluid/src";
 
 const HOTKEYS = {
   'mod+b': 'bold',
@@ -23,7 +23,7 @@ const RichTextExample = (props: {model: IFluidDraftJsObject, currentSlateValue: 
   const renderElement = useCallback(props => <Element {...props} />, []);
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
   const editor = useMemo(
-    () => withHistory(withReact(withSlateFluid(createEditor(), props.model))),
+    () => withHistory(withReact(withSlateFluid(createEditor(), props.model as unknown as FluidDraftJsObject))),
     [],
   );
 

@@ -10,7 +10,6 @@ import {
   FluidNodeChildrenHandle,
   FluidNodePropertyHandle,
 } from './types';
-import { registerOperationReceiver } from './dds-event-processor/binder';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
 import {
@@ -21,12 +20,17 @@ import {
 } from './dds-cache';
 import { addEventListenerHandler } from './event-handler';
 import { convertSharedMapToSlateOp } from './dds-event-processor/processor/children-value-changed-event-processor';
+import { ddsChangesQueue } from './dds-changes-queue';
 
 class SlateFluidModel extends BaseFluidModel<Operation> {
   unsubscribe(): void {
     throw new Error('Method not implemented.');
   }
-  subscribe(callback: (ops: Operation[]) => void): void {}
+
+  subscribe(callback: (ops: Operation[]) => void): void {
+    ddsChangesQueue.init(callback);
+  }
+
   public fluidNodeSequence!: SharedObjectSequence<IFluidHandle<SharedMap>>;
   private initValue: any[] = [];
 
@@ -51,6 +55,7 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     ],
     {},
   );
+
   apply(ops: Operation[]) {
     ops.forEach(op => console.log(op));
     ops.forEach(op =>
@@ -63,10 +68,6 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
       nodes.map(n => convertSharedMapToSlateOp(getNodeFromCacheByHandle(n))),
     ).then(v => console.log(v));
   }
-
-  public onModelChanged = (callback: (op: Operation) => void) => {
-    registerOperationReceiver(callback);
-  };
 
   fetch(): any {}
 

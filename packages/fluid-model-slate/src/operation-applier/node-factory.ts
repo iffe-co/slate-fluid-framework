@@ -3,7 +3,7 @@ import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
 import { SharedMap } from '@fluidframework/map';
 import { FLUIDNODE_KEYS } from '../interfaces';
-import { FluidNode, FluidNodeChildren, FluidNodeHandle } from '../types';
+import { FluidNodeChildren, FluidNodeHandle } from '../types';
 import {
   addChildrenToCache,
   addNodeToCache,

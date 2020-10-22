@@ -1,10 +1,9 @@
-import { Editor, Operation } from 'slate';
+import { Operation } from 'slate';
 
 type OperationResolver = Promise<Operation[]>;
 
 class DdsChangesQueue {
-  private apply!: (op: Operation) => void;
-  private editor!: Editor;
+  private apply!: (ops: Operation[]) => void;
   private resolverMap: Map<string, OperationResolver[]>;
   private currentKey!: string;
   constructor() {
@@ -42,27 +41,11 @@ class DdsChangesQueue {
   public async applyAsyncOps(key: string) {
     const ops = await this.resolveOperations(key);
     console.log(ops);
-    Editor.withoutNormalizing(this.editor, () => {
-      ops.forEach(op => {
-        try {
-          this.apply(op);
-          console.log('apply op', op);
-        } catch (e) {
-          console.log(op);
-          throw e;
-        }
-      });
-    });
-    console.log('apply ops: ', ops);
+    this.apply(ops);
   }
 
-  public init(
-    apply: (op: Operation) => void,
-    opIdMarker: (op: Operation) => Operation,
-    editor: Editor,
-  ) {
-    this.apply = (op: Operation) => apply(opIdMarker(op));
-    this.editor = editor;
+  public init(apply: (ops: Operation[]) => void) {
+    this.apply = apply;
   }
 }
 

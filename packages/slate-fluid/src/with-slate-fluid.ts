@@ -7,19 +7,24 @@ const withSlateFluid = <T extends Editor, U extends BaseFluidModel<Operation>>(
   model: U,
 ) => {
   const { apply, onChange } = editor;
-  model.subscribe(op => {
-    op[uuid] = true;
 
-    apply(op);
+  model.subscribe(ops => {
+    Editor.withoutNormalizing(editor, () => {
+      ops.forEach(op => {
+        op[uuid] = true;
+        apply(op);
+        console.log('apply op', op);
+      });
+    });
   });
 
   editor.onChange = () => {
-    let opsFromUserAction = editor.operations.filter(op => !op[uuid]);
-    if (opsFromUserAction.length !== 0) {
-      model.apply(opsFromUserAction);
+    const allWasUserActionOps = editor.operations.every(op => !op[uuid]);
+    if (allWasUserActionOps) {
+      model.apply(editor.operations);
       onChange();
     } else {
-      console.log(editor.operations);
+      console.log('operation from server', editor.operations);
     }
   };
 
