@@ -11,27 +11,30 @@ import { getChildren } from '../../operation-applier/node-getter';
 import { SharedMap } from '@fluidframework/map';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
 import { MergeTreeDeltaType } from '@fluidframework/merge-tree';
-import { addNodeWithChildrenToCache } from '../../dds-cache';
+import {
+  addNodeWithChildrenToCache,
+  getNodeFromCacheByHandle,
+} from '../../dds-cache';
 
-async function getPathFromRoot(
+function getPathFromRoot(
   target: FluidNodeChildren,
   root: FluidNodeChildren,
   path: Path = [],
-): Promise<Path | undefined> {
+): Path | undefined {
   if (target.id === root.id) {
     return path;
   }
 
   for (let i = 0; i < root.getLength(); i++) {
     const [nodeHandle] = root.getRange(i, i + 1);
-    const needCheckNode = await nodeHandle.get();
+    const needCheckNode = getNodeFromCacheByHandle(nodeHandle);
     const isTextNode = !needCheckNode.get(FLUIDNODE_KEYS.CHILDREN);
     if (isTextNode) {
       continue;
     } else {
-      const children = await getChildren(needCheckNode);
+      const children = getChildren(needCheckNode);
 
-      const res = await getPathFromRoot(target, children, [...path, i]);
+      const res = getPathFromRoot(target, children, [...path, i]);
       if (!res) {
         continue;
       } else {
@@ -126,9 +129,8 @@ async function getOperationsPromise(
   target: FluidNodeChildren,
   root: FluidNodeChildren,
   event: SequenceDeltaEvent,
+  path: Path,
 ) {
-  const path = (await getPathFromRoot(target, root)) || [];
-
   if (event.opArgs.op.type === MergeTreeDeltaType.REMOVE.valueOf()) {
     return removeNodeOpProcessor(event, path);
   }
@@ -146,8 +148,8 @@ function childrenSequenceDeltaEventProcessor(
   if (event.isLocal) {
     return;
   }
-
-  return getOperationsPromise(target, root, event);
+  const path = getPathFromRoot(target, root) || [];
+  return getOperationsPromise(target, root, event, path);
 }
 
-export { childrenSequenceDeltaEventProcessor };
+export { childrenSequenceDeltaEventProcessor, convertSharedMapToSlateOp };

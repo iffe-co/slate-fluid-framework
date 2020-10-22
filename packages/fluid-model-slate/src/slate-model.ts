@@ -17,8 +17,10 @@ import {
   addChildrenToCache,
   addNodeToCache,
   addTextToCache,
+  getNodeFromCacheByHandle,
 } from './dds-cache';
 import { addEventListenerHandler } from './event-handler';
+import { convertSharedMapToSlateOp } from './dds-event-processor/processor/children-value-changed-event-processor';
 
 class SlateFluidModel extends BaseFluidModel<Operation> {
   unsubscribe(): void {
@@ -54,6 +56,12 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     ops.forEach(op =>
       operationApplier[op.type](op, this.fluidNodeSequence, this.runtime),
     );
+
+    const nodes = this.fluidNodeSequence.getRange(0);
+
+    Promise.all(
+      nodes.map(n => convertSharedMapToSlateOp(getNodeFromCacheByHandle(n))),
+    ).then(v => console.log(v));
   }
 
   public onModelChanged = (callback: (op: Operation) => void) => {
