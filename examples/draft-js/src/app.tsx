@@ -9,7 +9,6 @@ import { HashRouter, Switch, Route, Link } from 'react-router-dom';
 
 import { Home, DraftJsPage } from './pages';
 
-// eslint-disable-next-line import/no-unassigned-import
 import './styles.css';
 
 const App = () => {
@@ -24,7 +23,7 @@ const App = () => {
         href="https://fonts.googleapis.com/icon?family=Material+Icons"
       />
       <nav className="nav-wrapper">
-        <span className="nav-title">Fluid-Draft.js Document Manager</span>
+        <span className="nav-title">Slate Fluid Model Demo</span>
         <span className="vertical-center">
           <Link to="/">Home</Link>
           <span> | </span>
