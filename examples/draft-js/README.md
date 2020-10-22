@@ -1,107 +1,62 @@
-# @fluid-example/draft-js
+# Slate-fluid-example
 
-An experimental implementation of how to take Facebook's open source [Draft.js](https://draftjs.org/) rich text editor and
-enable real-time coauthoring using the Fluid Framework.
+An example for slate-fluid-example.
 
 ## Getting Started
 
 To run this follow the steps below:
 
-1. Run `npm install` from the draft-js folder root
-2. Run `npm run start` to start both the client and server
-3. Navigate to `http://localhost:8080` in a browser tab
-4. Copy full URL, including hash id, to a new tab for collaboration
+1. Run `yarn` from the folder root
+2. **Modify some code in node_modules**
+3. Run `yarn start` from current folder
+4. Navigate to `http://localhost:8080` in a browser tab
 
-## Data model
+## Code need add into node_modules
 
-Draft.js uses the following distributed data structures:
-
-- SharedDirectory - root
-- SharedString - storing Draft.js text
-- SharedMap - storing user presence
-
-## Available Scripts
-
-### `build`
-
-```bash
-npm run build
+add flow up code into **node_modules/lodash/_arrayEach.js**
+```
+  array = array.filter(k => k !== 'initialMessages' &&k !== 'routeContext')
 ```
 
-Runs [`tsc`](###-tsc) and [`webpack`](###-webpack) and outputs the results in `./dist`.
+replace **sendPending()** in **node_modules/@fluidframework/server-lambdas/dist/broadcaster/lambda.js**
+```
+sendPending() {
+    // If there is work currently being sent or we have no pending work return early
+    if (this.pending.size === 0) {
+        return;
+    }
 
-### `start`
+    // Invoke the next send after a setImmediate to give IO time to create more batches
+    setImmediate(() => {
+        const batchOffset = this.pendingOffset;
 
-```bash
-npm run start
+        this.current = this.pending;
+        this.pending = new Map()
+
+        // Process all the batches + checkpoint
+        this.current.forEach((batch, topic) => {
+            this.publisher.to(topic).emit(batch.event, batch.documentId, batch.messages);
+        });
+
+        this.context.checkpoint(batchOffset);
+        this.current.clear();
+        this.sendPending();
+    });
+}
 ```
 
-Runs both [`start:client`](###-start:client) and [`start:server`](###-start:server).
-
-### `start:client`
-
-```bash
-npm run start:all
+add flow up code into **node_modules/@fluidframework/container-loader/lib/deltaManager.js**, put code into import section and the line 870
 ```
-
-Uses `webpack-dev-server` to start a local webserver that will host your webpack file.
-
-Once you run `start` you can navigate to `http://localhost:8080` in any browser window to use your fluid example.
-
-> The Tinylicious Fluid server must be running. See [`start:server`](###-start:server) below.
-
-### `start:server`
-
-```bash
-npm run start:server
+import {ddsChangesQueue} from "@solidoc/fluid-model-slate"
 ```
-
-Starts an instance of the Tinylicious Fluid server running locally at `http://localhost:3000`.
-
-> Tinylicious only needs to be running once on a machine and can support multiple examples.
-
-### `start:test`
-
-```bash
-npm run start:test
 ```
-
-Uses `webpack-dev-server` to start a local webserver that will host your webpack file.
-
-Once you run `start:test` you can navigate to `http://localhost:8080` in any browser window to test your fluid example.
-
-`start:test` uses a Fluid server with storage to local tab session storage and launches two instances side by side. It does not require Tinylicious.
-
-This is primarily used for testing scenarios.
-
-### `test`
-
-```bash
-npm run test
+if (messages.every(m => m.type === 'op')) {
+    let milliseconds = new Date().getMilliseconds();
+    console.log('enqueueMessages ', messages.map(m => m.type).join(', '), milliseconds)
+    ddsChangesQueue.startRecord(milliseconds)
+    process.nextTick(async () => {
+        await ddsChangesQueue.applyAsyncOps(milliseconds)
+        console.log('nextTick ', milliseconds)
+    })
+}
 ```
-
-Runs end to end test using [Jest](https://jestjs.io/) and [Puppeteer](https://github.com/puppeteer/puppeteer/).
-
-### `test:report`
-
-```bash
-npm run test:report
-```
-
-Runs `npm run test` with additional properties that will report success/failure to a file in `./nyc/*`. This is used for CI validation.
-
-### `tsc`
-
-Compiles the TypeScript code. Output is written to the `./dist` folder.
-
-### `webpack`
-
-Compiles and webpacks the TypeScript code. Output is written to the `./dist` folder.
-
-## Known Issues
-
-### [Issue #22](https://github.com/microsoft/FluidExamples/issues/22) - Presence stored in the ShareMap
-
-### [Issue #23](https://github.com/microsoft/FluidExamples/issues/23) - No Undo/Redo Support
-
-### [Issue #24](https://github.com/microsoft/FluidExamples/issues/24) - No FluidObject Canvas Support
