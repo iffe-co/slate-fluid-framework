@@ -23,12 +23,12 @@ describe('dds event processor', () => {
   const getMockerAndAwaiter = (): [jest.Mock, () => Promise<void>] => {
     const operationReceiverMock = jest.fn();
     let key = uuid.v4();
-    ddsChangesQueue.startRecord(key)
+    // ddsChangesQueue.startRecord(key)
     ddsChangesQueue.init(ops => {
       operationReceiverMock(ops);
     })
     const receiveOpsPromise = async () => {
-      await ddsChangesQueue.applyAsyncOps(key)
+      await ddsChangesQueue.applyAsyncOps()
       key = uuid.v4();
     }
     return [operationReceiverMock, receiveOpsPromise];

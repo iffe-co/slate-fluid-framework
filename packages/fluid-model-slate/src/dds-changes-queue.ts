@@ -1,4 +1,5 @@
 import { Operation } from 'slate';
+import { v4 } from 'uuid';
 
 type OperationResolver = Promise<Operation[]>;
 
@@ -8,10 +9,7 @@ class DdsChangesQueue {
   private currentKey!: string;
   constructor() {
     this.resolverMap = new Map<string, OperationResolver[]>();
-  }
-
-  public startRecord(key: string) {
-    this.currentKey = key;
+    this.currentKey = v4();
     this.resolverMap.set(this.currentKey, []);
   }
 
@@ -38,9 +36,26 @@ class DdsChangesQueue {
     }
   }
 
-  public async applyAsyncOps(key: string) {
+  public logContent() {
+    console.log(
+      'start enqueue message',
+      this.currentKey,
+      this.resolverMap.get(this.currentKey),
+    );
+  }
+
+  public async applyAsyncOps() {
+    const key = this.currentKey;
+    const newKey = v4();
+    this.resolverMap.set(newKey, []);
+    this.currentKey = newKey;
+
+    console.log('previous currentKey ', key, 'current key ', this.currentKey);
     const ops = await this.resolveOperations(key);
-    console.log(ops);
+    if (ops.length === 0) {
+      return;
+    }
+    console.log('fluid change to slate op', ops);
     this.apply(ops);
   }
 

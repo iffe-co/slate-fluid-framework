@@ -17,7 +17,7 @@ const registerOperationReceiver = (receiver: OperationReceiver) =>
 
 function bindFluidNodeEvent(fluidNode: FluidNode, root: FluidNodeChildren) {
   if (fluidNode.listenerCount('valueChanged') !== 0) {
-    console.log('duplicated bind');
+    // console.log('duplicated bind');
     return;
   }
   fluidNode.on(
@@ -47,7 +47,7 @@ function fluidNodePropertyEventBinder(
   root: FluidNodeChildren,
 ) {
   if (fluidNodeProperty.listenerCount('sequenceDelta') !== 0) {
-    console.warn('duplicated bind');
+    // console.warn('duplicated bind');
     return;
   }
   fluidNodeProperty.on(
@@ -70,7 +70,7 @@ function fluidNodeChildrenEventBinder(
   root: FluidNodeChildren,
 ) {
   if (fluidNodeChildren.listenerCount('sequenceDelta') !== 0) {
-    console.log('duplicated bind');
+    // console.log('duplicated bind');
     return;
   }
   fluidNodeChildren.on(
