@@ -45,18 +45,12 @@ sendPending() {
 }
 ```
 
-add flow up code into **node_modules/@fluidframework/container-loader/lib/deltaManager.js**, put code into import section and the line 870
+add flow up code into **node_modules/@fluidframework/container-loader/lib/deltaQueue.js**, put code into import section and the line 139
 ```
 import {ddsChangesQueue} from "@solidoc/fluid-model-slate"
 ```
 ```
-if (messages.every(m => m.type === 'op')) {
-    let milliseconds = new Date().getMilliseconds();
-    console.log('enqueueMessages ', messages.map(m => m.type).join(', '), milliseconds)
-    ddsChangesQueue.startRecord(milliseconds)
-    process.nextTick(async () => {
-        await ddsChangesQueue.applyAsyncOps(milliseconds)
-        console.log('nextTick ', milliseconds)
-    })
+if (this.q.length === 0) {
+    ddsChangesQueue.applyAsyncOps()
 }
 ```
