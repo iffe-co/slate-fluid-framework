@@ -64,8 +64,10 @@ class DdsChangesQueue {
       this.resolveOperations(key)
         .then(ops => {
           if (ops.length !== 0) {
-            console.log('fluid change to slate op', ops);
+            const udd = v4();
+            console.log('apply ops start ---', udd, ops);
             this.apply(ops);
+            console.log('apply ops end ---', udd, ops);
           }
           this.process();
         })

@@ -9,15 +9,16 @@ import {
 import { MergeTreeDeltaType, TextSegment } from '@fluidframework/merge-tree';
 import { Path } from '../../types/path';
 import { getChildren } from '../../operation-applier/node-getter';
+import { getNodeFromCacheByHandle } from '../../dds-cache';
 
-async function getTextPathFromRoot(
+function getTextPathFromRoot(
   text: FluidNodeProperty,
   root: FluidNodeChildren,
   path: Path = [],
-): Promise<Path | undefined> {
+): Path | undefined {
   for (let i = 0; i < root.getLength(); i++) {
     const [nodeHandle] = root.getRange(i, i + 1);
-    const needCheckNode = await nodeHandle.get();
+    const needCheckNode = getNodeFromCacheByHandle(nodeHandle);
     const isTextNode = !needCheckNode.get(FLUIDNODE_KEYS.CHILDREN);
     if (isTextNode) {
       const id = needCheckNode.get(FLUIDNODE_KEYS.TEXT).absolutePath;
@@ -27,9 +28,9 @@ async function getTextPathFromRoot(
         continue;
       }
     } else {
-      const children = await getChildren(needCheckNode);
+      const children = getChildren(needCheckNode);
 
-      const res = await getTextPathFromRoot(text, children, [...path, i]);
+      const res = getTextPathFromRoot(text, children, [...path, i]);
       if (!res) {
         continue;
       } else {
@@ -62,12 +63,12 @@ function process(event: SequenceDeltaEvent, path: number[]) {
   });
 }
 
-async function getOperationPromise(
+function getOperationPromise(
   event: SequenceDeltaEvent,
   target: FluidNodeProperty,
   root: FluidNodeChildren,
 ) {
-  const path = (await getTextPathFromRoot(target, root)) || [];
+  const path = getTextPathFromRoot(target, root) || [];
   return process(event, path);
 }
 
@@ -75,7 +76,7 @@ function textSequenceDeltaEventProcessor(
   event: SequenceDeltaEvent,
   target: FluidNodeProperty,
   root: FluidNodeChildren,
-): Promise<Operation[]> | undefined {
+): Operation[] | undefined {
   if (event.isLocal) {
     return;
   }
