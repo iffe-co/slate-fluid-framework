@@ -1,13 +1,12 @@
 {
-  "name": "@solidoc/slate-fluid",
+  "name": "@solidoc/fluid-model-base",
   "version": "0.0.1",
-  "description": "adapter for slate operation and fluid framework",
+  "description": "fluid-model-base",
   "keywords": [
-    "fluid",
-    "slate"
+    "fluid"
   ],
   "author": "CoffeyGit <tjcaofei@126.com>",
-  "homepage": "https://github.com/iffe-co/slate-fluid-framework.git",
+  "homepage": "https://github.com/iffe-co/slate-fluid-framework#readme",
   "license": "ISC",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
@@ -33,7 +32,6 @@
     "url": "https://github.com/iffe-co/slate-fluid-framework/issues"
   },
   "dependencies": {
-    "@solidoc/fluid-model-slate": "^0.0.1",
-    "slate": "^0.59.0"
+    "@fluidframework/aqueduct": "^0.27.0"
   }
 }

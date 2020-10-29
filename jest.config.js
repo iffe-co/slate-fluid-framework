@@ -7,7 +7,7 @@ module.exports = {
   coverageDirectory: path.resolve(__dirname, './coverage'), // 指定输出覆盖信息文件的目录
   collectCoverageFrom: [
     // 指定收集覆盖率的目录文件，只收集每个包的lib目录，不收集打包后的dist目录
-    '**/src/**',
+    'packages/**/src/**',
     '!**/dist/**',
   ],
   testURL: 'https://www.shuidichou.com/jd', // 设置jsdom环境的URL
@@ -22,10 +22,10 @@ module.exports = {
   coverageThreshold: {
     // 配置测试最低阈值
     global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80,
+      // branches: 80,
+      // functions: 80,
+      // lines: 80,
+      // statements: 80,
     },
   },
 };

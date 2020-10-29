@@ -1,7 +1,8 @@
 {
   "name": "slate-fluid-framework",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "examples/*"
   ],
   "private": true,
   "devDependencies": {
@@ -60,17 +61,18 @@
     "fix:eslint": "yarn lint:eslint --fix",
     "fix:prettier": "yarn lint:prettier --write",
     "lint": "yarn lint:eslint",
-    "lint:eslint": "eslint \"./**/src/**/*.{js,jsx,ts}\" -c ./configs/eslintrc.js",
-    "lint:prettier": "prettier --list-different \"**/*.{css,md,js,jsx,json,ts,tsx}\"",
+    "lint:eslint": "eslint \"./{packages,examples}/**/src/**/*.{js,jsx,ts}\" -c ./configs/eslintrc.js",
+    "lint:prettier": "prettier --list-different \"{packages,examples}/**/src/*.{css,md,js,jsx,json,ts,tsx}\"",
     "build": "node scripts/build.js",
     "build:start": "yarn build:pkg && yarn rs-build",
-    "start": "node scripts/start.js --watch",
     "rs-start": "PORT=8888 yarn react-scripts start",
     "rs-build": "yarn react-scripts build",
     "rs-test": "yarn react-scripts test",
     "up": "yarn upgrade-interactive --latest",
     "ps": "node scripts/publish.js",
-    "npm:publish": "node scripts/npm-publish.js"
+    "npm:publish": "node scripts/npm-publish.js",
+    "bootstrap": "lerna bootstrap",
+    "clean": "node scripts/dist-clean.js"
   },
   "config": {
     "commitizen": {
@@ -91,6 +93,11 @@
     "extends": "./configs/releaserc.json"
   },
   "lint-staged": {
-    "src/**/*": "yarn fix"
+    "packages/**/src/*": "yarn fix",
+    "examples/**/src/*": "yarn fix",
+    "src/**/*.{js,jsx,ts,tsx}": "yarn fix"
+  },
+  "dependencies": {
+    "lerna": "^3.22.1"
   }
 }

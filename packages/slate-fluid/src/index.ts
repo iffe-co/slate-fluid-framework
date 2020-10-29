@@ -1,1 +1,1 @@
-export * from './slate-fluid';
+export * from './with-slate-fluid';
