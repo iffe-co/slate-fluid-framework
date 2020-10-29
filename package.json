@@ -49,6 +49,7 @@
     "rollup-plugin-typescript2": "^0.28.0",
     "rollup-plugin-uglify": "^6.0.4",
     "ts-jest": "^26.4.0",
+    "lerna": "^3.22.1",
     "typescript": "^4.0.3"
   },
   "scripts": {
@@ -96,8 +97,5 @@
     "packages/**/src/*": "yarn fix",
     "examples/**/src/*": "yarn fix",
     "src/**/*.{js,jsx,ts,tsx}": "yarn fix"
-  },
-  "dependencies": {
-    "lerna": "^3.22.1"
   }
 }
