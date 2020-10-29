@@ -71,7 +71,8 @@
     "up": "yarn upgrade-interactive --latest",
     "ps": "node scripts/publish.js",
     "npm:publish": "node scripts/npm-publish.js",
-    "bootstrap": "lerna bootstrap"
+    "bootstrap": "lerna bootstrap",
+    "clean": "node scripts/dist-clean.js"
   },
   "config": {
     "commitizen": {

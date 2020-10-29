@@ -24,7 +24,8 @@ packages
       name,
       externals: Object.keys(dependencies || {})
         .concat(Object.keys(peerDependencies || {}))
-        .concat(Object.keys(devDependencies || {})),
+        .concat(Object.keys(devDependencies || {}))
+        .concat(['react', 'react-dom', 'slate', 'slate-react']),
     };
   });
 
