@@ -4,7 +4,8 @@
   "description": "test for slate fluid model",
   "main": "index.js",
   "scripts": {
-    "test": "jest --no-cache --config jest.config.js"
+    "test": "jest --no-cache --config jest.config.js",
+    "server:start": "tinylicious"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.4",
