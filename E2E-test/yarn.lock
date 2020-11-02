@@ -1084,20 +1084,6 @@
     lodash "^4.17.19"
     uuid "^3.3.2"
 
-"@fluidframework/driver-base@^0.27.8":
-  version "0.27.8"
-  resolved "https://registry.npm.taobao.org/@fluidframework/driver-base/download/@fluidframework/driver-base-0.27.8.tgz#d6f22066c861aa64e2db4eb885c4b91c2e43d374"
-  integrity sha1-1vIgZshhqmTi2064hcS5HC5D03Q=
-  dependencies:
-    "@fluidframework/common-utils" "^0.24.0"
-    "@fluidframework/driver-definitions" "^0.27.8"
-    "@fluidframework/driver-utils" "^0.27.8"
-    "@fluidframework/protocol-definitions" "^0.1013.0"
-    "@types/debug" "^4.1.5"
-    "@types/node" "^10.17.24"
-    "@types/socket.io-client" "^1.4.32"
-    debug "^4.1.1"
-
 "@fluidframework/driver-definitions@^0.27.8":
   version "0.27.8"
   resolved "https://registry.npm.taobao.org/@fluidframework/driver-definitions/download/@fluidframework/driver-definitions-0.27.8.tgz#b0ca949c81370eac0ec8cf580075252ba00d0839"
@@ -1120,20 +1106,6 @@
     "@fluidframework/protocol-base" "^0.1013.0"
     "@fluidframework/protocol-definitions" "^0.1013.0"
     "@fluidframework/telemetry-utils" "^0.27.8"
-
-"@fluidframework/get-tinylicious-container@^0.27.0":
-  version "0.27.8"
-  resolved "https://registry.npm.taobao.org/@fluidframework/get-tinylicious-container/download/@fluidframework/get-tinylicious-container-0.27.8.tgz#3c0d683c5e42257891f5c3ca5f5a53448a452f56"
-  integrity sha1-PA1oPF5CJXiR9cPKX1pTRIpFL1Y=
-  dependencies:
-    "@fluidframework/container-definitions" "^0.27.8"
-    "@fluidframework/container-loader" "^0.27.8"
-    "@fluidframework/core-interfaces" "^0.27.8"
-    "@fluidframework/driver-definitions" "^0.27.8"
-    "@fluidframework/protocol-definitions" "^0.1013.0"
-    "@fluidframework/routerlicious-driver" "^0.27.8"
-    jsonwebtoken "^8.4.0"
-    uuid "^3.3.2"
 
 "@fluidframework/gitresources@^0.1012.0", "@fluidframework/gitresources@^0.1012.2":
   version "0.1012.2"
@@ -1236,27 +1208,6 @@
     "@fluidframework/core-interfaces" "^0.27.8"
     "@fluidframework/runtime-definitions" "^0.27.8"
     "@fluidframework/runtime-utils" "^0.27.8"
-
-"@fluidframework/routerlicious-driver@^0.27.8":
-  version "0.27.8"
-  resolved "https://registry.npm.taobao.org/@fluidframework/routerlicious-driver/download/@fluidframework/routerlicious-driver-0.27.8.tgz#d067f9c0aef8772d00c4ade887a39705d41adae3"
-  integrity sha1-0Gf5wK74dy0AxK3oh6OXBdQa2uM=
-  dependencies:
-    "@fluidframework/common-definitions" "^0.19.1"
-    "@fluidframework/common-utils" "^0.24.0"
-    "@fluidframework/driver-base" "^0.27.8"
-    "@fluidframework/driver-definitions" "^0.27.8"
-    "@fluidframework/driver-utils" "^0.27.8"
-    "@fluidframework/gitresources" "^0.1013.0"
-    "@fluidframework/protocol-base" "^0.1013.0"
-    "@fluidframework/protocol-definitions" "^0.1013.0"
-    "@fluidframework/server-services-client" "^0.1013.0"
-    axios "^0.18.0"
-    debug "^4.1.1"
-    isomorphic-ws "^4.0.1"
-    jwt-decode "^2.2.0"
-    socket.io-client "^2.1.1"
-    ws "^6.1.2"
 
 "@fluidframework/runtime-definitions@^0.27.8":
   version "0.27.8"
@@ -1369,22 +1320,6 @@
     "@fluidframework/gitresources" "^0.1012.2"
     "@fluidframework/protocol-base" "^0.1012.2"
     "@fluidframework/protocol-definitions" "^0.1012.2"
-    "@types/node" "^10.17.24"
-    axios "^0.18.0"
-    debug "^4.1.1"
-    jsonwebtoken "^8.4.0"
-    sillyname "0.1.0"
-    uuid "^3.3.2"
-
-"@fluidframework/server-services-client@^0.1013.0":
-  version "0.1013.0"
-  resolved "https://registry.npm.taobao.org/@fluidframework/server-services-client/download/@fluidframework/server-services-client-0.1013.0.tgz#e190d3d8d569da4d3e3e84efd93f0ea91eae866c"
-  integrity sha1-4ZDT2NVp2k0+PoTv2T8OqR6uhmw=
-  dependencies:
-    "@fluidframework/common-utils" "^0.24.0"
-    "@fluidframework/gitresources" "^0.1013.0"
-    "@fluidframework/protocol-base" "^0.1013.0"
-    "@fluidframework/protocol-definitions" "^0.1013.0"
     "@types/node" "^10.17.24"
     axios "^0.18.0"
     debug "^4.1.1"
@@ -2043,11 +1978,6 @@
     "@types/mime" "*"
     "@types/node" "*"
 
-"@types/socket.io-client@^1.4.32":
-  version "1.4.34"
-  resolved "https://registry.npm.taobao.org/@types/socket.io-client/download/@types/socket.io-client-1.4.34.tgz#8ca5f5732a9ad92b79aba71083cda5e5821e3ed9"
-  integrity sha1-jKX1cyqa2St5q6cQg82l5YIePtk=
-
 "@types/socket.io@^2.1.4":
   version "2.1.11"
   resolved "https://registry.npm.taobao.org/@types/socket.io/download/@types/socket.io-2.1.11.tgz#e0d6759880e5f9818d5297a3328b36641bae996b"
@@ -2271,6 +2201,11 @@ anymatch@^3.0.3, anymatch@~3.1.1:
   dependencies:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
+
+arg@^4.1.0:
+  version "4.1.3"
+  resolved "https://registry.npm.taobao.org/arg/download/arg-4.1.3.tgz#269fc7ad5b8e42cb63c896d5666017261c144089"
+  integrity sha1-Jp/HrVuOQstjyJbVZmAXJhwUQIk=
 
 argparse@^1.0.7:
   version "1.0.10"
@@ -3364,6 +3299,11 @@ diff3@0.0.3:
   version "0.0.3"
   resolved "https://registry.npm.taobao.org/diff3/download/diff3-0.0.3.tgz#d4e5c3a4cdf4e5fe1211ab42e693fcb4321580fc"
   integrity sha1-1OXDpM305f4SEatC5pP8tDIVgPw=
+
+diff@^4.0.1:
+  version "4.0.2"
+  resolved "https://registry.npm.taobao.org/diff/download/diff-4.0.2.tgz#60f3aecb89d5fae520c11aa19efc2bb982aade7d"
+  integrity sha1-YPOuy4nV+uUgwRqhnvwruYKq3n0=
 
 dir-glob@^3.0.1:
   version "3.0.1"
@@ -4657,11 +4597,6 @@ isomorphic-git@^0.72.1:
     sha.js "^2.4.9"
     simple-get "^3.0.2"
 
-isomorphic-ws@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.npm.taobao.org/isomorphic-ws/download/isomorphic-ws-4.0.1.tgz#55fd4cd6c5e6491e76dc125938dd863f5cd4f2dc"
-  integrity sha1-Vf1M1sXmSR523BJZON2GP1zU8tw=
-
 isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.npm.taobao.org/isstream/download/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
@@ -5222,11 +5157,6 @@ jws@^3.2.2:
     jwa "^1.4.1"
     safe-buffer "^5.0.1"
 
-jwt-decode@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.npm.taobao.org/jwt-decode/download/jwt-decode-2.2.0.tgz#7d86bd56679f58ce6a84704a657dd392bba81a79"
-  integrity sha1-fYa9VmefWM5qhHBKZX3TkruoGnk=
-
 kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
   version "3.2.2"
   resolved "https://registry.npm.taobao.org/kind-of/download/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"
@@ -5398,7 +5328,7 @@ make-dir@^3.0.0:
   dependencies:
     semver "^6.0.0"
 
-make-error@1.x:
+make-error@1.x, make-error@^1.1.1:
   version "1.3.6"
   resolved "https://registry.npm.taobao.org/make-error/download/make-error-1.3.6.tgz?cache=0&sync_timestamp=1582106154960&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmake-error%2Fdownload%2Fmake-error-1.3.6.tgz#2eb2e37ea9b67c4891f684a1394799af484cf7a2"
   integrity sha1-LrLjfqm2fEiR9oShOUeZr0hM96I=
@@ -6653,23 +6583,6 @@ socket.io-client@2.3.0:
     socket.io-parser "~3.3.0"
     to-array "0.1.4"
 
-socket.io-client@^2.1.1:
-  version "2.3.1"
-  resolved "https://registry.npm.taobao.org/socket.io-client/download/socket.io-client-2.3.1.tgz#91a4038ef4d03c19967bb3c646fec6e0eaa78cff"
-  integrity sha1-kaQDjvTQPBmWe7PGRv7G4OqnjP8=
-  dependencies:
-    backo2 "1.0.2"
-    component-bind "1.0.0"
-    component-emitter "~1.3.0"
-    debug "~3.1.0"
-    engine.io-client "~3.4.0"
-    has-binary2 "~1.0.2"
-    indexof "0.0.1"
-    parseqs "0.0.6"
-    parseuri "0.0.6"
-    socket.io-parser "~3.3.0"
-    to-array "0.1.4"
-
 socket.io-parser@~3.3.0:
   version "3.3.1"
   resolved "https://registry.npm.taobao.org/socket.io-parser/download/socket.io-parser-3.3.1.tgz?cache=0&sync_timestamp=1603666657892&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsocket.io-parser%2Fdownload%2Fsocket.io-parser-3.3.1.tgz#f07d9c8cb3fb92633aa93e76d98fd3a334623199"
@@ -6699,9 +6612,9 @@ socket.io-redis@^5.2.0:
     socket.io-adapter "~1.1.0"
     uid2 "0.0.3"
 
-socket.io@^2.2.0:
+socket.io@^2.2.0, socket.io@^2.3.0:
   version "2.3.0"
-  resolved "https://registry.npm.taobao.org/socket.io/download/socket.io-2.3.0.tgz#cd762ed6a4faeca59bc1f3e243c0969311eb73fb"
+  resolved "https://registry.npm.taobao.org/socket.io/download/socket.io-2.3.0.tgz?cache=0&sync_timestamp=1603756136608&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsocket.io%2Fdownload%2Fsocket.io-2.3.0.tgz#cd762ed6a4faeca59bc1f3e243c0969311eb73fb"
   integrity sha1-zXYu1qT67KWbwfPiQ8CWkxHrc/s=
   dependencies:
     debug "~4.1.0"
@@ -6722,7 +6635,7 @@ source-map-resolve@^0.5.0:
     source-map-url "^0.4.0"
     urix "^0.1.0"
 
-source-map-support@^0.5.6:
+source-map-support@^0.5.17, source-map-support@^0.5.6:
   version "0.5.19"
   resolved "https://registry.npm.taobao.org/source-map-support/download/source-map-support-0.5.19.tgz?cache=0&sync_timestamp=1587719517036&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsource-map-support%2Fdownload%2Fsource-map-support-0.5.19.tgz#a98b62f86dcaf4f67399648c085291ab9e8fed61"
   integrity sha1-qYti+G3K9PZzmWSMCFKRq56P7WE=
@@ -7158,6 +7071,17 @@ ts-jest@^26.4.0:
     mkdirp "1.x"
     semver "7.x"
     yargs-parser "20.x"
+
+ts-node@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.npm.taobao.org/ts-node/download/ts-node-9.0.0.tgz#e7699d2a110cc8c0d3b831715e417688683460b3"
+  integrity sha1-52mdKhEMyMDTuDFxXkF2iGg0YLM=
+  dependencies:
+    arg "^4.1.0"
+    diff "^4.0.1"
+    make-error "^1.1.1"
+    source-map-support "^0.5.17"
+    yn "3.1.1"
 
 tslib@^1.8.1, tslib@^1.9.3:
   version "1.14.1"
@@ -7610,3 +7534,8 @@ yeast@0.1.2:
   version "0.1.2"
   resolved "https://registry.npm.taobao.org/yeast/download/yeast-0.1.2.tgz#008e06d8094320c372dbc2f8ed76a0ca6c8ac419"
   integrity sha1-AI4G2AlDIMNy28L47XagymyKxBk=
+
+yn@3.1.1:
+  version "3.1.1"
+  resolved "https://registry.npm.taobao.org/yn/download/yn-3.1.1.tgz#1e87401a09d767c1d5eab26a6e4c185182d2eb50"
+  integrity sha1-HodAGgnXZ8HV6rJqbkwYUYLS61A=

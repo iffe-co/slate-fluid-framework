@@ -1,7 +1,7 @@
 import {ContainerRuntimeFactoryWithDefaultDataStore, getDefaultObjectFromContainer} from "@fluidframework/aqueduct";
-import {getTinyliciousContainer} from "@fluidframework/get-tinylicious-container";
 import {v4} from "uuid"
 import {SlateFluidModel} from "@solidoc/fluid-model-slate";
+import {getTinyliciousContainer} from "./getTinyliciousContainer";
 
 const Container = new ContainerRuntimeFactoryWithDefaultDataStore(
     SlateFluidModel.Name,
