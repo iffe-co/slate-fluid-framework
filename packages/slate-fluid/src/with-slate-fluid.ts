@@ -8,7 +8,9 @@ const withSlateFluid = <T extends Editor, U extends BaseFluidModel<Operation>>(
 ) => {
   const { apply, onChange } = editor;
 
-  model.subscribe(ops => {
+  const observable = model.subscribe();
+
+  observable.subscribe(ops => {
     Editor.withoutNormalizing(editor, () => {
       ops.forEach(op => {
         op[uuid] = true;

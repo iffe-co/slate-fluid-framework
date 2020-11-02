@@ -1,9 +1,8 @@
-import { Operation } from 'slate';
+import { Observable } from 'rxjs';
 
 interface IBaseFluidModel<T> {
-  subscribe(callback: (ops: Operation[]) => void): any;
-  unsubscribe(id: string): void;
-  apply(op: T[]): void;
+  subscribe(): Observable<T[]>;
+  apply(ops: T[]): void;
   fetch(): any;
 }
 

@@ -1,12 +1,11 @@
 import { DataObject } from '@fluidframework/aqueduct';
 import { IBaseFluidModel } from './interfaces';
-import { Operation } from 'slate';
+import { Observable } from 'rxjs';
 
 abstract class BaseFluidModel<T>
   extends DataObject
   implements IBaseFluidModel<T> {
-  abstract subscribe(callback: (ops: Operation[]) => void): void;
-  abstract unsubscribe(): void;
+  abstract subscribe(): Observable<T[]>;
   abstract apply(op: T[]): void;
   abstract fetch(): any;
 }

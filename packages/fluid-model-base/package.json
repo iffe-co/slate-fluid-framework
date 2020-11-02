@@ -32,6 +32,7 @@
     "url": "https://github.com/iffe-co/slate-fluid-framework/issues"
   },
   "dependencies": {
-    "@fluidframework/aqueduct": "^0.27.0"
+    "@fluidframework/aqueduct": "^0.27.0",
+    "rxjs": "^6.6.3"
   }
 }

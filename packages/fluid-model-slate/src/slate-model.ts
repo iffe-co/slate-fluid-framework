@@ -21,14 +21,13 @@ import {
 import { addEventListenerHandler } from './event-handler';
 import { convertSharedMapToSlateOp } from './dds-event-processor/processor/children-value-changed-event-processor';
 import { ddsChangesQueue } from './dds-changes-queue';
+import { Observable } from 'rxjs';
 
 class SlateFluidModel extends BaseFluidModel<Operation> {
-  unsubscribe(): void {
-    throw new Error('Method not implemented.');
-  }
+  private readonly observable: Observable<Operation[]>;
 
-  subscribe(callback: (ops: Operation[]) => void): void {
-    ddsChangesQueue.init(callback);
+  subscribe(): Observable<Operation[]> {
+    return this.observable;
   }
 
   public fluidNodeSequence!: SharedObjectSequence<IFluidHandle<SharedMap>>;
@@ -37,6 +36,9 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
   public constructor(props: IDataObjectProps) {
     super(props);
     this.runtime = props.runtime;
+    this.observable = new Observable(subscriber => {
+      ddsChangesQueue.init(ops => subscriber.next(ops));
+    });
   }
 
   public runtime: IFluidDataStoreRuntime;
