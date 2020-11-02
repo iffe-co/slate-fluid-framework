@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iffe-co/slate-fluid-framework.git"
+    "url": "git+https://github.com/solidoc/iffe-react.git"
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"
