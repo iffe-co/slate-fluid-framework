@@ -20,16 +20,19 @@ import {ddsChangesQueue} from "../../src";
 const uuid = require('uuid');
 
 describe('dds event processor', () => {
-  const getMockerAndAwaiter = (): [jest.Mock, () => Promise<void>] => {
+  const getMockerAndAwaiter = (): [jest.Mock, () => Promise<any>] => {
     const operationReceiverMock = jest.fn();
-    let key = uuid.v4();
-    // ddsChangesQueue.startRecord(key)
-    ddsChangesQueue.init(ops => {
-      operationReceiverMock(ops);
+
+    const initReceiveOpsPromise = new Promise(resolve => {
+      ddsChangesQueue.init(ops => {
+        operationReceiverMock(ops);
+        resolve()
+      })
     })
+
     const receiveOpsPromise = async () => {
       await ddsChangesQueue.applyAsyncOps()
-      key = uuid.v4();
+      return await initReceiveOpsPromise
     }
     return [operationReceiverMock, receiveOpsPromise];
   };
