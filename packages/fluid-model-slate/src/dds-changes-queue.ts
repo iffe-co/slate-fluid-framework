@@ -7,22 +7,27 @@ class DdsChangesQueue {
   private apply!: (ops: Operation[]) => void;
   private resolverMap: Map<string, OperationResolver[]>;
   private currentKey!: string;
+  private keyQueue!: string[];
+  private processing: boolean = false;
   constructor() {
     this.resolverMap = new Map<string, OperationResolver[]>();
     this.currentKey = v4();
+    this.keyQueue = [];
     this.resolverMap.set(this.currentKey, []);
   }
 
   public addOperationResolver(resolver: OperationResolver) {
-    let newVar = this.resolverMap.get(this.currentKey);
-    if (!newVar) {
-      console.log('no this.currentKey', this.currentKey);
+    const currentKey = this.currentKey;
+    const currentValue = this.resolverMap.get(currentKey);
+    if (!currentValue) {
+      console.log('no this.currentKey', currentKey);
       return;
     }
-    newVar.push(resolver);
+    console.log('add op to currentKey', currentKey);
+    currentValue.push(resolver);
   }
 
-  public async resolveOperations(key: string) {
+  public async resolveOperations(key: string = '') {
     if (this.resolverMap.has(key)) {
       const resolvers = this.resolverMap.get(key) || [];
       const operations = (await Promise.all(resolvers)).reduce(
@@ -44,19 +49,45 @@ class DdsChangesQueue {
     );
   }
 
-  public async applyAsyncOps() {
-    const key = this.currentKey;
+  private startProcess() {
+    this.processing = true;
+    this.process();
+  }
+
+  public process() {
+    if (this.processing) {
+      const key = this.keyQueue.shift();
+      if (!key) {
+        this.processing = false;
+        return;
+      }
+      this.resolveOperations(key)
+        .then(ops => {
+          if (ops.length !== 0) {
+            const udd = v4();
+            console.log('apply ops start ---', udd, ops);
+            this.apply(ops);
+            console.log('apply ops end ---', udd, ops);
+          }
+          this.process();
+        })
+        .catch(err => {
+          throw Error(err);
+        });
+    }
+  }
+
+  public applyAsyncOps() {
+    if (this.processing) {
+      return;
+    }
+    let key = this.currentKey;
     const newKey = v4();
     this.resolverMap.set(newKey, []);
     this.currentKey = newKey;
-
-    console.log('previous currentKey ', key, 'current key ', this.currentKey);
-    const ops = await this.resolveOperations(key);
-    if (ops.length === 0) {
-      return;
-    }
-    console.log('fluid change to slate op', ops);
-    this.apply(ops);
+    this.keyQueue.push(key);
+    console.log('applyAsyncOps-------------------');
+    this.startProcess();
   }
 
   public init(apply: (ops: Operation[]) => void) {

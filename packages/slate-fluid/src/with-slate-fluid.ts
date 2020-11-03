@@ -25,6 +25,7 @@ const withSlateFluid = <T extends Editor, U extends BaseFluidModel<Operation>>(
       onChange();
     } else {
       console.log('operation from server', editor.operations);
+      onChange();
     }
   };
 

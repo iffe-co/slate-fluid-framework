@@ -93,7 +93,7 @@ module.exports = (opt, format = 'cjs') => {
           return dep === id || id.startsWith(`${dep}/`);
         });
         if (!bool) {
-          console.log('-build:--', id);
+          //console.log('-build:--', id);
           buildFileNum++;
           if (buildFileNum % 50 === 0) {
             console.info(`打包文件数：${buildFileNum}个 ...`);
