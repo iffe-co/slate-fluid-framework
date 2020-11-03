@@ -11,16 +11,12 @@
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
-  "directories": {
-    "lib": "src",
-    "test": "test"
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "files": [
-    "src"
+    "dist"
   ],
-  "publishConfig": {
-    "registry": "http://registry.npmjs.org"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/solidoc/iffe-react.git"

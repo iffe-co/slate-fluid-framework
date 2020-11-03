@@ -16,12 +16,12 @@
     "lib": "src",
     "test": "test"
   },
-  "files": [
-    "src"
-  ],
   "publishConfig": {
-    "registry": "http://registry.npmjs.org"
+    "registry": "https://npm.pkg.github.com"
   },
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/solidoc/iffe-react.git"
