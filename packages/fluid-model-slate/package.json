@@ -1,6 +1,6 @@
 {
   "name": "@solidoc/fluid-model-slate",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "adapter for slate to fluid framework",
   "keywords": [
     "fluid",
@@ -9,13 +9,9 @@
   "author": "CoffeyGit <tjcaofei@126.com>",
   "homepage": "https://github.com/iffe-co/slate-fluid-framework.git",
   "license": "ISC",
-  "main": "src/index.ts",
-  "module": "src/index.ts",
-  "types": "src/index.ts",
-  "directories": {
-    "lib": "src",
-    "test": "test"
-  },
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
