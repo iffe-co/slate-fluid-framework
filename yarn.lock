@@ -1286,22 +1286,22 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
-"@fluidframework/agent-scheduler@^0.27.3":
-  version "0.27.3"
-  resolved "https://registry.npm.taobao.org/@fluidframework/agent-scheduler/download/@fluidframework/agent-scheduler-0.27.3.tgz#138f3d9309bf02bb7a18ece2206d25856af64cb4"
-  integrity sha1-E489kwm/Art6GOziIG0lhWr2TLQ=
+"@fluidframework/agent-scheduler@^0.27.11", "@fluidframework/agent-scheduler@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/agent-scheduler/download/@fluidframework/agent-scheduler-0.27.11.tgz#ecf968e63ed5f647e26480f8b63dfc8f036f7d1f"
+  integrity sha1-7Plo5j7V9kfiZID4tj38jwNvfR8=
   dependencies:
-    "@fluidframework/container-definitions" "^0.27.3"
-    "@fluidframework/core-interfaces" "^0.27.3"
-    "@fluidframework/datastore" "^0.27.3"
-    "@fluidframework/datastore-definitions" "^0.27.3"
-    "@fluidframework/map" "^0.27.3"
-    "@fluidframework/register-collection" "^0.27.3"
-    "@fluidframework/runtime-definitions" "^0.27.3"
+    "@fluidframework/container-definitions" "^0.27.11"
+    "@fluidframework/core-interfaces" "^0.27.11"
+    "@fluidframework/datastore" "^0.27.11"
+    "@fluidframework/datastore-definitions" "^0.27.11"
+    "@fluidframework/map" "^0.27.11"
+    "@fluidframework/register-collection" "^0.27.11"
+    "@fluidframework/runtime-definitions" "^0.27.11"
     debug "^4.1.1"
     uuid "^3.3.2"
 
-"@fluidframework/aqueduct@^0.27.0", "@fluidframework/aqueduct@^0.27.3":
+"@fluidframework/aqueduct@^0.27.0":
   version "0.27.3"
   resolved "https://registry.npm.taobao.org/@fluidframework/aqueduct/download/@fluidframework/aqueduct-0.27.3.tgz#92111af3f248003c65a3b11f0fe05bdaf1330608"
   integrity sha1-khEa8/JIADxlo7EfD+Bb2vEzBgg=
@@ -1321,6 +1321,28 @@
     "@fluidframework/runtime-utils" "^0.27.3"
     "@fluidframework/synthesize" "^0.27.3"
     "@fluidframework/view-interfaces" "^0.27.3"
+    uuid "^3.3.2"
+
+"@fluidframework/aqueduct@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/aqueduct/download/@fluidframework/aqueduct-0.27.11.tgz#ccee0916a313d6196bd2077dfc1e090b9dc0544c"
+  integrity sha1-zO4JFqMT1hlr0gd9/B4JC53AVEw=
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.24.0"
+    "@fluidframework/container-definitions" "^0.27.11"
+    "@fluidframework/container-loader" "^0.27.11"
+    "@fluidframework/container-runtime" "^0.27.11"
+    "@fluidframework/container-runtime-definitions" "^0.27.11"
+    "@fluidframework/core-interfaces" "^0.27.11"
+    "@fluidframework/datastore" "^0.27.11"
+    "@fluidframework/datastore-definitions" "^0.27.11"
+    "@fluidframework/map" "^0.27.11"
+    "@fluidframework/request-handler" "^0.27.11"
+    "@fluidframework/runtime-definitions" "^0.27.11"
+    "@fluidframework/runtime-utils" "^0.27.11"
+    "@fluidframework/synthesize" "^0.27.11"
+    "@fluidframework/view-interfaces" "^0.27.11"
     uuid "^3.3.2"
 
 "@fluidframework/common-definitions@^0.19.1":
@@ -1355,15 +1377,46 @@
     lodash "^4.17.19"
     sha.js "^2.4.11"
 
+"@fluidframework/container-definitions@^0.27.11", "@fluidframework/container-definitions@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/container-definitions/download/@fluidframework/container-definitions-0.27.11.tgz#f68f553978e1a90613726ac9968fc13cf3ba3ed2"
+  integrity sha1-9o9VOXjhqQYTcmrJlo/BPPO6PtI=
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/core-interfaces" "^0.27.11"
+    "@fluidframework/driver-definitions" "^0.27.11"
+    "@fluidframework/protocol-definitions" "^0.1013.0"
+
 "@fluidframework/container-definitions@^0.27.3":
   version "0.27.3"
   resolved "https://registry.npm.taobao.org/@fluidframework/container-definitions/download/@fluidframework/container-definitions-0.27.3.tgz#67c87a480574c210a9884dbd0c810ac22203c4a3"
   integrity sha1-Z8h6SAV0whCpiE29DIEKwiIDxKM=
   dependencies:
     "@fluidframework/common-definitions" "^0.19.1"
-    "@fluidframework/core-interfaces" "^0.27.8"
-    "@fluidframework/driver-definitions" "^0.27.8"
+    "@fluidframework/core-interfaces" "^0.27.3"
+    "@fluidframework/driver-definitions" "^0.27.3"
     "@fluidframework/protocol-definitions" "^0.1013.0"
+
+"@fluidframework/container-loader@^0.27.11", "@fluidframework/container-loader@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/container-loader/download/@fluidframework/container-loader-0.27.11.tgz#2d619d4e61d09a435f50749a456d8f34506ec679"
+  integrity sha1-LWGdTmHQmkNfUHSaRW2PNFBuxnk=
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.24.0"
+    "@fluidframework/container-definitions" "^0.27.11"
+    "@fluidframework/container-utils" "^0.27.11"
+    "@fluidframework/core-interfaces" "^0.27.11"
+    "@fluidframework/driver-definitions" "^0.27.11"
+    "@fluidframework/driver-utils" "^0.27.11"
+    "@fluidframework/protocol-base" "^0.1013.0"
+    "@fluidframework/protocol-definitions" "^0.1013.0"
+    "@fluidframework/telemetry-utils" "^0.27.11"
+    "@types/double-ended-queue" "^2.1.0"
+    debug "^4.1.1"
+    double-ended-queue "^2.1.0-0"
+    lodash "^4.17.19"
+    uuid "^3.3.2"
 
 "@fluidframework/container-loader@^0.27.3":
   version "0.27.3"
@@ -1372,19 +1425,31 @@
   dependencies:
     "@fluidframework/common-definitions" "^0.19.1"
     "@fluidframework/common-utils" "^0.24.0"
-    "@fluidframework/container-definitions" "^0.27.8"
-    "@fluidframework/container-utils" "^0.27.8"
-    "@fluidframework/core-interfaces" "^0.27.8"
-    "@fluidframework/driver-definitions" "^0.27.8"
-    "@fluidframework/driver-utils" "^0.27.8"
+    "@fluidframework/container-definitions" "^0.27.3"
+    "@fluidframework/container-utils" "^0.27.3"
+    "@fluidframework/core-interfaces" "^0.27.3"
+    "@fluidframework/driver-definitions" "^0.27.3"
+    "@fluidframework/driver-utils" "^0.27.3"
     "@fluidframework/protocol-base" "^0.1013.0"
     "@fluidframework/protocol-definitions" "^0.1013.0"
-    "@fluidframework/telemetry-utils" "^0.27.8"
+    "@fluidframework/telemetry-utils" "^0.27.3"
     "@types/double-ended-queue" "^2.1.0"
     debug "^4.1.1"
     double-ended-queue "^2.1.0-0"
     lodash "^4.17.19"
     uuid "^3.3.2"
+
+"@fluidframework/container-runtime-definitions@^0.27.11", "@fluidframework/container-runtime-definitions@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/container-runtime-definitions/download/@fluidframework/container-runtime-definitions-0.27.11.tgz#b21431db6305798069c365fbefc53c24d95a797d"
+  integrity sha1-shQx22MFeYBpw2X778U8JNlaeX0=
+  dependencies:
+    "@fluidframework/container-definitions" "^0.27.11"
+    "@fluidframework/core-interfaces" "^0.27.11"
+    "@fluidframework/driver-definitions" "^0.27.11"
+    "@fluidframework/protocol-definitions" "^0.1013.0"
+    "@fluidframework/runtime-definitions" "^0.27.11"
+    "@types/node" "^10.17.24"
 
 "@fluidframework/container-runtime-definitions@^0.27.3":
   version "0.27.3"
@@ -1398,26 +1463,26 @@
     "@fluidframework/runtime-definitions" "^0.27.3"
     "@types/node" "^10.17.24"
 
-"@fluidframework/container-runtime@^0.27.3":
-  version "0.27.3"
-  resolved "https://registry.npm.taobao.org/@fluidframework/container-runtime/download/@fluidframework/container-runtime-0.27.3.tgz#1beaad0005fd9c6edcd4eba247b9ada5a2967279"
-  integrity sha1-G+qtAAX9nG7c1OuiR7mtpaKWcnk=
+"@fluidframework/container-runtime@^0.27.11", "@fluidframework/container-runtime@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/container-runtime/download/@fluidframework/container-runtime-0.27.11.tgz#253ccefdef70edfd4e779e5d72b822dcc084bc7f"
+  integrity sha1-JTzO/e9w7f1Od55dcrgi3MCEvH8=
   dependencies:
-    "@fluidframework/agent-scheduler" "^0.27.8"
+    "@fluidframework/agent-scheduler" "^0.27.11"
     "@fluidframework/common-definitions" "^0.19.1"
     "@fluidframework/common-utils" "^0.24.0"
-    "@fluidframework/container-definitions" "^0.27.8"
-    "@fluidframework/container-runtime-definitions" "^0.27.8"
-    "@fluidframework/container-utils" "^0.27.8"
-    "@fluidframework/core-interfaces" "^0.27.8"
-    "@fluidframework/datastore" "^0.27.8"
-    "@fluidframework/driver-definitions" "^0.27.8"
-    "@fluidframework/driver-utils" "^0.27.8"
+    "@fluidframework/container-definitions" "^0.27.11"
+    "@fluidframework/container-runtime-definitions" "^0.27.11"
+    "@fluidframework/container-utils" "^0.27.11"
+    "@fluidframework/core-interfaces" "^0.27.11"
+    "@fluidframework/datastore" "^0.27.11"
+    "@fluidframework/driver-definitions" "^0.27.11"
+    "@fluidframework/driver-utils" "^0.27.11"
     "@fluidframework/protocol-base" "^0.1013.0"
     "@fluidframework/protocol-definitions" "^0.1013.0"
-    "@fluidframework/runtime-definitions" "^0.27.8"
-    "@fluidframework/runtime-utils" "^0.27.8"
-    "@fluidframework/telemetry-utils" "^0.27.8"
+    "@fluidframework/runtime-definitions" "^0.27.11"
+    "@fluidframework/runtime-utils" "^0.27.11"
+    "@fluidframework/telemetry-utils" "^0.27.11"
     "@types/debug" "^4.1.5"
     "@types/double-ended-queue" "^2.1.0"
     "@types/node" "^10.17.24"
@@ -1426,18 +1491,51 @@
     double-ended-queue "^2.1.0-0"
     uuid "^3.3.2"
 
-"@fluidframework/container-utils@^0.27.3":
+"@fluidframework/container-runtime@^0.27.3":
   version "0.27.3"
-  resolved "https://registry.npm.taobao.org/@fluidframework/container-utils/download/@fluidframework/container-utils-0.27.3.tgz#1c4abc10eb7669a91ed3432a143e6e44d532bafb"
-  integrity sha1-HEq8EOt2aake00MqFD5uRNUyuvs=
+  resolved "https://registry.npm.taobao.org/@fluidframework/container-runtime/download/@fluidframework/container-runtime-0.27.3.tgz#1beaad0005fd9c6edcd4eba247b9ada5a2967279"
+  integrity sha1-G+qtAAX9nG7c1OuiR7mtpaKWcnk=
   dependencies:
-    "@fluidframework/container-definitions" "^0.27.8"
-    "@fluidframework/telemetry-utils" "^0.27.8"
+    "@fluidframework/agent-scheduler" "^0.27.3"
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.24.0"
+    "@fluidframework/container-definitions" "^0.27.3"
+    "@fluidframework/container-runtime-definitions" "^0.27.3"
+    "@fluidframework/container-utils" "^0.27.3"
+    "@fluidframework/core-interfaces" "^0.27.3"
+    "@fluidframework/datastore" "^0.27.3"
+    "@fluidframework/driver-definitions" "^0.27.3"
+    "@fluidframework/driver-utils" "^0.27.3"
+    "@fluidframework/protocol-base" "^0.1013.0"
+    "@fluidframework/protocol-definitions" "^0.1013.0"
+    "@fluidframework/runtime-definitions" "^0.27.3"
+    "@fluidframework/runtime-utils" "^0.27.3"
+    "@fluidframework/telemetry-utils" "^0.27.3"
+    "@types/debug" "^4.1.5"
+    "@types/double-ended-queue" "^2.1.0"
+    "@types/node" "^10.17.24"
+    "@types/uuid" "^3.4.4"
+    debug "^4.1.1"
+    double-ended-queue "^2.1.0-0"
+    uuid "^3.3.2"
+
+"@fluidframework/container-utils@^0.27.11", "@fluidframework/container-utils@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/container-utils/download/@fluidframework/container-utils-0.27.11.tgz#fb00d96b70727a5dfadfe7e1e770fd16bf17a258"
+  integrity sha1-+wDZa3Byel363+fh53D9Fr8Xolg=
+  dependencies:
+    "@fluidframework/container-definitions" "^0.27.11"
+    "@fluidframework/telemetry-utils" "^0.27.11"
 
 "@fluidframework/core-interfaces@^0.27.0", "@fluidframework/core-interfaces@^0.27.3":
   version "0.27.3"
   resolved "https://registry.npm.taobao.org/@fluidframework/core-interfaces/download/@fluidframework/core-interfaces-0.27.3.tgz#04a355af51ebf24a15e15cf7758c9c3bea843dbe"
   integrity sha1-BKNVr1Hr8koV4Vz3dYycO+qEPb4=
+
+"@fluidframework/core-interfaces@^0.27.11", "@fluidframework/core-interfaces@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/core-interfaces/download/@fluidframework/core-interfaces-0.27.11.tgz#ca41f4da75a438fabdd6175b9156cd78167b29e7"
+  integrity sha1-ykH02nWkOPq91hdbkVbNeBZ7Kec=
 
 "@fluidframework/datastore-definitions@^0.27.0", "@fluidframework/datastore-definitions@^0.27.3":
   version "0.27.3"
@@ -1446,11 +1544,47 @@
   dependencies:
     "@fluidframework/common-definitions" "^0.19.1"
     "@fluidframework/common-utils" "^0.24.0"
-    "@fluidframework/container-definitions" "^0.27.8"
-    "@fluidframework/core-interfaces" "^0.27.8"
+    "@fluidframework/container-definitions" "^0.27.3"
+    "@fluidframework/core-interfaces" "^0.27.3"
     "@fluidframework/protocol-definitions" "^0.1013.0"
-    "@fluidframework/runtime-definitions" "^0.27.8"
+    "@fluidframework/runtime-definitions" "^0.27.3"
     "@types/node" "^10.17.24"
+
+"@fluidframework/datastore-definitions@^0.27.11", "@fluidframework/datastore-definitions@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/datastore-definitions/download/@fluidframework/datastore-definitions-0.27.11.tgz#e2b03f6076c4c2525b6c7c30464f9091c677acfe"
+  integrity sha1-4rA/YHbEwlJbbHwwRk+QkcZ3rP4=
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.24.0"
+    "@fluidframework/container-definitions" "^0.27.11"
+    "@fluidframework/core-interfaces" "^0.27.11"
+    "@fluidframework/protocol-definitions" "^0.1013.0"
+    "@fluidframework/runtime-definitions" "^0.27.11"
+    "@types/node" "^10.17.24"
+
+"@fluidframework/datastore@^0.27.11", "@fluidframework/datastore@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/datastore/download/@fluidframework/datastore-0.27.11.tgz#a0cf4f0995a55481137c8aa6707aff6658f567b0"
+  integrity sha1-oM9PCZWlVIETfIqmcHr/Zlj1Z7A=
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.24.0"
+    "@fluidframework/container-definitions" "^0.27.11"
+    "@fluidframework/container-utils" "^0.27.11"
+    "@fluidframework/core-interfaces" "^0.27.11"
+    "@fluidframework/datastore-definitions" "^0.27.11"
+    "@fluidframework/driver-definitions" "^0.27.11"
+    "@fluidframework/driver-utils" "^0.27.11"
+    "@fluidframework/protocol-base" "^0.1013.0"
+    "@fluidframework/protocol-definitions" "^0.1013.0"
+    "@fluidframework/runtime-definitions" "^0.27.11"
+    "@fluidframework/runtime-utils" "^0.27.11"
+    "@fluidframework/telemetry-utils" "^0.27.11"
+    assert "^2.0.0"
+    debug "^4.1.1"
+    lodash "^4.17.19"
+    uuid "^3.3.2"
 
 "@fluidframework/datastore@^0.27.3":
   version "0.27.3"
@@ -1459,35 +1593,44 @@
   dependencies:
     "@fluidframework/common-definitions" "^0.19.1"
     "@fluidframework/common-utils" "^0.24.0"
-    "@fluidframework/container-definitions" "^0.27.8"
-    "@fluidframework/container-utils" "^0.27.8"
-    "@fluidframework/core-interfaces" "^0.27.8"
-    "@fluidframework/datastore-definitions" "^0.27.8"
-    "@fluidframework/driver-definitions" "^0.27.8"
-    "@fluidframework/driver-utils" "^0.27.8"
+    "@fluidframework/container-definitions" "^0.27.3"
+    "@fluidframework/container-utils" "^0.27.3"
+    "@fluidframework/core-interfaces" "^0.27.3"
+    "@fluidframework/datastore-definitions" "^0.27.3"
+    "@fluidframework/driver-definitions" "^0.27.3"
+    "@fluidframework/driver-utils" "^0.27.3"
     "@fluidframework/protocol-base" "^0.1013.0"
     "@fluidframework/protocol-definitions" "^0.1013.0"
-    "@fluidframework/runtime-definitions" "^0.27.8"
-    "@fluidframework/runtime-utils" "^0.27.8"
-    "@fluidframework/telemetry-utils" "^0.27.8"
+    "@fluidframework/runtime-definitions" "^0.27.3"
+    "@fluidframework/runtime-utils" "^0.27.3"
+    "@fluidframework/telemetry-utils" "^0.27.3"
     assert "^2.0.0"
     debug "^4.1.1"
     lodash "^4.17.19"
     uuid "^3.3.2"
 
-"@fluidframework/driver-base@^0.27.3":
-  version "0.27.3"
-  resolved "https://registry.npm.taobao.org/@fluidframework/driver-base/download/@fluidframework/driver-base-0.27.3.tgz#9f4149470edd8b7d421b4ed474d28b8c346ec8ae"
-  integrity sha1-n0FJRw7di31CG07UdNKLjDRuyK4=
+"@fluidframework/driver-base@^0.27.11", "@fluidframework/driver-base@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/driver-base/download/@fluidframework/driver-base-0.27.11.tgz#8e1cbc4df52b61b8d5beac20d4b70e846d3a11d8"
+  integrity sha1-jhy8TfUrYbjVvqwg1LcOhG06Edg=
   dependencies:
     "@fluidframework/common-utils" "^0.24.0"
-    "@fluidframework/driver-definitions" "^0.27.8"
-    "@fluidframework/driver-utils" "^0.27.8"
+    "@fluidframework/driver-definitions" "^0.27.11"
+    "@fluidframework/driver-utils" "^0.27.11"
     "@fluidframework/protocol-definitions" "^0.1013.0"
     "@types/debug" "^4.1.5"
     "@types/node" "^10.17.24"
     "@types/socket.io-client" "^1.4.32"
     debug "^4.1.1"
+
+"@fluidframework/driver-definitions@^0.27.11", "@fluidframework/driver-definitions@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/driver-definitions/download/@fluidframework/driver-definitions-0.27.11.tgz#0269c9a38d18eee1fbed3863db05d0fbf20c06b9"
+  integrity sha1-AmnJo40Y7uH77Thj2wXQ+/IMBrk=
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/core-interfaces" "^0.27.11"
+    "@fluidframework/protocol-definitions" "^0.1013.0"
 
 "@fluidframework/driver-definitions@^0.27.3":
   version "0.27.3"
@@ -1498,19 +1641,19 @@
     "@fluidframework/core-interfaces" "^0.27.3"
     "@fluidframework/protocol-definitions" "^0.1013.0"
 
-"@fluidframework/driver-utils@^0.27.3":
-  version "0.27.3"
-  resolved "https://registry.npm.taobao.org/@fluidframework/driver-utils/download/@fluidframework/driver-utils-0.27.3.tgz#bdf25ab5f8e8a94024f92c8a718c87b11811dd5a"
-  integrity sha1-vfJatfjoqUAk+SyKcYyHsRgR3Vo=
+"@fluidframework/driver-utils@^0.27.11", "@fluidframework/driver-utils@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/driver-utils/download/@fluidframework/driver-utils-0.27.11.tgz#3e1e6ce16dfda47f7752381122da218f88e54a77"
+  integrity sha1-Ph5s4W39pH93UjgRItohj4jlSnc=
   dependencies:
     "@fluidframework/common-definitions" "^0.19.1"
     "@fluidframework/common-utils" "^0.24.0"
-    "@fluidframework/core-interfaces" "^0.27.8"
-    "@fluidframework/driver-definitions" "^0.27.8"
+    "@fluidframework/core-interfaces" "^0.27.11"
+    "@fluidframework/driver-definitions" "^0.27.11"
     "@fluidframework/gitresources" "^0.1013.0"
     "@fluidframework/protocol-base" "^0.1013.0"
     "@fluidframework/protocol-definitions" "^0.1013.0"
-    "@fluidframework/telemetry-utils" "^0.27.8"
+    "@fluidframework/telemetry-utils" "^0.27.11"
 
 "@fluidframework/get-session-storage-container@^0.27.0":
   version "0.27.8"
@@ -1532,7 +1675,7 @@
     "@fluidframework/core-interfaces" "^0.27.8"
     "@fluidframework/driver-definitions" "^0.27.8"
     "@fluidframework/protocol-definitions" "^0.1013.0"
-    "@fluidframework/routerlicious-driver" "^0.27.3"
+    "@fluidframework/routerlicious-driver" "^0.27.8"
     jsonwebtoken "^8.4.0"
     uuid "^3.3.2"
 
@@ -1572,26 +1715,54 @@
   dependencies:
     "@fluidframework/common-definitions" "^0.19.1"
     "@fluidframework/common-utils" "^0.24.0"
-    "@fluidframework/core-interfaces" "^0.27.8"
-    "@fluidframework/datastore-definitions" "^0.27.8"
+    "@fluidframework/core-interfaces" "^0.27.3"
+    "@fluidframework/datastore-definitions" "^0.27.3"
     "@fluidframework/protocol-base" "^0.1013.0"
     "@fluidframework/protocol-definitions" "^0.1013.0"
-    "@fluidframework/shared-object-base" "^0.27.8"
+    "@fluidframework/shared-object-base" "^0.27.3"
     debug "^4.1.1"
     path-browserify "^1.0.1"
 
-"@fluidframework/merge-tree@^0.27.0", "@fluidframework/merge-tree@^0.27.3":
+"@fluidframework/map@^0.27.11", "@fluidframework/map@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/map/download/@fluidframework/map-0.27.11.tgz#bb724b8e6414c2696354851664b204c118d30078"
+  integrity sha1-u3JLjmQUwmljVIUWZLIEwRjTAHg=
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.24.0"
+    "@fluidframework/core-interfaces" "^0.27.11"
+    "@fluidframework/datastore-definitions" "^0.27.11"
+    "@fluidframework/protocol-base" "^0.1013.0"
+    "@fluidframework/protocol-definitions" "^0.1013.0"
+    "@fluidframework/shared-object-base" "^0.27.11"
+    debug "^4.1.1"
+    path-browserify "^1.0.1"
+
+"@fluidframework/merge-tree@^0.27.0":
   version "0.27.3"
   resolved "https://registry.npm.taobao.org/@fluidframework/merge-tree/download/@fluidframework/merge-tree-0.27.3.tgz#82fa59aa7121383bf6c57947c13a226f5f605886"
   integrity sha1-gvpZqnEhODv2xXlHwToib19gWIY=
   dependencies:
     "@fluidframework/common-definitions" "^0.19.1"
     "@fluidframework/common-utils" "^0.24.0"
-    "@fluidframework/container-definitions" "^0.27.8"
-    "@fluidframework/core-interfaces" "^0.27.8"
-    "@fluidframework/datastore-definitions" "^0.27.8"
+    "@fluidframework/container-definitions" "^0.27.3"
+    "@fluidframework/core-interfaces" "^0.27.3"
+    "@fluidframework/datastore-definitions" "^0.27.3"
     "@fluidframework/protocol-definitions" "^0.1013.0"
-    "@fluidframework/telemetry-utils" "^0.27.8"
+    "@fluidframework/telemetry-utils" "^0.27.3"
+
+"@fluidframework/merge-tree@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/merge-tree/download/@fluidframework/merge-tree-0.27.11.tgz#4e2bc01f5c6276f1d8c292c47276dfdfb0bae456"
+  integrity sha1-TivAH1xidvHYwpLEcnbf37C65FY=
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.24.0"
+    "@fluidframework/container-definitions" "^0.27.11"
+    "@fluidframework/core-interfaces" "^0.27.11"
+    "@fluidframework/datastore-definitions" "^0.27.11"
+    "@fluidframework/protocol-definitions" "^0.1013.0"
+    "@fluidframework/telemetry-utils" "^0.27.11"
 
 "@fluidframework/protocol-base@^0.1012.0", "@fluidframework/protocol-base@^0.1012.2":
   version "0.1012.2"
@@ -1622,16 +1793,33 @@
   dependencies:
     "@fluidframework/common-definitions" "^0.19.1"
 
-"@fluidframework/register-collection@^0.27.3":
-  version "0.27.3"
-  resolved "https://registry.npm.taobao.org/@fluidframework/register-collection/download/@fluidframework/register-collection-0.27.3.tgz#af12f5845d8a8eeaf2677d4acfc643be28fb8c81"
-  integrity sha1-rxL1hF2KjuryZ31Kz8ZDvij7jIE=
+"@fluidframework/protocol-definitions@^0.1012.0", "@fluidframework/protocol-definitions@^0.1012.2":
+  version "0.1012.2"
+  resolved "https://registry.npm.taobao.org/@fluidframework/protocol-definitions/download/@fluidframework/protocol-definitions-0.1012.2.tgz#afff8f9f8445d2ebea6534157c61915b7a6ee1ba"
+  integrity sha1-r/+Pn4RF0uvqZTQVfGGRW3pu4bo=
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+
+"@fluidframework/register-collection@^0.27.11":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/register-collection/download/@fluidframework/register-collection-0.27.11.tgz#a24b27853ec13c89cb55f6fd1513685b4237cae0"
+  integrity sha1-oksnhT7BPInLVfb9FRNoW0I3yuA=
   dependencies:
     "@fluidframework/common-utils" "^0.24.0"
-    "@fluidframework/datastore-definitions" "^0.27.8"
+    "@fluidframework/datastore-definitions" "^0.27.11"
     "@fluidframework/protocol-definitions" "^0.1013.0"
-    "@fluidframework/shared-object-base" "^0.27.8"
+    "@fluidframework/shared-object-base" "^0.27.11"
     debug "^4.1.1"
+
+"@fluidframework/request-handler@^0.27.11", "@fluidframework/request-handler@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/request-handler/download/@fluidframework/request-handler-0.27.11.tgz#02da6fca7df08377464254e6bea5723412018935"
+  integrity sha1-Atpvyn3wg3dGQlTmvqVyNBIBiTU=
+  dependencies:
+    "@fluidframework/container-runtime-definitions" "^0.27.11"
+    "@fluidframework/core-interfaces" "^0.27.11"
+    "@fluidframework/runtime-definitions" "^0.27.11"
+    "@fluidframework/runtime-utils" "^0.27.11"
 
 "@fluidframework/request-handler@^0.27.3":
   version "0.27.3"
@@ -1650,9 +1838,9 @@
   dependencies:
     "@fluidframework/common-definitions" "^0.19.1"
     "@fluidframework/common-utils" "^0.24.0"
-    "@fluidframework/driver-base" "^0.27.8"
-    "@fluidframework/driver-definitions" "^0.27.8"
-    "@fluidframework/driver-utils" "^0.27.8"
+    "@fluidframework/driver-base" "^0.27.3"
+    "@fluidframework/driver-definitions" "^0.27.3"
+    "@fluidframework/driver-utils" "^0.27.3"
     "@fluidframework/gitresources" "^0.1013.0"
     "@fluidframework/protocol-base" "^0.1013.0"
     "@fluidframework/protocol-definitions" "^0.1013.0"
@@ -1664,6 +1852,40 @@
     socket.io-client "^2.1.1"
     ws "^6.1.2"
 
+"@fluidframework/routerlicious-driver@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/routerlicious-driver/download/@fluidframework/routerlicious-driver-0.27.11.tgz#ae48363e37006651ca8bca3357f6c73dfd74ccb0"
+  integrity sha1-rkg2PjcAZlHKi8ozV/bHPf10zLA=
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.24.0"
+    "@fluidframework/driver-base" "^0.27.11"
+    "@fluidframework/driver-definitions" "^0.27.11"
+    "@fluidframework/driver-utils" "^0.27.11"
+    "@fluidframework/gitresources" "^0.1013.0"
+    "@fluidframework/protocol-base" "^0.1013.0"
+    "@fluidframework/protocol-definitions" "^0.1013.0"
+    "@fluidframework/server-services-client" "^0.1013.0"
+    axios "^0.18.0"
+    debug "^4.1.1"
+    isomorphic-ws "^4.0.1"
+    jwt-decode "^2.2.0"
+    socket.io-client "^2.1.1"
+    ws "^6.1.2"
+
+"@fluidframework/runtime-definitions@^0.27.11", "@fluidframework/runtime-definitions@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/runtime-definitions/download/@fluidframework/runtime-definitions-0.27.11.tgz#43680755c5f9803a33372071183a71a6177c93d5"
+  integrity sha1-Q2gHVcX5gDozNyBxGDpxphd8k9U=
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.24.0"
+    "@fluidframework/container-definitions" "^0.27.11"
+    "@fluidframework/core-interfaces" "^0.27.11"
+    "@fluidframework/driver-definitions" "^0.27.11"
+    "@fluidframework/protocol-definitions" "^0.1013.0"
+    "@types/node" "^10.17.24"
+
 "@fluidframework/runtime-definitions@^0.27.3":
   version "0.27.3"
   resolved "https://registry.npm.taobao.org/@fluidframework/runtime-definitions/download/@fluidframework/runtime-definitions-0.27.3.tgz#6307fda00aa096ee99747ed61fea5ea03912afcb"
@@ -1671,11 +1893,24 @@
   dependencies:
     "@fluidframework/common-definitions" "^0.19.1"
     "@fluidframework/common-utils" "^0.24.0"
-    "@fluidframework/container-definitions" "^0.27.8"
-    "@fluidframework/core-interfaces" "^0.27.8"
-    "@fluidframework/driver-definitions" "^0.27.8"
+    "@fluidframework/container-definitions" "^0.27.3"
+    "@fluidframework/core-interfaces" "^0.27.3"
+    "@fluidframework/driver-definitions" "^0.27.3"
     "@fluidframework/protocol-definitions" "^0.1013.0"
     "@types/node" "^10.17.24"
+
+"@fluidframework/runtime-utils@^0.27.11", "@fluidframework/runtime-utils@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/runtime-utils/download/@fluidframework/runtime-utils-0.27.11.tgz#8b5e756a46ff4af53253ffe5fd7956fc51d50073"
+  integrity sha1-i151akb/SvUyU//l/XlW/FHVAHM=
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.24.0"
+    "@fluidframework/core-interfaces" "^0.27.11"
+    "@fluidframework/datastore-definitions" "^0.27.11"
+    "@fluidframework/protocol-base" "^0.1013.0"
+    "@fluidframework/protocol-definitions" "^0.1013.0"
+    "@fluidframework/runtime-definitions" "^0.27.11"
 
 "@fluidframework/runtime-utils@^0.27.3":
   version "0.27.3"
@@ -1684,11 +1919,11 @@
   dependencies:
     "@fluidframework/common-definitions" "^0.19.1"
     "@fluidframework/common-utils" "^0.24.0"
-    "@fluidframework/core-interfaces" "^0.27.8"
-    "@fluidframework/datastore-definitions" "^0.27.8"
+    "@fluidframework/core-interfaces" "^0.27.3"
+    "@fluidframework/datastore-definitions" "^0.27.3"
     "@fluidframework/protocol-base" "^0.1013.0"
     "@fluidframework/protocol-definitions" "^0.1013.0"
-    "@fluidframework/runtime-definitions" "^0.27.8"
+    "@fluidframework/runtime-definitions" "^0.27.3"
 
 "@fluidframework/sequence@^0.27.0":
   version "0.27.8"
@@ -1702,9 +1937,9 @@
     "@fluidframework/map" "^0.27.8"
     "@fluidframework/merge-tree" "^0.27.8"
     "@fluidframework/protocol-definitions" "^0.1013.0"
-    "@fluidframework/runtime-utils" "^0.27.3"
-    "@fluidframework/shared-object-base" "^0.27.3"
-    "@fluidframework/telemetry-utils" "^0.27.3"
+    "@fluidframework/runtime-utils" "^0.27.8"
+    "@fluidframework/shared-object-base" "^0.27.8"
+    "@fluidframework/telemetry-utils" "^0.27.8"
     debug "^4.1.1"
     lodash "^4.17.19"
 
@@ -1952,16 +2187,40 @@
   integrity sha1-85Odj9ZGFWhECjCE7wFgBohDsHA=
   dependencies:
     "@fluidframework/common-definitions" "^0.19.1"
-    "@fluidframework/container-definitions" "^0.27.8"
-    "@fluidframework/core-interfaces" "^0.27.8"
-    "@fluidframework/datastore" "^0.27.8"
-    "@fluidframework/datastore-definitions" "^0.27.8"
+    "@fluidframework/container-definitions" "^0.27.3"
+    "@fluidframework/core-interfaces" "^0.27.3"
+    "@fluidframework/datastore" "^0.27.3"
+    "@fluidframework/datastore-definitions" "^0.27.3"
     "@fluidframework/protocol-definitions" "^0.1013.0"
-    "@fluidframework/telemetry-utils" "^0.27.8"
+    "@fluidframework/telemetry-utils" "^0.27.3"
     "@types/debug" "^4.1.5"
     "@types/node" "^10.17.24"
     debug "^4.1.1"
     uuid "^3.3.2"
+
+"@fluidframework/shared-object-base@^0.27.11", "@fluidframework/shared-object-base@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/shared-object-base/download/@fluidframework/shared-object-base-0.27.11.tgz#5436a92b68748dff622bd6d19d0b97f65e674edb"
+  integrity sha1-VDapK2h0jf9iK9bRnQuX9l5nTts=
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/container-definitions" "^0.27.11"
+    "@fluidframework/core-interfaces" "^0.27.11"
+    "@fluidframework/datastore" "^0.27.11"
+    "@fluidframework/datastore-definitions" "^0.27.11"
+    "@fluidframework/protocol-definitions" "^0.1013.0"
+    "@fluidframework/telemetry-utils" "^0.27.11"
+    "@types/debug" "^4.1.5"
+    "@types/node" "^10.17.24"
+    debug "^4.1.1"
+    uuid "^3.3.2"
+
+"@fluidframework/synthesize@^0.27.11":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/synthesize/download/@fluidframework/synthesize-0.27.11.tgz#d023c52fbec2be03c0aea793674f6064d1fb4001"
+  integrity sha1-0CPFL77CvgPArqeTZ09gZNH7QAE=
+  dependencies:
+    "@fluidframework/core-interfaces" "^0.27.11"
 
 "@fluidframework/synthesize@^0.27.3":
   version "0.27.3"
@@ -1969,6 +2228,16 @@
   integrity sha1-XcjgTbVHRUKRSzQnuJd66Dmx4YE=
   dependencies:
     "@fluidframework/core-interfaces" "^0.27.3"
+
+"@fluidframework/telemetry-utils@^0.27.11", "@fluidframework/telemetry-utils@^0.27.8":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/telemetry-utils/download/@fluidframework/telemetry-utils-0.27.11.tgz#59d14a077992048e662149b37395127f1cbb6394"
+  integrity sha1-WdFKB3mSBI5mIUmzc5USfxy7Y5Q=
+  dependencies:
+    "@fluidframework/common-definitions" "^0.19.1"
+    "@fluidframework/common-utils" "^0.24.0"
+    debug "^4.1.1"
+    events "^3.1.0"
 
 "@fluidframework/telemetry-utils@^0.27.3":
   version "0.27.3"
@@ -2029,7 +2298,14 @@
   resolved "https://registry.npm.taobao.org/@fluidframework/view-interfaces/download/@fluidframework/view-interfaces-0.27.3.tgz#bc48b37644d785033a4253e3c03a8577087fb862"
   integrity sha1-vEizdkTXhQM6QlPjwDqFdwh/uGI=
   dependencies:
-    "@fluidframework/core-interfaces" "^0.27.8"
+    "@fluidframework/core-interfaces" "^0.27.3"
+
+"@fluidframework/view-interfaces@^0.27.11":
+  version "0.27.11"
+  resolved "https://registry.npm.taobao.org/@fluidframework/view-interfaces/download/@fluidframework/view-interfaces-0.27.11.tgz#8c811a1a12da55ae2cca571d64aff931ec4d96da"
+  integrity sha1-jIEaGhLaVa4sylcdZK/5MexNlto=
+  dependencies:
+    "@fluidframework/core-interfaces" "^0.27.11"
 
 "@hapi/address@2.x.x":
   version "2.1.4"
@@ -11205,7 +11481,7 @@ mkdirp-promise@^5.0.1:
   dependencies:
     mkdirp "*"
 
-mkdirp@*, mkdirp@1.x:
+mkdirp@*, mkdirp@1.x, mkdirp@^1.0.4:
   version "1.0.4"
   resolved "https://registry.npm.taobao.org/mkdirp/download/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha1-PrXtYmInVteaXw4qIh3+utdcL34=
@@ -12995,10 +13271,15 @@ react-dom@^17.0.1:
     object-assign "^4.1.1"
     scheduler "^0.20.1"
 
-react-is@^16.12.0, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
+react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-is@^17.0.1:
+  version "17.0.1"
+  resolved "https://registry.npm.taobao.org/react-is/download/react-is-17.0.1.tgz?cache=0&sync_timestamp=1603367632728&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact-is%2Fdownload%2Freact-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
+  integrity sha1-WzUxvXamRaTJ+25pPtNkGeMwEzk=
 
 react-router-dom@^5.2.0:
   version "5.2.0"
@@ -13029,14 +13310,13 @@ react-router@5.2.0:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react@^16.10.2:
-  version "16.14.0"
-  resolved "https://registry.npm.taobao.org/react/download/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
-  integrity sha1-lNd23dCqo32j7aj8W2sYpMmjEU0=
+react@^17.0.1:
+  version "17.0.1"
+  resolved "https://registry.npm.taobao.org/react/download/react-17.0.1.tgz?cache=0&sync_timestamp=1603367633953&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact%2Fdownload%2Freact-17.0.1.tgz#6e0600416bd57574e3f86d92edba3d9008726127"
+  integrity sha1-bgYAQWvVdXTj+G2S7bo9kAhyYSc=
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
-    prop-types "^15.6.2"
 
 read-cmd-shim@^1.0.1:
   version "1.0.5"
@@ -13618,7 +13898,7 @@ rimraf@^2.5.4, rimraf@^2.6.2, rimraf@^2.6.3:
   dependencies:
     glob "^7.1.3"
 
-rimraf@^3.0.0:
+rimraf@^3.0.0, rimraf@^3.0.2:
   version "3.0.2"
   resolved "https://registry.npm.taobao.org/rimraf/download/rimraf-3.0.2.tgz#f1a5402ba6220ad52cc1282bac1ae3aa49fd061a"
   integrity sha1-8aVAK6YiCtUswSgrrBrjqkn9Bho=
@@ -13840,7 +14120,7 @@ schema-utils@^1.0.0:
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
 
-schema-utils@^2.6.5, schema-utils@^2.6.6:
+schema-utils@^2.6.5:
   version "2.7.1"
   resolved "https://registry.npm.taobao.org/schema-utils/download/schema-utils-2.7.1.tgz?cache=0&sync_timestamp=1601922251376&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fschema-utils%2Fdownload%2Fschema-utils-2.7.1.tgz#1ca4f32d1b24c590c203b8e7a50bf0ea4cd394d7"
   integrity sha1-HKTzLRskxZDCA7jnpQvw6kzTlNc=
@@ -13945,6 +14225,13 @@ serialize-javascript@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npm.taobao.org/serialize-javascript/download/serialize-javascript-4.0.0.tgz?cache=0&sync_timestamp=1599740666792&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fserialize-javascript%2Fdownload%2Fserialize-javascript-4.0.0.tgz#b525e1238489a5ecfc42afacc3fe99e666f4b1aa"
   integrity sha1-tSXhI4SJpez8Qq+sw/6Z5mb0sao=
+  dependencies:
+    randombytes "^2.1.0"
+
+serialize-javascript@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.npm.taobao.org/serialize-javascript/download/serialize-javascript-5.0.1.tgz?cache=0&sync_timestamp=1599740694587&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fserialize-javascript%2Fdownload%2Fserialize-javascript-5.0.1.tgz#7886ec848049a462467a97d3d918ebb2aaf934f4"
+  integrity sha1-eIbshIBJpGJGepfT2Rjrsqr5NPQ=
   dependencies:
     randombytes "^2.1.0"
 
@@ -15868,10 +16155,18 @@ webpack-merge@^4.2.2:
   dependencies:
     lodash "^4.17.15"
 
-webpack-sources@^1.4.0, webpack-sources@^1.4.1:
-  version "1.4.3"
-  resolved "https://registry.npmjs.org/webpack-sources/-/webpack-sources-1.4.3.tgz#eedd8ec0b928fbf1cbfe994e22d2d890f330a933"
-  integrity sha512-lgTS3Xhv1lCOKo7SA5TjKXMjpSM4sBjNV5+q2bqesbSPs5FjGmU6jjtBSkX9b4qW87vDIsCIlUPOEhbZrMdjeQ==
+webpack-merge@^5.2.0:
+  version "5.3.0"
+  resolved "https://registry.npm.taobao.org/webpack-merge/download/webpack-merge-5.3.0.tgz?cache=0&sync_timestamp=1604077865177&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fwebpack-merge%2Fdownload%2Fwebpack-merge-5.3.0.tgz#a80df44d35fabace680bf430a19fda9ec49ed8eb"
+  integrity sha1-qA30TTX6us5oC/QwoZ/ansSe2Os=
+  dependencies:
+    clone-deep "^4.0.1"
+    wildcard "^2.0.0"
+
+webpack-sources@^2.1.0:
+  version "2.2.0"
+  resolved "https://registry.npm.taobao.org/webpack-sources/download/webpack-sources-2.2.0.tgz?cache=0&sync_timestamp=1603965314165&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fwebpack-sources%2Fdownload%2Fwebpack-sources-2.2.0.tgz#058926f39e3d443193b6c31547229806ffd02bac"
+  integrity sha1-BYkm8549RDGTtsMVRyKYBv/QK6w=
   dependencies:
     source-list-map "^2.0.1"
     source-map "^0.6.1"
@@ -15999,6 +16294,11 @@ wide-align@^1.1.0:
   integrity sha1-rgdOa9wMFKQx6ATmJFScYzsABFc=
   dependencies:
     string-width "^1.0.2 || 2"
+
+wildcard@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npm.taobao.org/wildcard/download/wildcard-2.0.0.tgz#a77d20e5200c6faaac979e4b3aadc7b3dd7f8fec"
+  integrity sha1-p30g5SAMb6qsl55LOq3Hs91/j+w=
 
 window-size@^0.1.4:
   version "0.1.4"

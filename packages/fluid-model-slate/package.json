@@ -9,22 +9,18 @@
   "author": "CoffeyGit <tjcaofei@126.com>",
   "homepage": "https://github.com/iffe-co/slate-fluid-framework.git",
   "license": "ISC",
-  "main": "src/index.ts",
-  "module": "src/index.ts",
-  "types": "src/index.ts",
-  "directories": {
-    "lib": "src",
-    "test": "test"
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "files": [
-    "src"
+    "dist"
   ],
-  "publishConfig": {
-    "registry": "http://registry.npmjs.org"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iffe-co/slate-fluid-framework.git"
+    "url": "https://github.com/solidoc/iffe-react.git"
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"
