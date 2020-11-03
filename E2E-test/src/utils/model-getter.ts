@@ -20,6 +20,6 @@ export async function getSlateModel(documentId?: string) {
     const model = await getDefaultObjectFromContainer<SlateFluidModel>(
         container,
     );
-    const initValue = model.currentSlateValue();
+    const initValue = model.getCurrentSlateValue();
     return {model, initValue, id}
 }

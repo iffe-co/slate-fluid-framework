@@ -19,7 +19,7 @@ export interface IFluidDraftJsObject {
     readonly members: IterableIterator<[string, ISequencedClient]>
     on(event: "addMember" | "removeMember", listener: () => void): this;
     off(event: "addMember" | "removeMember", listener: () => void): this;
-    currentSlateValue(): any
+    getCurrentSlateValue(): any
 }
 
 const addMemberValue = "addMember";

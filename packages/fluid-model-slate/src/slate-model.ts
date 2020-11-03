@@ -16,7 +16,9 @@ import {
   addChildrenToCache,
   addNodeToCache,
   addTextToCache,
+  getChildrenFromCacheByHandle,
   getNodeFromCacheByHandle,
+  getTextFromCacheByHandle,
 } from './dds-cache';
 import { addEventListenerHandler } from './event-handler';
 import { convertSharedMapToSlateOp } from './dds-event-processor/processor/children-value-changed-event-processor';
@@ -31,7 +33,6 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
   }
 
   public fluidNodeSequence!: SharedObjectSequence<IFluidHandle<SharedMap>>;
-  private initValue: any[] = [];
 
   public constructor(props: IDataObjectProps) {
     super(props);
@@ -96,16 +97,44 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
       this.root.get(FLUIDNODE_KEYS.CHILDREN).get(),
     ]);
 
-    await this.addDDSToCacheAndInitCurrentValue();
+    await this.addDDSToCache();
     addEventListenerHandler(this.fluidNodeSequence);
   }
 
-  private async addDDSToCacheAndInitCurrentValue() {
-    this.initValue = await this.toInitSlateValue(this.fluidNodeSequence);
+  private async addDDSToCache() {
+    await this.toInitSlateValue(this.fluidNodeSequence);
   }
 
-  public currentSlateValue() {
-    return this.initValue;
+  public getCurrentSlateValue(root?: FluidNodeChildren) {
+    const slateNodes: any[] = [];
+    const nodeHandles = (root || this.fluidNodeSequence).getRange(0);
+    for (let nodeHandle of nodeHandles) {
+      const node = getNodeFromCacheByHandle(nodeHandle);
+      const slateNode = {};
+      if (node.has(FLUIDNODE_KEYS.CHILDREN)) {
+        const childrenHandle = node.get<FluidNodeChildrenHandle>(
+          FLUIDNODE_KEYS.CHILDREN,
+        );
+        const children = getChildrenFromCacheByHandle(childrenHandle);
+        slateNode[FLUIDNODE_KEYS.CHILDREN] = this.getCurrentSlateValue(
+          children,
+        );
+      }
+      if (node.has(FLUIDNODE_KEYS.TEXT)) {
+        const textHandle = node.get<FluidNodePropertyHandle>(
+          FLUIDNODE_KEYS.TEXT,
+        );
+        const text = getTextFromCacheByHandle(textHandle);
+        slateNode[FLUIDNODE_KEYS.TEXT] = text.getText();
+      }
+      [...node.keys()]
+        .filter(k => k !== 'children' && k !== 'text')
+        .forEach(k => {
+          slateNode[k] = node.get(k);
+        });
+      slateNodes.push(slateNode);
+    }
+    return slateNodes;
   }
 
   private async toInitSlateValue(root: FluidNodeChildren) {
