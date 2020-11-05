@@ -40,6 +40,7 @@
     "@fluidframework/local-driver": "^0.27.0",
     "@fluidframework/test-utils": "^0.27.0",
     "@fluidframework/merge-tree": "^0.27.0",
+    "@fluidframework/container-definitions": "^0.27.0",
     "core-js": "3",
     "tinylicious": "0.2.3810",
     "uuid": "^8.3.0",
