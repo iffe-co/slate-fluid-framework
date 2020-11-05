@@ -72,8 +72,6 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     ).then(v => console.log(v));
   }
 
-  fetch(): any {}
-
   protected async initializingFirstTime() {
     const fluidNodeSequence = SharedObjectSequence.create(this.runtime);
     const node_0 = SharedMap.create(this.runtime);
@@ -102,10 +100,11 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
   }
 
   private async addDDSToCache() {
-    await this.toInitSlateValue(this.fluidNodeSequence);
+    const initValue = await this.toInitSlateValue(this.fluidNodeSequence);
+    console.log('init value', initValue);
   }
 
-  public getCurrentSlateValue(root?: FluidNodeChildren) {
+  public fetch(root?: FluidNodeChildren) {
     const slateNodes: any[] = [];
     const nodeHandles = (root || this.fluidNodeSequence).getRange(0);
     for (let nodeHandle of nodeHandles) {
@@ -116,9 +115,7 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
           FLUIDNODE_KEYS.CHILDREN,
         );
         const children = getChildrenFromCacheByHandle(childrenHandle);
-        slateNode[FLUIDNODE_KEYS.CHILDREN] = this.getCurrentSlateValue(
-          children,
-        );
+        slateNode[FLUIDNODE_KEYS.CHILDREN] = this.fetch(children);
       }
       if (node.has(FLUIDNODE_KEYS.TEXT)) {
         const textHandle = node.get<FluidNodePropertyHandle>(
