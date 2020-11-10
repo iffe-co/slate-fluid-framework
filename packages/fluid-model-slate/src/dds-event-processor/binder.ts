@@ -37,7 +37,10 @@ function bindFluidNodeEvent(fluidNode: FluidNode, root: FluidNodeChildren) {
       );
       if (slateOp) {
         console.log('valueChanged op');
-        ddsChangesQueue.addOperationResolver(Promise.resolve([slateOp]));
+        ddsChangesQueue.addOperationResolver({
+          key: root.id,
+          resolver: Promise.resolve([slateOp]),
+        });
       }
     },
   );
@@ -54,14 +57,13 @@ function fluidNodePropertyEventBinder(
   fluidNodeProperty.on(
     'sequenceDelta',
     (event: SequenceDeltaEvent, target: FluidNodeProperty) => {
-      const slateOpsPromise = textSequenceDeltaEventProcessor(
-        event,
-        target,
-        root,
-      );
-      if (slateOpsPromise) {
+      const slateOps = textSequenceDeltaEventProcessor(event, target, root);
+      if (slateOps) {
         console.log('sequenceDelta op');
-        ddsChangesQueue.addOperationResolver(Promise.resolve(slateOpsPromise));
+        ddsChangesQueue.addOperationResolver({
+          key: root.id,
+          resolver: Promise.resolve(slateOps),
+        });
       }
     },
   );
@@ -86,7 +88,10 @@ function fluidNodeChildrenEventBinder(
       if (slateOpsPromise) {
         console.log('sequenceDelta op');
 
-        ddsChangesQueue.addOperationResolver(slateOpsPromise);
+        ddsChangesQueue.addOperationResolver({
+          key: root.id,
+          resolver: slateOpsPromise,
+        });
       }
     },
   );

@@ -26,7 +26,7 @@ export const useDraftJsData = (id, isNew) => {
         defaultObject = await getDefaultObjectFromContainer<FluidDraftJsObject>(
           container,
         );
-        const currentSlateValue = defaultObject.getCurrentSlateValue();
+        const currentSlateValue = defaultObject.fetch();
         console.log(currentSlateValue);
         setContext({ model: defaultObject, currentSlateValue });
       } catch (e) {
