@@ -3,6 +3,22 @@
  * Licensed under the MIT License.
  */
 
+import { DeltaQueue } from '@fluidframework/container-loader/lib/deltaQueue';
+import { ddsChangesQueue } from '@solidoc/fluid-model-slate';
+
+// @ts-ignore
+const processDeltas = DeltaQueue.prototype.processDeltas;
+
+// @ts-ignore
+DeltaQueue.prototype.processDeltas = function () {
+  console.log('DeltaQueue.prototype.processDeltas');
+  processDeltas.call(this);
+  if (this.q.length === 0) {
+    ddsChangesQueue.applyAsyncOps();
+  }
+};
+console.log('start ============= DeltaQueue.prototype.processDeltas');
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter, Switch, Route, Link } from 'react-router-dom';
