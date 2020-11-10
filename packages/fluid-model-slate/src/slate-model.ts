@@ -26,9 +26,19 @@ import { ddsChangesQueue } from './dds-changes-queue';
 import { Observable } from 'rxjs';
 
 class SlateFluidModel extends BaseFluidModel<Operation> {
-  private readonly observable: Observable<Operation[]>;
+  private observable?: Observable<Operation[]>;
 
   subscribe(): Observable<Operation[]> {
+    if (!this.observable) {
+      this.observable = new Observable(subscriber => {
+        console.log(this.fluidNodeSequence.id);
+        ddsChangesQueue.registerOperationsBroadcast(
+          this.fluidNodeSequence.id,
+          ops => subscriber.next(ops),
+        );
+      });
+    }
+    console.log('this.fluidNodeSequence.id', this.fluidNodeSequence.id);
     return this.observable;
   }
 
@@ -37,9 +47,6 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
   public constructor(props: IDataObjectProps) {
     super(props);
     this.runtime = props.runtime;
-    this.observable = new Observable(subscriber => {
-      ddsChangesQueue.init(ops => subscriber.next(ops));
-    });
   }
 
   public runtime: IFluidDataStoreRuntime;

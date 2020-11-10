@@ -1,19 +1,21 @@
 import { Operation } from 'slate';
 import { v4 } from 'uuid';
 
-type OperationResolver = Promise<Operation[]>;
+type OperationResolver = { key: string; resolver: Promise<Operation[]> };
 
 class DdsChangesQueue {
-  private apply!: (ops: Operation[]) => void;
   private resolverMap: Map<string, OperationResolver[]>;
   private currentKey!: string;
   private keyQueue!: string[];
   private processing: boolean = false;
+  private operationBroadcaster: { [key: string]: (ops: Operation[]) => void };
+
   constructor() {
     this.resolverMap = new Map<string, OperationResolver[]>();
     this.currentKey = v4();
     this.keyQueue = [];
     this.resolverMap.set(this.currentKey, []);
+    this.operationBroadcaster = {};
   }
 
   public addOperationResolver(resolver: OperationResolver) {
@@ -30,10 +32,21 @@ class DdsChangesQueue {
   public async resolveOperations(key: string = '') {
     if (this.resolverMap.has(key)) {
       const resolvers = this.resolverMap.get(key) || [];
-      const operations = (await Promise.all(resolvers)).reduce(
-        (p, c) => p.concat(c),
-        [],
-      );
+
+      const operations: { [key: string]: Operation[] } = (
+        await Promise.all(
+          resolvers.map(async r => {
+            const ops = await r.resolver;
+            return { key: r.key, ops };
+          }),
+        )
+      ).reduce((p, { key, ops }) => {
+        if (p[key]) {
+          return { ...p, [key]: p[key].concat(ops) };
+        } else {
+          return { ...p, [key]: ops };
+        }
+      }, {});
       this.resolverMap.delete(key);
       return operations;
     } else {
@@ -63,10 +76,13 @@ class DdsChangesQueue {
       }
       this.resolveOperations(key)
         .then(ops => {
-          if (ops.length !== 0) {
+          const keys = Object.keys(ops);
+          if (keys.length !== 0) {
             const udd = v4();
             console.log('apply ops start ---', udd, ops);
-            this.apply(ops);
+            keys.forEach(k => {
+              this.operationBroadcaster[k](ops[k]);
+            });
             console.log('apply ops end ---', udd, ops);
           }
           this.process();
@@ -90,8 +106,8 @@ class DdsChangesQueue {
     this.startProcess();
   }
 
-  public init(apply: (ops: Operation[]) => void) {
-    this.apply = apply;
+  registerOperationsBroadcast(id: string, apply: (ops: Operation[]) => void) {
+    this.operationBroadcaster[id] = apply;
   }
 }
 

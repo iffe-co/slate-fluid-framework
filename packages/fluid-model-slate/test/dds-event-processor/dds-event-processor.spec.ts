@@ -24,7 +24,7 @@ describe('dds event processor', () => {
     const operationReceiverMock = jest.fn();
 
     const initReceiveOpsPromise = new Promise(resolve => {
-      ddsChangesQueue.init(ops => {
+      ddsChangesQueue.registerOperationsBroadcast('need to correct id',ops => {
         operationReceiverMock(ops);
         resolve()
       })
