@@ -1,6 +1,6 @@
 {
   "name": "@solidoc/fluid-model-base",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "fluid-model-base",
   "keywords": [
     "fluid"
@@ -8,7 +8,7 @@
   "author": "CoffeyGit <tjcaofei@126.com>",
   "homepage": "https://github.com/iffe-co/slate-fluid-framework#readme",
   "license": "ISC",
-  "main": "dist/index.cjs.js",
+  "main": "dist/index.es.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "publishConfig": {
@@ -28,7 +28,7 @@
     "url": "https://github.com/iffe-co/slate-fluid-framework/issues"
   },
   "dependencies": {
-    "@fluidframework/aqueduct": "^0.27.12",
+    "@fluidframework/aqueduct": "^0.28.5",
     "rxjs": "^6.6.3"
   }
 }
