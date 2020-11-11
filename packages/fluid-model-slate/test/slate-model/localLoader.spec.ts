@@ -73,13 +73,13 @@ describe("LocalLoader", () => {
             value2.insertText(0, '222')
             sharedMap2.set('x', value2.handle)
 
-            dataObject1.fluidNodeSequence.insert(0, [<IFluidHandle<SharedMap>>sharedMap.handle, <IFluidHandle<SharedMap>>sharedMap2.handle])
+            dataObject1.getDocContentAndProperties().content.insert(0, [<IFluidHandle<SharedMap>>sharedMap.handle, <IFluidHandle<SharedMap>>sharedMap2.handle])
             await opProcessingController.process();
             await opProcessingController.process();
             await opProcessingController.process();
             await opProcessingController.process();
 
-            let fluidNodeIFluidHandle = dataObject2.fluidNodeSequence.getRange(0, 2)[1];
+            let fluidNodeIFluidHandle = dataObject1.getDocContentAndProperties().content.getRange(0, 2)[1];
             let node_0 = await fluidNodeIFluidHandle.get();
             let newVar = await node_0.get('x').get();
             expect(newVar.getText()).toEqual('222')

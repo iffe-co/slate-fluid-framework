@@ -1,11 +1,14 @@
 import { BaseFluidModel } from '@solidoc/fluid-model-base';
-import { SharedMap } from '@fluidframework/map';
+import { IValueChanged, SharedMap } from '@fluidframework/map';
 import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
 import { DataObjectFactory, IDataObjectProps } from '@fluidframework/aqueduct';
 import { FLUIDNODE_KEYS } from './interfaces';
 import { Operation } from 'slate';
 import { operationApplier } from './operation-applier/operation-applier';
+import { ISequencedDocumentMessage } from '@fluidframework/protocol-definitions';
+
 import {
+  FluidNode,
   FluidNodeChildren,
   FluidNodeChildrenHandle,
   FluidNodePropertyHandle,
@@ -24,9 +27,11 @@ import { addEventListenerHandler } from './event-handler';
 import { convertSharedMapToSlateOp } from './dds-event-processor/processor/children-value-changed-event-processor';
 import { ddsChangesQueue } from './dds-changes-queue';
 import { Observable } from 'rxjs';
+import { createSetNodeOperation } from '.';
 
 class SlateFluidModel extends BaseFluidModel<Operation> {
   private observable?: Observable<Operation[]>;
+  private docPropertiesChangedOpReceiver = (op: Operation) => {};
 
   subscribe(): Observable<Operation[]> {
     if (!this.observable) {
@@ -36,13 +41,20 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
           this.fluidNodeSequence.id,
           ops => subscriber.next(ops),
         );
+        this.docPropertiesChangedOpReceiver = (op: Operation) =>
+          subscriber.next([op]);
       });
     }
     console.log('this.fluidNodeSequence.id', this.fluidNodeSequence.id);
     return this.observable;
   }
 
-  public fluidNodeSequence!: SharedObjectSequence<IFluidHandle<SharedMap>>;
+  private docProperties!: SharedMap;
+  private fluidNodeSequence!: SharedObjectSequence<IFluidHandle<SharedMap>>;
+
+  public getDocContentAndProperties() {
+    return { content: this.fluidNodeSequence, properties: this.docProperties };
+  }
 
   public constructor(props: IDataObjectProps) {
     super(props);
@@ -95,15 +107,51 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
       IFluidHandle<SharedMap>
     >;
     this.root.set(FLUIDNODE_KEYS.CHILDREN, fluidNodeSequence.handle);
+
+    // init doc properties
+    const docProperties = SharedMap.create(this.runtime);
+    docProperties.set(FLUIDNODE_KEYS.TITLE, '');
+    docProperties.set(FLUIDNODE_KEYS.ICON, '');
+
+    this.docProperties = docProperties;
+    this.root.set(FLUIDNODE_KEYS.PROPERTIES, docProperties.handle);
   }
 
   protected async hasInitialized() {
-    [this.fluidNodeSequence] = await Promise.all([
+    [this.fluidNodeSequence, this.docProperties] = await Promise.all([
       this.root.get(FLUIDNODE_KEYS.CHILDREN).get(),
+      this.root.get(FLUIDNODE_KEYS.PROPERTIES).get(),
     ]);
 
     await this.addDDSToCache();
     addEventListenerHandler(this.fluidNodeSequence);
+
+    this.onDocPropertiesChanged();
+  }
+
+  private onDocPropertiesChanged() {
+    this.docProperties.on(
+      'valueChanged',
+      (
+        event: IValueChanged,
+        local: boolean,
+        op: ISequencedDocumentMessage,
+        target: FluidNode,
+      ) => {
+        if (local) {
+          return;
+        }
+        const type = op.contents.type;
+        if (type === 'set') {
+          const path: number[] = [];
+          const properties = { [event.key]: event.previousValue };
+          const newProperties = { [event.key]: target.get(event.key) };
+          const op = createSetNodeOperation(path, properties, newProperties);
+          this.docPropertiesChangedOpReceiver(op);
+        }
+        return;
+      },
+    );
   }
 
   private async addDDSToCache() {
