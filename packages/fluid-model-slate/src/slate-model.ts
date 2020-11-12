@@ -53,7 +53,17 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
   private fluidNodeSequence!: SharedObjectSequence<IFluidHandle<SharedMap>>;
 
   public getDocContentAndProperties() {
-    return { content: this.fluidNodeSequence, properties: this.docProperties };
+    return {
+      content: this.fluidNodeSequence,
+      properties: this.docProperties,
+      getImmediateChildren: this.getImmediateChildren,
+    };
+  }
+
+  private getImmediateChildren() {
+    return this.fluidNodeSequence
+      .getItems(0)
+      .map(nodeHandle => getNodeFromCacheByHandle(nodeHandle));
   }
 
   public constructor(props: IDataObjectProps) {
