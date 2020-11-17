@@ -1,6 +1,6 @@
 {
   "name": "@solidoc/fluid-model-slate",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "adapter for slate to fluid framework",
   "keywords": [
     "fluid",
@@ -36,7 +36,7 @@
     "@fluidframework/sequence": "^0.28.5",
     "@fluidframework/shared-object-base": "^0.28.5",
     "@fluidframework/test-runtime-utils": "^0.28.5",
-    "@solidoc/fluid-model-base": "^0.0.6",
+    "@solidoc/fluid-model-base": "^0.0.8",
     "@fluidframework/local-driver": "^0.28.5",
     "@fluidframework/test-utils": "^0.28.5",
     "@fluidframework/merge-tree": "^0.28.5",
