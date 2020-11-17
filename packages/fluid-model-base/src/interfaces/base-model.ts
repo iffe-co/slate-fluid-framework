@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
 interface IBaseFluidModel<T> {
-  subscribe(): Observable<T[]>;
+  changedObserver: Observable<T[]>;
   apply(ops: T[]): void;
   fetch(): any;
 }
