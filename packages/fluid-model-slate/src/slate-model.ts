@@ -53,11 +53,11 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     };
   };
 
-  private getImmediateChildren() {
+  private getImmediateChildren = () => {
     return this.fluidNodeSequence
       .getItems(0)
       .map(nodeHandle => getNodeFromCacheByHandle(nodeHandle));
-  }
+  };
 
   public constructor(props: IDataObjectProps) {
     super(props);
