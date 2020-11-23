@@ -109,7 +109,7 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     const node_1_text = SharedString.create(this.runtime);
     node_1.set(FLUIDNODE_KEYS.TEXT, node_1_text.handle);
     node_1.set(FLUIDNODE_KEYS.TYPE, 'Page');
-    node_1.set(FLUIDNODE_KEYS.ID, 'SubPageID_SLATE');
+    node_1.set(FLUIDNODE_KEYS.ID, 'SubPageID_SLATE' + new Date().getTime());
 
     fluidNodeSequence.insert(0, [node_0.handle, node_1.handle]);
     this.fluidNodeSequence = fluidNodeSequence as SharedObjectSequence<
