@@ -43,6 +43,7 @@
     "core-js": "3",
     "tinylicious": "^0.2.3810",
     "uuid": "^8.3.0",
-    "rxjs": "^6.6.3"
+    "rxjs": "^6.6.3",
+    "@solidoc/slate-dependencies": "^0.0.3"
   }
 }

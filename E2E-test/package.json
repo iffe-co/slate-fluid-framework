@@ -30,11 +30,11 @@
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "babel-plugin-transform-imports": "^2.0.0",
     "jest": "^26.4.2",
-    "slate": "^0.59.0",
     "socket.io": "^2.3.0",
     "tinylicious": "0.2.3810",
     "ts-jest": "^26.4.0",
-    "typescript": "^4.0.3"
+    "typescript": "^4.0.3",
+    "@solidoc/slate-dependencies": "^0.0.3"
   },
   "author": "",
   "license": "ISC",
