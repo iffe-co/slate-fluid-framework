@@ -102,7 +102,6 @@ class DdsChangesQueue {
     this.resolverMap.set(newKey, []);
     this.currentKey = newKey;
     this.keyQueue.push(key);
-    console.log('applyAsyncOps-------------------');
     this.startProcess();
   }
 
