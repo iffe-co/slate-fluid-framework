@@ -1,4 +1,4 @@
-import { RemoveTextOperation } from 'slate';
+import { RemoveTextOperation } from '@solidoc/slate';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { getNode, getText } from '../node-getter';
 import { FluidNodeChildren } from '../../types';

@@ -1,4 +1,4 @@
-import { Node } from 'slate';
+import { Node } from '@solidoc/slate';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
 import { SharedMap } from '@fluidframework/map';

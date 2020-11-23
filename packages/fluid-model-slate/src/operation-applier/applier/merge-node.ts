@@ -1,4 +1,4 @@
-import { MergeNodeOperation } from 'slate';
+import { MergeNodeOperation } from '@solidoc/slate';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import {
   getChildren,

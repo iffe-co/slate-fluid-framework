@@ -1,4 +1,4 @@
-import { InsertNodeOperation } from 'slate';
+import { InsertNodeOperation } from '@solidoc/slate';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { getParent } from '../node-getter';
 import { createNode } from '../node-factory';

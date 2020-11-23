@@ -1,4 +1,4 @@
-import { SplitNodeOperation } from 'slate';
+import { SplitNodeOperation } from '@solidoc/slate';
 import { SharedMap } from '@fluidframework/map';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { getChildren, getNode, getParent, getText } from '../node-getter';

@@ -1,6 +1,6 @@
 import { SequenceDeltaEvent, SharedString } from '@fluidframework/sequence';
 import { FluidNodeChildren, FluidNodeHandle } from '../../types';
-import { Operation } from 'slate';
+import { Operation } from '@solidoc/slate';
 import { FLUIDNODE_KEYS } from '../../interfaces';
 import {
   createInsertNodeOperation,

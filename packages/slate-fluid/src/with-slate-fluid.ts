@@ -1,4 +1,4 @@
-import { Editor, Operation } from 'slate';
+import { Editor, Operation } from '@solidoc/slate';
 import { BaseFluidModel } from '@solidoc/fluid-model-base';
 const uuid = require('uuid').v4();
 

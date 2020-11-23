@@ -5,7 +5,7 @@ import {
 import { FluidNodeHandle } from '../../src/types';
 import { SharedMap } from '@fluidframework/map';
 import { FLUIDNODE_KEYS } from '../../src/interfaces';
-import { Node, Operation } from 'slate';
+import { Node, Operation } from '@solidoc/slate';
 import { operationApplier } from '../../src/operation-applier';
 import { getNode } from '../../src/operation-applier/node-getter';
 import { IFluidHandle } from '@fluidframework/core-interfaces';

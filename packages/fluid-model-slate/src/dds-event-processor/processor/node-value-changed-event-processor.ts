@@ -3,7 +3,7 @@ import { FluidNode, FluidNodeChildren } from '../../types';
 import { Path } from '../../types/path';
 import { IValueChanged } from '@fluidframework/map';
 import { ISequencedDocumentMessage } from '@fluidframework/protocol-definitions';
-import { Operation } from 'slate';
+import { Operation } from '@solidoc/slate';
 import { createSetNodeOperation } from '../slate-operation-factory';
 import {
   getChildrenFromCacheByHandle,

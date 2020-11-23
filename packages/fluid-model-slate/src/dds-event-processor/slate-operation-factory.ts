@@ -1,5 +1,5 @@
 import { Path } from '../types/path';
-import { Node, Operation } from 'slate';
+import { Node, Operation } from '@solidoc/slate';
 
 export function createSetNodeOperation(
   path: Path,

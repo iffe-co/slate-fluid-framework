@@ -1,6 +1,6 @@
 import { SequenceDeltaEvent } from '@fluidframework/sequence';
 import { FluidNodeChildren, FluidNodeProperty } from '../../types';
-import { Operation } from 'slate';
+import { Operation } from '@solidoc/slate';
 import { FLUIDNODE_KEYS } from '../../interfaces';
 import {
   createInsertTextOperation,

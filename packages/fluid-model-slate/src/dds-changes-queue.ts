@@ -1,4 +1,4 @@
-import { Operation } from 'slate';
+import { Operation } from '@solidoc/slate';
 import { v4 } from 'uuid';
 
 type OperationResolver = { key: string; resolver: Promise<Operation[]> };

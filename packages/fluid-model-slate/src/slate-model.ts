@@ -3,7 +3,7 @@ import { IValueChanged, SharedMap } from '@fluidframework/map';
 import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
 import { DataObjectFactory, IDataObjectProps } from '@fluidframework/aqueduct';
 import { FLUIDNODE_KEYS } from './interfaces';
-import { Operation } from 'slate';
+import { Operation } from '@solidoc/slate';
 import { operationApplier } from './operation-applier/operation-applier';
 import { ISequencedDocumentMessage } from '@fluidframework/protocol-definitions';
 

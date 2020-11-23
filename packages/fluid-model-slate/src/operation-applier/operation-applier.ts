@@ -1,4 +1,4 @@
-import { SetSelectionOperation } from 'slate';
+import { SetSelectionOperation } from '@solidoc/slate';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { applyInsertNodeOperation } from './applier';
 import { applyInsertTextOperation } from './applier/insert-text';

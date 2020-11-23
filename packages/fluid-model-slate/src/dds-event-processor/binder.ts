@@ -2,7 +2,7 @@ import { FluidNode, FluidNodeChildren, FluidNodeProperty } from '../types';
 import { IValueChanged } from '@fluidframework/map';
 import { ISequencedDocumentMessage } from '@fluidframework/protocol-definitions';
 import { SequenceDeltaEvent } from '@fluidframework/sequence';
-import { Operation } from 'slate';
+import { Operation } from '@solidoc/slate';
 import {
   textSequenceDeltaEventProcessor,
   nodeValueChangedEventProcessor,
