@@ -105,13 +105,6 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     node_0_children.insert(0, [node_0_0.handle]);
     node_0_0.set(FLUIDNODE_KEYS.TEXT, node_0_0_text.handle);
 
-    const node_1 = SharedMap.create(this.runtime);
-    const node_1_text = SharedString.create(this.runtime);
-    node_1.set(FLUIDNODE_KEYS.TEXT, node_1_text.handle);
-    node_1.set(FLUIDNODE_KEYS.TYPE, 'Page');
-    node_1.set(FLUIDNODE_KEYS.ID, 'SubPageID_SLATE' + new Date().getTime());
-
-    fluidNodeSequence.insert(0, [node_0.handle, node_1.handle]);
     this.fluidNodeSequence = fluidNodeSequence as SharedObjectSequence<
       IFluidHandle<SharedMap>
     >;
@@ -120,7 +113,7 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     // init doc properties
     const docProperties = SharedMap.create(this.runtime);
     docProperties.set(FLUIDNODE_KEYS.TITLE, 'default title');
-    docProperties.set(FLUIDNODE_KEYS.ICON, 'default icon');
+    docProperties.set(FLUIDNODE_KEYS.ICON, '');
     docProperties.set(FLUIDNODE_KEYS.TYPE, 'Page');
 
     this.docProperties = docProperties;
