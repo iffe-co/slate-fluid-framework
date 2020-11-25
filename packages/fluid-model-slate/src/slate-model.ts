@@ -82,16 +82,15 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
   );
 
   apply(ops: Operation[]) {
-    ops.forEach(op => console.log(op));
+    console.log("model-apply:", ops);
     ops.forEach(op =>
       operationApplier[op.type](op, this.fluidNodeSequence, this.runtime),
     );
+    // const nodes = this.fluidNodeSequence.getRange(0);
 
-    const nodes = this.fluidNodeSequence.getRange(0);
-
-    Promise.all(
-      nodes.map(n => convertSharedMapToSlateOp(getNodeFromCacheByHandle(n))),
-    ).then(v => console.log(v));
+    // Promise.all(
+    //   nodes.map(n => convertSharedMapToSlateOp(getNodeFromCacheByHandle(n))),
+    // ).then(v => console.log(v));
   }
 
   protected async initializingFirstTime() {
@@ -104,6 +103,8 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     node_0.set(FLUIDNODE_KEYS.CHILDREN, node_0_children.handle);
     node_0_children.insert(0, [node_0_0.handle]);
     node_0_0.set(FLUIDNODE_KEYS.TEXT, node_0_0_text.handle);
+
+    fluidNodeSequence.insert(0, [node_0.handle]);
 
     this.fluidNodeSequence = fluidNodeSequence as SharedObjectSequence<
       IFluidHandle<SharedMap>

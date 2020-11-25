@@ -30,7 +30,6 @@ const getNode = (path: number[], root: FluidNodeChildren): SharedMap => {
 
     return getNodeFromCacheByHandle(targetNode);
   }
-
   const mapHandle = root.getRange(index, index + 1)[0];
   const map = getNodeFromCache(mapHandle.absolutePath);
   let childrenHandle = map.get(FLUIDNODE_KEYS.CHILDREN);
