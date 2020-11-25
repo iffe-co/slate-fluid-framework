@@ -81,7 +81,11 @@ class DdsChangesQueue {
             const udd = v4();
             console.log('apply ops start ---', udd, ops);
             keys.forEach(k => {
-              this.operationBroadcaster[k](ops[k]);
+              if (this.operationBroadcaster[k]) {
+                this.operationBroadcaster[k](ops[k]);
+              } else {
+                console.warn(`can not find operationBroadcaster for ${k}`);
+              }
             });
             console.log('apply ops end ---', udd, ops);
           }
