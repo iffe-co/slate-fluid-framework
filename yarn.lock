@@ -3634,6 +3634,35 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@solidoc/fluid-model-base@^0.0.8":
+  version "0.0.8"
+  resolved "https://npm.pkg.github.com/download/@solidoc/fluid-model-base/0.0.8/6ce414f01e97872e38e3937c09feafefb2030f5fc3381bce79540f27c346976c#6b26064ab0704e26473450f20a918ae098507a43"
+  integrity sha512-cFrnn9rY2qVjDp2q89Vxjg3k/81kFvfvU65A7xFdY9yWizg2U4hdzaQucWo597eigqsv6jhejFGRmH54ATxBJQ==
+  dependencies:
+    "@fluidframework/aqueduct" "^0.28.5"
+    rxjs "^6.6.3"
+
+"@solidoc/fluid-model-slate@^0.0.18":
+  version "0.0.18"
+  resolved "https://npm.pkg.github.com/download/@solidoc/fluid-model-slate/0.0.18/6325488ec8a03de05a8ac0ba0d7c612049ef5d850f9e4cf2534afa31bcb3bbca#ba4b08a3373de81597f04aac6afcdd221390023c"
+  integrity sha512-H0JVjM30jhFPZ6qgFRghK8tCf8bqd2qMHAUelZld5PfqUsRTecwADunRzqYsFcFSQn36JAI6Gcge44TpVvSv3g==
+  dependencies:
+    "@fluidframework/aqueduct" "^0.28.5"
+    "@fluidframework/core-interfaces" "^0.28.5"
+    "@fluidframework/datastore-definitions" "^0.28.5"
+    "@fluidframework/local-driver" "^0.28.5"
+    "@fluidframework/map" "^0.28.5"
+    "@fluidframework/merge-tree" "^0.28.5"
+    "@fluidframework/sequence" "^0.28.5"
+    "@fluidframework/shared-object-base" "^0.28.5"
+    "@fluidframework/test-runtime-utils" "^0.28.5"
+    "@fluidframework/test-utils" "^0.28.5"
+    "@solidoc/fluid-model-base" "^0.0.8"
+    core-js "3"
+    rxjs "^6.6.3"
+    tinylicious "^0.2.3810"
+    uuid "^8.3.0"
+
 "@solidoc/iffe-cli@^1.2.0":
   version "1.2.0"
   resolved "https://npm.pkg.github.com/download/@solidoc/iffe-cli/1.2.0/89f3d870eb7c29e7df8aa53391e7b2b38c71b83a8af9094cd3658eb85757af49#8666b4657629ac56da98bd9f4cf5b9c3fee74a2c"
