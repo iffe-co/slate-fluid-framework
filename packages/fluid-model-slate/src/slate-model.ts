@@ -24,13 +24,11 @@ import {
   getTextFromCacheByHandle,
 } from './dds-cache';
 import { addEventListenerHandler } from './event-handler';
-import { convertSharedMapToSlateOp } from './dds-event-processor/processor/children-value-changed-event-processor';
 import { ddsChangesQueue } from './dds-changes-queue';
 import { Observable, Subscriber } from 'rxjs';
 import { createSetNodeOperation } from '.';
 
 class SlateFluidModel extends BaseFluidModel<Operation> {
-  private observable?: Observable<Operation[]>;
   private docPropertiesChangedOpReceiver = (op: Operation) => {};
 
   notifyConsumer = (subscriber: Subscriber<Operation[]>) => {
