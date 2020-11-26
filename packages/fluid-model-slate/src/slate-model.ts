@@ -80,7 +80,7 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
   );
 
   apply(ops: Operation[]) {
-    console.log("model-apply:", ops);
+    console.log('model-apply:', ops);
     ops.forEach(op =>
       operationApplier[op.type](op, this.fluidNodeSequence, this.runtime),
     );
@@ -161,7 +161,16 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     console.log('init value', initValue);
   }
 
-  public fetch(root?: FluidNodeChildren) {
+  public fetch() {
+    return {
+      id: this.id,
+      title: this.docProperties.get(FLUIDNODE_KEYS.TITLE),
+      icon: this.docProperties.get(FLUIDNODE_KEYS.ICON),
+      children: this.fetchChildren(this.fluidNodeSequence),
+    };
+  }
+
+  private fetchChildren = (root: FluidNodeChildren) => {
     const slateNodes: any[] = [];
     const nodeHandles = (root || this.fluidNodeSequence).getRange(0);
     for (let nodeHandle of nodeHandles) {
@@ -172,7 +181,7 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
           FLUIDNODE_KEYS.CHILDREN,
         );
         const children = getChildrenFromCacheByHandle(childrenHandle);
-        slateNode[FLUIDNODE_KEYS.CHILDREN] = this.fetch(children);
+        slateNode[FLUIDNODE_KEYS.CHILDREN] = this.fetchChildren(children);
       }
       if (node.has(FLUIDNODE_KEYS.TEXT)) {
         const textHandle = node.get<FluidNodePropertyHandle>(
@@ -189,7 +198,7 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
       slateNodes.push(slateNode);
     }
     return slateNodes;
-  }
+  };
 
   private async toInitSlateValue(root: FluidNodeChildren) {
     const slateNodes: any[] = [];
