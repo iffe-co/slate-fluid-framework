@@ -1,6 +1,6 @@
 {
   "name": "@solidoc/fluid-model-slate",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "description": "adapter for slate to fluid framework",
   "keywords": [
     "fluid",
@@ -44,6 +44,6 @@
     "tinylicious": "^0.2.3810",
     "uuid": "^8.3.0",
     "rxjs": "^6.6.3",
-    "@solidoc/slate-dependencies": "^0.0.3"
+    "@solidoc/slate-dependencies": "0.1.4"
   }
 }
