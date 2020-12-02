@@ -9,11 +9,8 @@ import {
   addNodeToCache,
   addTextToCache,
 } from '../dds-cache';
-import {
-  bindFluidNodeEvent,
-  fluidNodeChildrenEventBinder,
-  fluidNodePropertyEventBinder,
-} from '../dds-event-processor';
+import { addListenerToNode } from '../event-handler';
+import { IFluidHandle } from '@fluidframework/core-interfaces';
 
 const createSharedString = (
   text: string,
@@ -23,13 +20,11 @@ const createSharedString = (
   const shareString = SharedString.create(runtime);
   shareString.insertText(0, text);
   addTextToCache(shareString);
-  fluidNodePropertyEventBinder(shareString, root);
   return shareString;
 };
 
 const createChildren = (
   runtime: IFluidDataStoreRuntime,
-  root: FluidNodeChildren,
   content?: FluidNodeHandle[],
 ) => {
   const sequence = SharedObjectSequence.create<FluidNodeHandle>(runtime);
@@ -37,7 +32,6 @@ const createChildren = (
     sequence.insert(0, content);
   }
   addChildrenToCache(sequence);
-  fluidNodeChildrenEventBinder(sequence, root);
   return sequence;
 };
 
@@ -46,22 +40,21 @@ function buildChildren(
   childrenOp: Node[],
   root: FluidNodeChildren,
 ) {
-  const children = createChildren(runtime, root);
+  const children = createChildren(runtime);
   const childrenHandles = childrenOp.map(
-    c => createNode(c, runtime, root).handle,
+    c => createNodeInternal(c, runtime, root).handle,
   );
   children.insert(0, <FluidNodeHandle[]>childrenHandles);
   return children;
 }
 
-const createNode = (
+const createNodeInternal = (
   slateNode: Node,
   runtime: IFluidDataStoreRuntime,
   root: FluidNodeChildren,
 ) => {
   const node = SharedMap.create(runtime);
   addNodeToCache(node);
-  bindFluidNodeEvent(node, root);
 
   if (slateNode.text !== undefined) {
     const text = createSharedString(slateNode.text as string, runtime, root);
@@ -70,7 +63,7 @@ const createNode = (
     const children = buildChildren(runtime, slateNode.children as Node[], root);
     node.set(FLUIDNODE_KEYS.CHILDREN, children.handle);
   } else {
-    const children = createChildren(runtime, root);
+    const children = createChildren(runtime);
     node.set(FLUIDNODE_KEYS.CHILDREN, children.handle);
   }
 
@@ -80,6 +73,16 @@ const createNode = (
       node.set(k, slateNode[k]);
     });
 
+  return node;
+};
+
+const createNodeNeo = (
+  slateNode: Node,
+  runtime: IFluidDataStoreRuntime,
+  root: FluidNodeChildren,
+) => {
+  const node = createNodeInternal(slateNode, runtime, root);
+  addListenerToNode(<IFluidHandle<SharedMap>>node.handle, root);
   return node;
 };
 
@@ -93,7 +96,7 @@ const applyProperties = <T extends Text | Element>(
   });
 };
 
-const createNodeWithChildren = (
+const createNodeWithChildrenNeo = (
   children: FluidNodeHandle[],
   properties: Partial<Element>,
   runtime: IFluidDataStoreRuntime,
@@ -102,14 +105,14 @@ const createNodeWithChildren = (
   const node = SharedMap.create(runtime);
   addNodeToCache(node);
 
-  node.set(
-    FLUIDNODE_KEYS.CHILDREN,
-    createChildren(runtime, root, children).handle,
-  );
+  node.set(FLUIDNODE_KEYS.CHILDREN, createChildren(runtime, children).handle);
+
   if (properties) {
     applyProperties<Element>(properties, node, runtime);
   }
+
+  addListenerToNode(<IFluidHandle<SharedMap>>node.handle, root);
   return node;
 };
 
-export { createNode, createNodeWithChildren, createSharedString };
+export { createNodeNeo, createNodeWithChildrenNeo };

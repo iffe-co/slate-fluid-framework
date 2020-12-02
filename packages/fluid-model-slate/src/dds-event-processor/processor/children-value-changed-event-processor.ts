@@ -6,7 +6,7 @@ import {
   createInsertNodeOperation,
   createRemoveNodeOperation,
 } from '../slate-operation-factory';
-import { Path } from '../../types/path';
+import { Path } from '../../interfaces/path';
 import { getChildren } from '../../operation-applier/node-getter';
 import { SharedMap } from '@fluidframework/map';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
@@ -15,6 +15,7 @@ import {
   addNodeWithChildrenToCache,
   getNodeFromCacheByHandle,
 } from '../../dds-cache';
+import { ddsToSlateNode } from '../../convertor';
 
 function getPathFromRoot(
   target: FluidNodeChildren,
@@ -87,7 +88,7 @@ async function insertNodeOpProcessor(
   return Promise.all(
     items.map(async (rh: FluidNodeHandle, i: number) => {
       const node = (await rh.get()) as SharedMap;
-      let nodeData = await convertSharedMapToSlateOp(node);
+      const nodeData = await convertSharedMapToSlateOp(node);
       await addNodeWithChildrenToCache(node, root);
       return createInsertNodeOperation([...path, i + position], nodeData);
     }),
@@ -139,15 +140,66 @@ async function getOperationsPromise(
   throw new Error(`Not support operation: ${event.opArgs.op}`);
 }
 
+function localEventProcessor(
+  target: FluidNodeChildren,
+  root: FluidNodeChildren,
+  event: SequenceDeltaEvent,
+  path: Path,
+) {
+  if (event.opArgs.op.type === MergeTreeDeltaType.REMOVE.valueOf()) {
+    const {
+      opArgs: {
+        op: { pos1: position },
+      },
+      deltaArgs: { deltaSegments },
+    } = (event as unknown) as {
+      opArgs: {
+        op: {
+          pos1: number;
+        };
+      };
+      deltaArgs: {
+        deltaSegments: { segment: { items: { value: SharedMap }[] } }[];
+      };
+    };
+
+    const ops = deltaSegments
+      .reduce((p, c) => p.concat(c.segment.items), [] as { value: SharedMap }[])
+      .map(({ value: node }, i: number) => {
+        const nodeData = ddsToSlateNode(node);
+        return createRemoveNodeOperation([...path, i + position], nodeData);
+      });
+
+    return ops;
+  }
+  if (event.opArgs.op.type === MergeTreeDeltaType.INSERT.valueOf()) {
+    const {
+      seg: { items },
+      pos1: position,
+    } = event.opArgs.op as {
+      seg: { items: { value: SharedMap }[] };
+      pos1: number;
+    };
+
+    const ops = items.map(({ value: node }, i: number) => {
+      const nodeData = ddsToSlateNode(node);
+      return createInsertNodeOperation([...path, i + position], nodeData);
+    });
+
+    return ops;
+  }
+  throw new Error(`Not support operation: ${event.opArgs.op}`);
+}
+
 function childrenSequenceDeltaEventProcessor(
   event: SequenceDeltaEvent,
   target: FluidNodeChildren,
   root: FluidNodeChildren,
-): Promise<Operation[]> | undefined {
-  if (event.isLocal) {
-    return;
-  }
+): Promise<Operation[]> | Operation[] {
   const path = getPathFromRoot(target, root) || [];
+  if (event.isLocal) {
+    return localEventProcessor(target, root, event, path);
+  }
   return getOperationsPromise(target, root, event, path);
 }
 

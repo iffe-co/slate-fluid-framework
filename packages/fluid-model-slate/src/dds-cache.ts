@@ -7,11 +7,9 @@ import {
   FluidNodePropertyHandle,
 } from './types';
 import { FLUIDNODE_KEYS } from './interfaces';
-import {
-  bindFluidNodeEvent,
-  fluidNodeChildrenEventBinder,
-  fluidNodePropertyEventBinder,
-} from './dds-event-processor';
+import { addListenerToNode } from './event-handler';
+import { IFluidHandle } from '@fluidframework/core-interfaces';
+import { SharedMap } from '@fluidframework/map';
 
 const nodeCache: { [key: string]: FluidNode } = {};
 const childrenCache: { [key: string]: FluidNodeChildren } = {};
@@ -21,25 +19,30 @@ const addNodeWithChildrenToCache = async (
   node: FluidNode,
   root: FluidNodeChildren,
 ) => {
+  await addNodeWithChildrenToCacheNeo(node, root);
+  addListenerToNode(<IFluidHandle<SharedMap>>node.handle, root);
+};
+
+const addNodeWithChildrenToCacheNeo = async (
+  node: FluidNode,
+  root: FluidNodeChildren,
+) => {
   addNodeToCache(node);
-  bindFluidNodeEvent(node, root);
   if (node.has(FLUIDNODE_KEYS.CHILDREN)) {
     const children = await node
       .get<FluidNodeChildrenHandle>(FLUIDNODE_KEYS.CHILDREN)
       .get();
-    fluidNodeChildrenEventBinder(children, root);
     addChildrenToCache(children);
 
     await Promise.all(
       [...children.getRange(0)].map(async (handle: FluidNodeHandle) => {
         const node = await handle.get();
-        await addNodeWithChildrenToCache(node, root);
+        await addNodeWithChildrenToCacheNeo(node, root);
       }),
     );
   }
   if (node.has(FLUIDNODE_KEYS.TEXT)) {
     const text = await node.get(FLUIDNODE_KEYS.TEXT).get();
-    fluidNodePropertyEventBinder(text, root);
     addTextToCache(text);
   }
 };

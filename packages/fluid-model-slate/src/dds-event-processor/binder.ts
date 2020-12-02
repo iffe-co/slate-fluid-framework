@@ -9,6 +9,7 @@ import {
 } from './processor';
 import { childrenSequenceDeltaEventProcessor } from './processor/children-value-changed-event-processor';
 import { ddsChangesQueue } from '../dds-changes-queue';
+import { operationCollector } from './operations-collector';
 
 type OperationReceiver = (op: Operation) => void;
 const operationTransmitter: OperationReceiver[] = [];
@@ -28,19 +29,17 @@ function bindFluidNodeEvent(fluidNode: FluidNode, root: FluidNodeChildren) {
       op: ISequencedDocumentMessage,
       target: FluidNode,
     ) => {
-      const slateOp = nodeValueChangedEventProcessor(
-        event,
-        local,
-        op,
-        target,
-        root,
-      );
+      const slateOp = nodeValueChangedEventProcessor(event, op, target, root);
       if (slateOp) {
-        console.log('valueChanged op');
-        ddsChangesQueue.addOperationResolver({
-          key: root.id,
-          resolver: Promise.resolve([slateOp]),
-        });
+        if (local) {
+          operationCollector.add(root.id, [slateOp]);
+        } else {
+          console.log('valueChanged op');
+          ddsChangesQueue.addOperationResolver({
+            key: root.id,
+            resolver: Promise.resolve([slateOp]),
+          });
+        }
       }
     },
   );
@@ -58,7 +57,9 @@ function fluidNodePropertyEventBinder(
     'sequenceDelta',
     (event: SequenceDeltaEvent, target: FluidNodeProperty) => {
       const slateOps = textSequenceDeltaEventProcessor(event, target, root);
-      if (slateOps) {
+      if (event.isLocal) {
+        operationCollector.add(root.id, slateOps);
+      } else {
         console.log('sequenceDelta op');
         ddsChangesQueue.addOperationResolver({
           key: root.id,
@@ -80,17 +81,15 @@ function fluidNodeChildrenEventBinder(
   fluidNodeChildren.on(
     'sequenceDelta',
     (event: SequenceDeltaEvent, target: FluidNodeChildren) => {
-      const slateOpsPromise = childrenSequenceDeltaEventProcessor(
-        event,
-        target,
-        root,
-      );
-      if (slateOpsPromise) {
+      const result = childrenSequenceDeltaEventProcessor(event, target, root);
+      if (result instanceof Array) {
+        operationCollector.add(root.id, result);
+      } else {
         console.log('sequenceDelta op');
 
         ddsChangesQueue.addOperationResolver({
           key: root.id,
-          resolver: slateOpsPromise,
+          resolver: result,
         });
       }
     },

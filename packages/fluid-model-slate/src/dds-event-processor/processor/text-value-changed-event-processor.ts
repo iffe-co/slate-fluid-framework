@@ -7,7 +7,7 @@ import {
   createRemoveTextOperation,
 } from '../slate-operation-factory';
 import { MergeTreeDeltaType, TextSegment } from '@fluidframework/merge-tree';
-import { Path } from '../../types/path';
+import { Path } from '../../interfaces/path';
 import { getChildren } from '../../operation-applier/node-getter';
 import { getNodeFromCacheByHandle } from '../../dds-cache';
 
@@ -76,10 +76,7 @@ function textSequenceDeltaEventProcessor(
   event: SequenceDeltaEvent,
   target: FluidNodeProperty,
   root: FluidNodeChildren,
-): Operation[] | undefined {
-  if (event.isLocal) {
-    return;
-  }
+): Operation[] {
   checkEventType(event);
   return getOperationPromise(event, target, root);
 }

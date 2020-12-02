@@ -49,4 +49,4 @@ const addListenerToNode = (
   }
 };
 
-export { addEventListenerHandler };
+export { addEventListenerHandler, addListenerToNode };

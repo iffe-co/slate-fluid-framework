@@ -1,5 +1,6 @@
 import {IUrlResolver} from '@fluidframework/driver-definitions';
-import {IContainer, IFluidCodeDetails, ILoader,} from '@fluidframework/container-definitions';
+import {IContainer, ILoader,} from '@fluidframework/container-definitions';
+import {IFluidCodeDetails} from '@fluidframework/core-interfaces';
 import {LocalResolver} from '@fluidframework/local-driver';
 import {SharedObjectSequence, SharedString,} from '@fluidframework/sequence';
 import {requestFluidObject} from '@fluidframework/runtime-utils';
@@ -18,11 +19,6 @@ import {IFluidHandle} from '@fluidframework/core-interfaces';
 import {IChannelFactory} from '@fluidframework/datastore-definitions';
 import {addChildrenToCache, addNodeToCache, addTextToCache} from "../../src/dds-cache";
 import {FluidNodeHandle} from "../../src/types";
-
-Object.defineProperty(window, 'performance', {
-  value: undefined,
-  writable: false,
-});
 
 const uuid = require('uuid');
 

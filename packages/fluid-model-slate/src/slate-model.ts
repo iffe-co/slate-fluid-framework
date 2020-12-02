@@ -3,7 +3,7 @@ import { IValueChanged, SharedMap } from '@fluidframework/map';
 import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
 import { DataObjectFactory, IDataObjectProps } from '@fluidframework/aqueduct';
 import { FLUIDNODE_KEYS } from './interfaces';
-import { Operation } from '@solidoc/slate';
+import { Operation, SetNodeOperation } from '@solidoc/slate';
 import { operationApplier } from './operation-applier/operation-applier';
 import { ISequencedDocumentMessage } from '@fluidframework/protocol-definitions';
 
@@ -27,17 +27,22 @@ import { addEventListenerHandler } from './event-handler';
 import { ddsChangesQueue } from './dds-changes-queue';
 import { Observable, Subscriber } from 'rxjs';
 import { createSetNodeOperation } from '.';
+import { operationCollector } from './dds-event-processor/operations-collector';
 
 class SlateFluidModel extends BaseFluidModel<Operation> {
   private docPropertiesChangedOpReceiver = (op: Operation) => {};
+  private localDocChangedOpReceiver = (ops: Operation[]) => {};
 
   notifyConsumer = (subscriber: Subscriber<Operation[]>) => {
     ddsChangesQueue.registerOperationsBroadcast(
       this.fluidNodeSequence.id,
       ops => subscriber.next(ops),
     );
+
     this.docPropertiesChangedOpReceiver = (op: Operation) =>
       subscriber.next([op]);
+
+    this.localDocChangedOpReceiver = (ops: Operation[]) => subscriber.next(ops);
   };
 
   private docProperties!: SharedMap;
@@ -81,15 +86,29 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
 
   apply(ops: Operation[]) {
     console.log('model-apply:', ops);
-    ops.forEach(op =>
-      operationApplier[op.type](op, this.fluidNodeSequence, this.runtime),
-    );
-    // const nodes = this.fluidNodeSequence.getRange(0);
-
-    // Promise.all(
-    //   nodes.map(n => convertSharedMapToSlateOp(getNodeFromCacheByHandle(n))),
-    // ).then(v => console.log(v));
+    ops.forEach(op => {
+      if (op.type === 'set_node' && op.path.length === 0) {
+        this.applySetRootNodeOp(op);
+      } else {
+        operationApplier[op.type](op, this.fluidNodeSequence, this.runtime);
+      }
+    });
+    const returnOps = operationCollector.take(this.fluidNodeSequence.id);
+    this.localDocChangedOpReceiver(returnOps);
   }
+
+  private applySetRootNodeOp = (op: SetNodeOperation) => {
+    Object.keys(op.newProperties).forEach(k => {
+      if (k !== 'icon' && k !== 'title') {
+        throw new Error(
+          `Can only set 'title' and 'icon' to root, error op was: ${JSON.stringify(
+            op,
+          )}`,
+        );
+      }
+      this.docProperties.set(k, op.newProperties[k]);
+    });
+  };
 
   protected async initializingFirstTime() {
     const fluidNodeSequence = SharedObjectSequence.create(this.runtime);
@@ -140,16 +159,17 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
         op: ISequencedDocumentMessage,
         target: FluidNode,
       ) => {
-        if (local) {
-          return;
-        }
-        const type = op.contents.type;
+        const type = (op && op.contents.type) || 'set';
         if (type === 'set') {
           const path: number[] = [];
           const properties = { [event.key]: event.previousValue };
           const newProperties = { [event.key]: target.get(event.key) };
           const op = createSetNodeOperation(path, properties, newProperties);
-          this.docPropertiesChangedOpReceiver(op);
+          if (local) {
+            operationCollector.add(this.fluidNodeSequence.id, [op]);
+          } else {
+            this.docPropertiesChangedOpReceiver(op);
+          }
         }
         return;
       },
