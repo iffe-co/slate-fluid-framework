@@ -25,7 +25,7 @@ packages
       externals: Object.keys(dependencies || {})
         .concat(Object.keys(peerDependencies || {}))
         .concat(Object.keys(devDependencies || {}))
-        .concat(['react', 'react-dom', 'slate', 'slate-react']),
+        .concat(['react', 'react-dom', 'slate', 'slate-react', 'uuid']),
     };
   });
 
