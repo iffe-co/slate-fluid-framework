@@ -89,6 +89,8 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     ops.forEach(op => {
       if (op.type === 'set_node' && op.path.length === 0) {
         this.applySetRootNodeOp(op);
+      } else if(op.type === 'set_selection') {
+        operationCollector.add(this.fluidNodeSequence.id, [op])
       } else {
         operationApplier[op.type](op, this.fluidNodeSequence, this.runtime);
       }
