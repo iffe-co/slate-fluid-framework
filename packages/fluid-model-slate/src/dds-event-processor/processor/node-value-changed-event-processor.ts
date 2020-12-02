@@ -1,6 +1,6 @@
 import { FLUIDNODE_KEYS } from '../../interfaces';
 import { FluidNode, FluidNodeChildren } from '../../types';
-import { Path } from '../../types/path';
+import { Path } from '../../interfaces/path';
 import { IValueChanged } from '@fluidframework/map';
 import { ISequencedDocumentMessage } from '@fluidframework/protocol-definitions';
 import { Operation } from '@solidoc/slate';
@@ -49,15 +49,11 @@ function getPathFromRoot(
 
 function nodeValueChangedEventProcessor(
   event: IValueChanged,
-  local: boolean,
   op: ISequencedDocumentMessage,
   target: FluidNode,
   root: FluidNodeChildren,
 ): Operation | undefined {
-  if (local) {
-    return;
-  }
-  const type = op.contents.type;
+  const type = (op && op.contents.type) || 'set';
   if (type === 'set' && !noChangedKey.includes(event.key as FLUIDNODE_KEYS)) {
     const path = getPathFromRoot(target, root) || [];
     const properties = { [event.key]: event.previousValue };

@@ -2,9 +2,9 @@ import { SplitNodeOperation } from '@solidoc/slate';
 import { SharedMap } from '@fluidframework/map';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { getChildren, getNode, getParent, getText } from '../node-getter';
-import { createNode, createNodeWithChildren } from '../node-factory';
 import { FLUIDNODE_KEYS } from '../../interfaces';
 import { FluidNodeChildren, FluidNodeHandle } from '../../types';
+import { createNodeNeo, createNodeWithChildrenNeo } from '../node-factory-neo';
 
 function addNewNodeIntoParent(
   newNode: SharedMap,
@@ -30,7 +30,7 @@ const applySplitNodeOperation = (
     if (originText.length > op.position) {
       text.removeText(op.position, originText.length);
     }
-    const newNode = createNode(
+    const newNode = createNodeNeo(
       { text: after, ...op.properties },
       runtime,
       root,
@@ -39,7 +39,7 @@ const applySplitNodeOperation = (
   } else {
     const children = getChildren(node);
     const after = children.getRange(op.position);
-    const newNode = createNodeWithChildren(
+    const newNode = createNodeWithChildrenNeo(
       after,
       op.properties as Partial<Element>,
       runtime,

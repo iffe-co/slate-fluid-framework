@@ -1,7 +1,7 @@
 import { InsertNodeOperation } from '@solidoc/slate';
 import { IFluidDataStoreRuntime } from '@fluidframework/datastore-definitions';
 import { getParent } from '../node-getter';
-import { createNode } from '../node-factory';
+import { createNodeNeo } from '../node-factory-neo';
 import { FluidNodeChildren, FluidNodeHandle } from '../../types';
 
 const applyInsertNodeOperation = (
@@ -11,7 +11,7 @@ const applyInsertNodeOperation = (
 ) => {
   const parent = getParent(op.path, root);
   const index = op.path[op.path.length - 1];
-  const node = createNode(op.node, runtime, root);
+  const node = createNodeNeo(op.node, runtime, root);
   parent.insert(index, [<FluidNodeHandle>node.handle]);
 };
 

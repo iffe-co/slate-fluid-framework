@@ -40,10 +40,13 @@
     "@fluidframework/local-driver": "^0.28.5",
     "@fluidframework/test-utils": "^0.28.5",
     "@fluidframework/merge-tree": "^0.28.5",
+    "@fluidframework/driver-definitions": "^0.28.5",
     "core-js": "3",
     "tinylicious": "^0.2.3810",
-    "uuid": "^8.3.0",
     "rxjs": "^6.6.3",
     "@solidoc/slate-dependencies": "0.1.4"
+  },
+  "devDependencies": {
+    "@types/uuid": "8.3.0"
   }
 }

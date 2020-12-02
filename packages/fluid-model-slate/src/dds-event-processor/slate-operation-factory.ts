@@ -1,4 +1,4 @@
-import { Path } from '../types/path';
+import { Path } from '../interfaces/path';
 import { Node, Operation } from '@solidoc/slate';
 
 export function createSetNodeOperation(

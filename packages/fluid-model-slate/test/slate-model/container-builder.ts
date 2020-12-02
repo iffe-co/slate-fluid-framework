@@ -1,9 +1,3 @@
-
-Object.defineProperty(window, 'performance', {
-    value: undefined,
-    writable: false,
-});
-
 import {
     IContainer,
     IFluidCodeDetails,

@@ -17,16 +17,28 @@ import { buildE2eSharedObjectSequence } from './e2e-dds-builder';
 import { mockRuntime, restoreDdsCreate } from '../operation-applier/mocker';
 import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
 import {ddsChangesQueue} from "../../src";
-const uuid = require('uuid');
+import { DeltaQueue } from '@fluidframework/container-loader/dist/deltaQueue';
 
-describe('dds event processor', () => {
+// @ts-ignore
+const processDeltas = DeltaQueue.prototype.processDeltas;
+
+// @ts-ignore
+DeltaQueue.prototype.processDeltas = function () {
+  processDeltas.call(this);
+  // @ts-ignore
+  if (this.q.length === 0) {
+    ddsChangesQueue.applyAsyncOps();
+  }
+};
+
+describe.skip('dds event processor', () => {
   const getMockerAndAwaiter = (): [jest.Mock, () => Promise<any>] => {
     const operationReceiverMock = jest.fn();
 
     const initReceiveOpsPromise = new Promise(resolve => {
       ddsChangesQueue.registerOperationsBroadcast('need to correct id',ops => {
         operationReceiverMock(ops);
-        resolve()
+        resolve(null)
       })
     })
 
