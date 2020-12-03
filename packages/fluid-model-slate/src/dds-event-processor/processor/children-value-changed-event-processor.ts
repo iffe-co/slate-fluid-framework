@@ -13,6 +13,7 @@ import { IFluidHandle } from '@fluidframework/core-interfaces';
 import { MergeTreeDeltaType } from '@fluidframework/merge-tree';
 import {
   addNodeWithChildrenToCache,
+  getNodeFromCache,
   getNodeFromCacheByHandle,
 } from '../../dds-cache';
 import { ddsToSlateNode } from '../../convertor';
@@ -159,14 +160,14 @@ function localEventProcessor(
         };
       };
       deltaArgs: {
-        deltaSegments: { segment: { items: { value: SharedMap }[] } }[];
+        deltaSegments: { segment: { items: { absolutePath: string }[] } }[];
       };
     };
 
     const ops = deltaSegments
-      .reduce((p, c) => p.concat(c.segment.items), [] as { value: SharedMap }[])
-      .map(({ value: node }, i: number) => {
-        const nodeData = ddsToSlateNode(node);
+      .reduce((p, c) => p.concat(c.segment.items), [] as { absolutePath: string }[])
+      .map(({ absolutePath }, i: number) => {
+        const nodeData = ddsToSlateNode(getNodeFromCache(absolutePath));
         return createRemoveNodeOperation([...path, i + position], nodeData);
       });
 
