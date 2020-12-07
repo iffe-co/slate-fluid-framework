@@ -1,6 +1,6 @@
 {
   "name": "@solidoc/fluid-model-slate",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "description": "adapter for slate to fluid framework",
   "keywords": [
     "fluid",
@@ -29,22 +29,21 @@
     "url": "https://github.com/iffe-co/slate-fluid-framework/issues"
   },
   "dependencies": {
-    "@fluidframework/aqueduct": "^0.28.5",
-    "@fluidframework/core-interfaces": "^0.28.5",
-    "@fluidframework/datastore-definitions": "^0.28.5",
-    "@fluidframework/map": "^0.28.5",
-    "@fluidframework/sequence": "^0.28.5",
-    "@fluidframework/shared-object-base": "^0.28.5",
-    "@fluidframework/test-runtime-utils": "^0.28.5",
-    "@solidoc/fluid-model-base": "^0.0.10",
-    "@fluidframework/local-driver": "^0.28.5",
-    "@fluidframework/test-utils": "^0.28.5",
-    "@fluidframework/merge-tree": "^0.28.5",
-    "@fluidframework/driver-definitions": "^0.28.5",
+    "@fluidframework/aqueduct": "^0.30.1",
+    "@fluidframework/core-interfaces": "^0.30.1",
+    "@fluidframework/datastore-definitions": "^0.30.1",
+    "@fluidframework/driver-definitions": "^0.30.1",
+    "@fluidframework/local-driver": "^0.30.1",
+    "@fluidframework/map": "^0.30.1",
+    "@fluidframework/merge-tree": "^0.30.1",
+    "@fluidframework/sequence": "^0.30.1",
+    "@fluidframework/shared-object-base": "^0.30.1",
+    "@fluidframework/test-runtime-utils": "^0.30.1",
+    "@fluidframework/test-utils": "^0.30.1",
+    "@solidoc/fluid-model-base": "^0.0.11",
+    "@solidoc/slate-dependencies": "0.1.4",
     "core-js": "3",
-    "tinylicious": "^0.2.3810",
-    "rxjs": "^6.6.3",
-    "@solidoc/slate-dependencies": "0.1.4"
+    "rxjs": "^6.6.3"
   },
   "devDependencies": {
     "@types/uuid": "8.3.0"

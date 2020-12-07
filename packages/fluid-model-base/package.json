@@ -1,6 +1,6 @@
 {
   "name": "@solidoc/fluid-model-base",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "fluid-model-base",
   "keywords": [
     "fluid"
@@ -28,7 +28,7 @@
     "url": "https://github.com/iffe-co/slate-fluid-framework/issues"
   },
   "dependencies": {
-    "@fluidframework/aqueduct": "^0.28.5",
+    "@fluidframework/aqueduct": "^0.30.1",
     "rxjs": "^6.6.3"
   }
 }
