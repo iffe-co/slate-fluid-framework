@@ -25,7 +25,7 @@ import {
 } from './dds-cache';
 import { addEventListenerHandler } from './event-handler';
 import { ddsChangesQueue } from './dds-changes-queue';
-import { Observable, Subscriber } from 'rxjs';
+import { Subject } from 'rxjs';
 import { createSetNodeOperation } from '.';
 import { operationCollector } from './dds-event-processor/operations-collector';
 
@@ -33,7 +33,7 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
   private docPropertiesChangedOpReceiver = (op: Operation) => {};
   private localDocChangedOpReceiver = (ops: Operation[]) => {};
 
-  notifyConsumer = (subscriber: Subscriber<Operation[]>) => {
+  notifyConsumer = (subscriber: Subject<Operation[]>) => {
     ddsChangesQueue.registerOperationsBroadcast(
       this.fluidNodeSequence.id,
       ops => subscriber.next(ops),
@@ -89,8 +89,8 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     ops.forEach(op => {
       if (op.type === 'set_node' && op.path.length === 0) {
         this.applySetRootNodeOp(op);
-      } else if(op.type === 'set_selection') {
-        operationCollector.add(this.fluidNodeSequence.id, [op])
+      } else if (op.type === 'set_selection') {
+        operationCollector.add(this.fluidNodeSequence.id, [op]);
       } else {
         operationApplier[op.type](op, this.fluidNodeSequence, this.runtime);
       }
@@ -124,7 +124,6 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     node_0_0.set(FLUIDNODE_KEYS.TEXT, node_0_0_text.handle);
 
     fluidNodeSequence.insert(0, [node_0.handle]);
-
     this.fluidNodeSequence = fluidNodeSequence as SharedObjectSequence<
       IFluidHandle<SharedMap>
     >;

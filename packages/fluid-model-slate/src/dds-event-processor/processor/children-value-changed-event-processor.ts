@@ -165,7 +165,10 @@ function localEventProcessor(
     };
 
     const ops = deltaSegments
-      .reduce((p, c) => p.concat(c.segment.items), [] as { absolutePath: string }[])
+      .reduce(
+        (p, c) => p.concat(c.segment.items),
+        [] as { absolutePath: string }[],
+      )
       .map(({ absolutePath }, i: number) => {
         const nodeData = ddsToSlateNode(getNodeFromCache(absolutePath));
         return createRemoveNodeOperation([...path, i + position], nodeData);
