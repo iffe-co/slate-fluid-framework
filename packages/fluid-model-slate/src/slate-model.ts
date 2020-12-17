@@ -25,24 +25,15 @@ import {
 } from './dds-cache';
 import { addEventListenerHandler } from './event-handler';
 import { ddsChangesQueue } from './dds-changes-queue';
-import { Subject } from 'rxjs';
 import { createSetNodeOperation } from '.';
 import { operationCollector } from './dds-event-processor/operations-collector';
 
 class SlateFluidModel extends BaseFluidModel<Operation> {
-  private docPropertiesChangedOpReceiver = (op: Operation) => {};
-  private localDocChangedOpReceiver = (ops: Operation[]) => {};
-
-  notifyConsumer = (subscriber: Subject<Operation[]>) => {
-    ddsChangesQueue.registerOperationsBroadcast(
-      this.fluidNodeSequence.id,
-      ops => subscriber.next(ops),
-    );
-
-    this.docPropertiesChangedOpReceiver = (op: Operation) =>
-      subscriber.next([op]);
-
-    this.localDocChangedOpReceiver = (ops: Operation[]) => subscriber.next(ops);
+  private docPropertiesChangedOpReceiver = (op: Operation) => {
+    this.notifyConsumer([op]);
+  };
+  private localDocChangedOpReceiver = (ops: Operation[]) => {
+    this.notifyConsumer(ops);
   };
 
   private docProperties!: SharedMap;
@@ -149,6 +140,11 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     addEventListenerHandler(this.fluidNodeSequence);
 
     this.onDocPropertiesChanged();
+
+    ddsChangesQueue.registerOperationsBroadcast(
+      this.fluidNodeSequence.id,
+      this.notifyConsumer,
+    );
   }
 
   private onDocPropertiesChanged() {
