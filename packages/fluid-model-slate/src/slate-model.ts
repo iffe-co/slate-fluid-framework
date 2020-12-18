@@ -141,6 +141,11 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     addEventListenerHandler(this.fluidNodeSequence);
 
     this.onDocPropertiesChanged();
+    //注册事件为何放置在fetch之后：让所有未summary的op回放到dds之后，client端fetch之后在执行op广播到客户端。
+    ddsChangesQueue.registerOperationsBroadcast(
+      this.fluidNodeSequence.id,
+      this.notifyConsumer,
+    );
   }
 
   private onDocPropertiesChanged() {
@@ -175,11 +180,6 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
   }
 
   public fetch() {
-    //注册事件为何放置在fetch之后：让所有未summary的op回放到dds之后，client端fetch之后在执行op广播到客户端。
-    ddsChangesQueue.registerOperationsBroadcast(
-      this.fluidNodeSequence.id,
-      this.notifyConsumer,
-    );
     return {
       id: this.id,
       title: this.docProperties.get(FLUIDNODE_KEYS.TITLE),
@@ -215,7 +215,6 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
         });
       slateNodes.push(slateNode);
     }
-    console.log('===============', slateNodes);
     return slateNodes;
   };
 
