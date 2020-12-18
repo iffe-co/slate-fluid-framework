@@ -6,10 +6,11 @@ import { Subject } from 'rxjs';
 abstract class BaseFluidModel<T, O extends IFluidObject = object>
   extends DataObject<O>
   implements IBaseFluidModel<T> {
-  public changedObserver = new Subject<T[]>();
-  protected notifyConsumer(ops: T[]): void {
+  public changedObserver: Subject<T[]> = new Subject<T[]>();
+
+  protected notifyConsumer = (ops: T[]): void => {
     this.changedObserver.next(ops);
-  }
+  };
   abstract apply(op: T[]): void;
   abstract fetch(): any;
 }
