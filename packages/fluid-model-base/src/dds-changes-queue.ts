@@ -77,7 +77,7 @@ class DdsChangesQueue {
           const uuid = v4();
           console.log('apply ops start ---', uuid, notifiableGroup);
           notifiableGroup.forEach(({ changedObserver, ops }) => {
-            changedObserver.next(ops);
+            changedObserver.next({ ops, callerId: 'remote' });
           });
           console.log('apply ops end ---', uuid, notifiableGroup);
           this.process();

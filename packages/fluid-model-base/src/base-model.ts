@@ -1,6 +1,6 @@
 import { DataObject } from '@fluidframework/aqueduct';
 import { IFluidObject } from '@fluidframework/core-interfaces';
-import { IBaseFluidModel } from './interfaces';
+import { BroadcastOpsRes, IBaseFluidModel } from './interfaces';
 import { Observable, Subject } from 'rxjs';
 import { EventProcessor } from './interfaces';
 import { SharedMap } from '@fluidframework/map';
@@ -20,43 +20,46 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
     super(props);
     this.changedObserver = this.bindDefaultEventProcessor
       ? this.bindDefaultEventProcessor()
-      : new Subject<T[]>();
+      : new Subject<BroadcastOpsRes<T>>();
   }
-  changedObserver: Observable<T[]>;
-  abstract apply(op: T[]): void;
+  changedObserver: Observable<BroadcastOpsRes<T>>;
+  abstract apply(callerId: string, op: T[]): void;
   abstract fetch(): any;
-  abstract bindDefaultEventProcessor(): Observable<T[]>;
-  private readonly processorGroup: {
+  abstract bindDefaultEventProcessor(): Observable<BroadcastOpsRes<T>>;
+  protected readonly processorGroup: {
     processor: EventProcessor<T>;
-    changedObserver: Subject<T[]>;
+    changedObserver: Subject<BroadcastOpsRes<T>>;
   }[] = [];
   protected localOpsCache: {
-    changedObserver: Subject<T[]>;
+    changedObserver: Subject<BroadcastOpsRes<T>>;
     operations: T[];
   }[] = [];
 
-  protected notifyConsumer = (ops: T[]): void => {
+  protected notifyConsumer = (callerId: string, ops: T[]): void => {
     if (this.processorGroup.length === 0) {
-      (this.changedObserver as Subject<T[]>).next(ops);
+      (this.changedObserver as Subject<BroadcastOpsRes<T>>).next({
+        callerId,
+        ops,
+      });
     } else {
       this.processorGroup.forEach(({ changedObserver }) =>
-        changedObserver.next(ops),
+        changedObserver.next({ callerId, ops }),
       );
     }
   };
 
-  protected broadcastLocalOp = (): void => {
+  protected broadcastLocalOp = (callerId: string): void => {
     this.localOpsCache.forEach(({ changedObserver, operations }) =>
-      changedObserver.next(operations),
+      changedObserver.next({ callerId, ops: operations }),
     );
     this.localOpsCache = [];
   };
 
   public bindEventProcessors = (
     eventProcessor: EventProcessor<T>,
-  ): Observable<T[]> => {
+  ): Observable<BroadcastOpsRes<T>> => {
     console.log('bindEventProcessors');
-    const subject = new Subject<T[]>();
+    const subject = new Subject<BroadcastOpsRes<T>>();
     this.processorGroup.push({
       processor: eventProcessor,
       changedObserver: subject,

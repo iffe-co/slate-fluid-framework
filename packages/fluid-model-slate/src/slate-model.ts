@@ -1,4 +1,4 @@
-import { BaseFluidModel } from '@solidoc/fluid-model-base';
+import { BaseFluidModel, BroadcastOpsRes } from '@solidoc/fluid-model-base';
 import { IValueChanged, SharedMap } from '@fluidframework/map';
 import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
 import { DataObjectFactory, IDataObjectProps } from '@fluidframework/aqueduct';
@@ -28,7 +28,7 @@ import { docEventprocessor } from './dds-event-processor/doc-event-processor';
 import { Observable } from 'rxjs';
 
 class SlateFluidModel extends BaseFluidModel<Operation> {
-  bindDefaultEventProcessor(): Observable<Operation[]> {
+  bindDefaultEventProcessor(): Observable<BroadcastOpsRes<Operation>> {
     return this.bindEventProcessors(docEventprocessor);
   }
 
@@ -71,18 +71,18 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     {},
   );
 
-  apply(ops: Operation[]) {
+  apply(callerId: string, ops: Operation[]) {
     console.log('model-apply:', ops);
     ops.forEach(op => {
       if (op.type === 'set_node' && op.path.length === 0) {
         this.applySetRootNodeOp(op);
       } else if (op.type === 'set_selection') {
-        this.notifyConsumer([op]);
+        this.notifyConsumer(callerId, [op]);
       } else {
         operationApplier[op.type](op, this.fluidNodeSequence, this.runtime);
       }
     });
-    this.broadcastLocalOp();
+    this.broadcastLocalOp(callerId);
     this.addEventListenerHandler(this.fluidNodeSequence);
   }
 
@@ -153,7 +153,13 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
           const properties = { [event.key]: event.previousValue };
           const newProperties = { [event.key]: target.get(event.key) };
           const op = createSetNodeOperation(path, properties, newProperties);
-          this.notifyConsumer([op]);
+          if (local) {
+            this.processorGroup.forEach(({ changedObserver }) =>
+              this.localOpsCache.push({ operations: [op], changedObserver }),
+            );
+          } else {
+            this.notifyConsumer('remote', [op]);
+          }
         }
         return;
       },
