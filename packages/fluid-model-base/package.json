@@ -29,6 +29,9 @@
   },
   "dependencies": {
     "@fluidframework/aqueduct": "^0.30.4",
+    "@fluidframework/map": "^0.30.4",
+    "@fluidframework/core-interfaces": "^0.30.4",
+    "@fluidframework/sequence": "^0.30.4",
     "rxjs": "^6.6.3"
   }
 }

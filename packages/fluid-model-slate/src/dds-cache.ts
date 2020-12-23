@@ -7,21 +7,10 @@ import {
   FluidNodePropertyHandle,
 } from './types';
 import { FLUIDNODE_KEYS } from './interfaces';
-import { addListenerToNode } from './event-handler';
-import { IFluidHandle } from '@fluidframework/core-interfaces';
-import { SharedMap } from '@fluidframework/map';
 
 const nodeCache: { [key: string]: FluidNode } = {};
 const childrenCache: { [key: string]: FluidNodeChildren } = {};
 const textCache: { [key: string]: FluidNodeProperty } = {};
-
-const addNodeWithChildrenToCache = async (
-  node: FluidNode,
-  root: FluidNodeChildren,
-) => {
-  await addNodeWithChildrenToCacheNeo(node, root);
-  addListenerToNode(<IFluidHandle<SharedMap>>node.handle, root);
-};
 
 const addNodeWithChildrenToCacheNeo = async (
   node: FluidNode,
@@ -102,5 +91,5 @@ export {
   getChildrenFromCacheByHandle,
   addTextToCache,
   getTextFromCacheByHandle,
-  addNodeWithChildrenToCache,
+  addNodeWithChildrenToCacheNeo,
 };

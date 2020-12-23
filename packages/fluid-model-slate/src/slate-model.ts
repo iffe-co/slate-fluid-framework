@@ -23,18 +23,14 @@ import {
   getNodeFromCacheByHandle,
   getTextFromCacheByHandle,
 } from './dds-cache';
-import { addEventListenerHandler } from './event-handler';
-import { ddsChangesQueue } from './dds-changes-queue';
 import { createSetNodeOperation } from '.';
-import { operationCollector } from './dds-event-processor/operations-collector';
+import { docEventprocessor } from './dds-event-processor/doc-event-processor';
+import { Observable } from 'rxjs';
 
 class SlateFluidModel extends BaseFluidModel<Operation> {
-  private docPropertiesChangedOpReceiver = (op: Operation) => {
-    this.notifyConsumer([op]);
-  };
-  private localDocChangedOpReceiver = (ops: Operation[]) => {
-    this.notifyConsumer(ops);
-  };
+  bindDefaultEventProcessor(): Observable<Operation[]> {
+    return this.bindEventProcessors(docEventprocessor);
+  }
 
   private docProperties!: SharedMap;
   private fluidNodeSequence!: SharedObjectSequence<IFluidHandle<SharedMap>>;
@@ -81,13 +77,13 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
       if (op.type === 'set_node' && op.path.length === 0) {
         this.applySetRootNodeOp(op);
       } else if (op.type === 'set_selection') {
-        operationCollector.add(this.fluidNodeSequence.id, [op]);
+        this.notifyConsumer([op]);
       } else {
         operationApplier[op.type](op, this.fluidNodeSequence, this.runtime);
       }
     });
-    const returnOps = operationCollector.take(this.fluidNodeSequence.id);
-    this.localDocChangedOpReceiver(returnOps);
+    this.broadcastLocalOp();
+    this.addEventListenerHandler(this.fluidNodeSequence);
   }
 
   private applySetRootNodeOp = (op: SetNodeOperation) => {
@@ -138,14 +134,8 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     ]);
 
     await this.addDDSToCache();
-    addEventListenerHandler(this.fluidNodeSequence);
-
+    this.addEventListenerHandler(this.fluidNodeSequence);
     this.onDocPropertiesChanged();
-    //注册事件为何放置在fetch之后：让所有未summary的op回放到dds之后，client端fetch之后在执行op广播到客户端。
-    ddsChangesQueue.registerOperationsBroadcast(
-      this.fluidNodeSequence.id,
-      this.notifyConsumer,
-    );
   }
 
   private onDocPropertiesChanged() {
@@ -163,11 +153,7 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
           const properties = { [event.key]: event.previousValue };
           const newProperties = { [event.key]: target.get(event.key) };
           const op = createSetNodeOperation(path, properties, newProperties);
-          if (local) {
-            operationCollector.add(this.fluidNodeSequence.id, [op]);
-          } else {
-            this.docPropertiesChangedOpReceiver(op);
-          }
+          this.notifyConsumer([op]);
         }
         return;
       },
@@ -250,6 +236,40 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     }
     return slateNodes;
   }
+
+  addEventListenerHandler = (root: FluidNodeChildren) => {
+    this.bindSharedObjectSequenceEvent(root, root);
+    const nodeHandles = root.getRange(0);
+    for (let handle of nodeHandles) {
+      this.addListenerToNode(handle, root);
+    }
+  };
+
+  addListenerToNode = (
+    nodeHandle: IFluidHandle<SharedMap>,
+    root: FluidNodeChildren,
+  ) => {
+    const node = getNodeFromCacheByHandle(nodeHandle);
+    this.bindSharedMapEvent(node, root);
+    if (node.has(FLUIDNODE_KEYS.CHILDREN)) {
+      const childrenHandle = <FluidNodeChildrenHandle>(
+        node.get(FLUIDNODE_KEYS.CHILDREN)
+      );
+      const children = getChildrenFromCacheByHandle(childrenHandle);
+
+      this.bindSharedObjectSequenceEvent(children, root);
+
+      const nodeHandles = children.getRange(0);
+      for (let handle of nodeHandles) {
+        this.addListenerToNode(handle, root);
+      }
+    }
+    if (node.has(FLUIDNODE_KEYS.TEXT)) {
+      const textHandle = node.get<FluidNodePropertyHandle>(FLUIDNODE_KEYS.TEXT);
+      const text = getTextFromCacheByHandle(textHandle);
+      this.bindSharedStringEvent(text, root);
+    }
+  };
 }
 
 export { SlateFluidModel };

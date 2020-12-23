@@ -9,7 +9,6 @@ import {
   addNodeToCache,
   addTextToCache,
 } from '../dds-cache';
-import { addListenerToNode } from '../event-handler';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
 
 const createSharedString = (
@@ -81,8 +80,8 @@ const createNodeNeo = (
   runtime: IFluidDataStoreRuntime,
   root: FluidNodeChildren,
 ) => {
+  // do not bind event listener, will bind on apply end
   const node = createNodeInternal(slateNode, runtime, root);
-  addListenerToNode(<IFluidHandle<SharedMap>>node.handle, root);
   return node;
 };
 
@@ -111,7 +110,6 @@ const createNodeWithChildrenNeo = (
     applyProperties<Element>(properties, node, runtime);
   }
 
-  addListenerToNode(<IFluidHandle<SharedMap>>node.handle, root);
   return node;
 };
 

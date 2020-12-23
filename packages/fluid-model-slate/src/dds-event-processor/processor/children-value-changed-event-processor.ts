@@ -1,5 +1,9 @@
-import { SequenceDeltaEvent, SharedString } from '@fluidframework/sequence';
-import { FluidNodeChildren, FluidNodeHandle } from '../../types';
+import {
+  SequenceDeltaEvent,
+  SharedObjectSequence,
+  SharedString,
+} from '@fluidframework/sequence';
+import { FluidNodeChildren, FluidNodeHandle, FluidNode } from '../../types';
 import { Operation } from '@solidoc/slate';
 import { FLUIDNODE_KEYS } from '../../interfaces';
 import {
@@ -12,11 +16,12 @@ import { SharedMap } from '@fluidframework/map';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
 import { MergeTreeDeltaType } from '@fluidframework/merge-tree';
 import {
-  addNodeWithChildrenToCache,
   getNodeFromCache,
+  addNodeWithChildrenToCacheNeo,
   getNodeFromCacheByHandle,
 } from '../../dds-cache';
 import { ddsToSlateNode } from '../../convertor';
+import { BaseFluidModel } from '@solidoc/fluid-model-base';
 
 function getPathFromRoot(
   target: FluidNodeChildren,
@@ -73,10 +78,25 @@ async function convertSharedMapToSlateOp(node: SharedMap) {
   return op;
 }
 
+const addNodeWithChildrenToCache = async (
+  node: FluidNode,
+  root: FluidNodeChildren,
+  model: BaseFluidModel<Operation>,
+) => {
+  await addNodeWithChildrenToCacheNeo(node, root);
+  // TODO: need fix addListenerToNode not in model type
+  (model as any).addListenerToNode &&
+    (model as any).addListenerToNode(
+      <IFluidHandle<SharedMap>>node.handle,
+      root,
+    );
+};
+
 async function insertNodeOpProcessor(
   event: SequenceDeltaEvent,
   path: number[],
   root: FluidNodeChildren,
+  model: BaseFluidModel<Operation>,
 ): Promise<Operation[]> {
   const {
     op: {
@@ -90,7 +110,7 @@ async function insertNodeOpProcessor(
     items.map(async (rh: FluidNodeHandle, i: number) => {
       const node = (await rh.get()) as SharedMap;
       const nodeData = await convertSharedMapToSlateOp(node);
-      await addNodeWithChildrenToCache(node, root);
+      await addNodeWithChildrenToCache(node, root, model);
       return createInsertNodeOperation([...path, i + position], nodeData);
     }),
   );
@@ -131,12 +151,13 @@ async function getOperationsPromise(
   root: FluidNodeChildren,
   event: SequenceDeltaEvent,
   path: Path,
+  model: BaseFluidModel<Operation>,
 ) {
   if (event.opArgs.op.type === MergeTreeDeltaType.REMOVE.valueOf()) {
     return removeNodeOpProcessor(event, path);
   }
   if (event.opArgs.op.type === MergeTreeDeltaType.INSERT.valueOf()) {
-    return insertNodeOpProcessor(event, path, root);
+    return insertNodeOpProcessor(event, path, root, model);
   }
   throw new Error(`Not support operation: ${event.opArgs.op}`);
 }
@@ -195,16 +216,27 @@ function localEventProcessor(
   throw new Error(`Not support operation: ${event.opArgs.op}`);
 }
 
-function childrenSequenceDeltaEventProcessor(
+function localChildrenSequenceDeltaEventProcessor(
   event: SequenceDeltaEvent,
-  target: FluidNodeChildren,
-  root: FluidNodeChildren,
-): Promise<Operation[]> | Operation[] {
+  target: SharedObjectSequence<IFluidHandle<SharedMap>>,
+  root: SharedObjectSequence<IFluidHandle<SharedMap>>,
+): Operation[] {
   const path = getPathFromRoot(target, root) || [];
-  if (event.isLocal) {
-    return localEventProcessor(target, root, event, path);
-  }
-  return getOperationsPromise(target, root, event, path);
+  return localEventProcessor(target, root, event, path);
 }
 
-export { childrenSequenceDeltaEventProcessor, convertSharedMapToSlateOp };
+function remoteChildrenSequenceDeltaEventProcessor(
+  event: SequenceDeltaEvent,
+  target: SharedObjectSequence<IFluidHandle<SharedMap>>,
+  root: SharedObjectSequence<IFluidHandle<SharedMap>>,
+  model?: BaseFluidModel<Operation>,
+): Promise<Operation[]> {
+  const path = getPathFromRoot(target, root) || [];
+  return getOperationsPromise(target, root, event, path, model);
+}
+
+export {
+  convertSharedMapToSlateOp,
+  localChildrenSequenceDeltaEventProcessor,
+  remoteChildrenSequenceDeltaEventProcessor,
+};

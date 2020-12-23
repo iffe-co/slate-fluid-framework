@@ -1,4 +1,8 @@
-import { SequenceDeltaEvent } from '@fluidframework/sequence';
+import {
+  SequenceDeltaEvent,
+  SharedObjectSequence,
+  SharedString,
+} from '@fluidframework/sequence';
 import { FluidNodeChildren, FluidNodeProperty } from '../../types';
 import { Operation } from '@solidoc/slate';
 import { FLUIDNODE_KEYS } from '../../interfaces';
@@ -10,6 +14,8 @@ import { MergeTreeDeltaType, TextSegment } from '@fluidframework/merge-tree';
 import { Path } from '../../interfaces/path';
 import { getChildren } from '../../operation-applier/node-getter';
 import { getNodeFromCacheByHandle } from '../../dds-cache';
+import { IFluidHandle } from '@fluidframework/core-interfaces';
+import { SharedMap } from '@fluidframework/map';
 
 function getTextPathFromRoot(
   text: FluidNodeProperty,
@@ -74,8 +80,8 @@ function getOperationPromise(
 
 function textSequenceDeltaEventProcessor(
   event: SequenceDeltaEvent,
-  target: FluidNodeProperty,
-  root: FluidNodeChildren,
+  target: SharedString,
+  root: SharedObjectSequence<IFluidHandle<SharedMap>>,
 ): Operation[] {
   checkEventType(event);
   return getOperationPromise(event, target, root);

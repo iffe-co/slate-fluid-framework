@@ -1,7 +1,7 @@
 import { FLUIDNODE_KEYS } from '../../interfaces';
 import { FluidNode, FluidNodeChildren } from '../../types';
 import { Path } from '../../interfaces/path';
-import { IValueChanged } from '@fluidframework/map';
+import { IValueChanged, SharedMap } from '@fluidframework/map';
 import { ISequencedDocumentMessage } from '@fluidframework/protocol-definitions';
 import { Operation } from '@solidoc/slate';
 import { createSetNodeOperation } from '../slate-operation-factory';
@@ -9,6 +9,8 @@ import {
   getChildrenFromCacheByHandle,
   getNodeFromCacheByHandle,
 } from '../../dds-cache';
+import { SharedObjectSequence } from '@fluidframework/sequence';
+import { IFluidHandle } from '@fluidframework/core-interfaces';
 
 const noChangedKey = [FLUIDNODE_KEYS.TEXT, FLUIDNODE_KEYS.CHILDREN];
 
@@ -50,16 +52,16 @@ function getPathFromRoot(
 function nodeValueChangedEventProcessor(
   event: IValueChanged,
   op: ISequencedDocumentMessage,
-  target: FluidNode,
-  root: FluidNodeChildren,
-): Operation | undefined {
+  target: SharedMap,
+  root: SharedObjectSequence<IFluidHandle<SharedMap>>,
+): Operation[] {
   const type = (op && op.contents.type) || 'set';
   if (type === 'set' && !noChangedKey.includes(event.key as FLUIDNODE_KEYS)) {
     const path = getPathFromRoot(target, root) || [];
     const properties = { [event.key]: event.previousValue };
     const newProperties = { [event.key]: target.get(event.key) };
-    return createSetNodeOperation(path, properties, newProperties);
+    return [createSetNodeOperation(path, properties, newProperties)];
   }
-  return;
+  return [];
 }
 export { nodeValueChangedEventProcessor };
