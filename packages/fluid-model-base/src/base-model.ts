@@ -178,7 +178,7 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
                 event,
                 target,
                 root,
-                { model: this, path: [] },
+                this,
               ),
               changedObserver: item.changedObserver,
             });
