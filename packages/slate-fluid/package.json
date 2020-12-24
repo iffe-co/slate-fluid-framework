@@ -1,6 +1,6 @@
 {
   "name": "@solidoc/slate-fluid",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "adapter for slate operation and fluid framework",
   "keywords": [
     "fluid",

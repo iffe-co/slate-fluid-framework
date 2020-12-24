@@ -1,6 +1,6 @@
 {
   "name": "@solidoc/fluid-model-slate",
-  "version": "0.0.42",
+  "version": "0.1.0",
   "description": "adapter for slate to fluid framework",
   "keywords": [
     "fluid",
@@ -40,7 +40,7 @@
     "@fluidframework/shared-object-base": "^0.30.4",
     "@fluidframework/test-runtime-utils": "^0.30.4",
     "@fluidframework/test-utils": "^0.30.4",
-    "@solidoc/fluid-model-base": "^0.0.19",
+    "@solidoc/fluid-model-base": "^0.1.0",
     "@solidoc/slate-dependencies": "0.1.4",
     "core-js": "3",
     "rxjs": "^6.6.3"
