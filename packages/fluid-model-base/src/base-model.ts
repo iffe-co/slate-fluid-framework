@@ -7,7 +7,6 @@ import { SharedMap } from '@fluidframework/map';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
 import { SharedObjectSequence, SharedString } from '@fluidframework/sequence';
 import { IDataObjectProps } from '@fluidframework/aqueduct';
-
 import { IValueChanged } from '@fluidframework/map';
 import { ISequencedDocumentMessage } from '@fluidframework/protocol-definitions';
 import { SequenceDeltaEvent } from '@fluidframework/sequence';
