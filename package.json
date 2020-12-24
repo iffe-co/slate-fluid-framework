@@ -70,8 +70,7 @@
     "rs-build": "yarn react-scripts build",
     "rs-test": "yarn react-scripts test",
     "up": "yarn upgrade-interactive --latest",
-    "ps": "node scripts/publish.js",
-    "publish": "lerna publish patch -y",
+    "ps": "lerna publish patch -y",
     "bootstrap": "lerna bootstrap",
     "clean": "node scripts/dist-clean.js"
   },
