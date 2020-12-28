@@ -25,6 +25,11 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
   abstract apply(callerId: string, op: T[]): void;
   abstract fetch(): any;
   abstract bindDefaultEventProcessor(): Observable<BroadcastOpsRes<T>>;
+  abstract getTargetSharedStringPath(target: SharedString): number[];
+  abstract getTargetSharedMapPath(target: SharedMap): number[];
+  abstract getTargetSharedObjectSequencePath(
+    target: SharedObjectSequence<IFluidHandle<SharedMap>>,
+  ): number[];
   protected readonly processorGroup: {
     processor: EventProcessor<T>;
     changedObserver: Subject<BroadcastOpsRes<T>>;
@@ -48,9 +53,30 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
   };
 
   protected broadcastLocalOp = (callerId: string): void => {
-    this.localOpsCache.forEach(({ changedObserver, operations }) =>
-      changedObserver.next({ callerId, ops: operations }),
-    );
+    const broadcastLocalOpMap = new Map<Subject<BroadcastOpsRes<T>>, T[]>();
+    this.localOpsCache
+      .reduce(
+        (
+          p: Map<Subject<BroadcastOpsRes<T>>, T[]>,
+          c: {
+            changedObserver: Subject<BroadcastOpsRes<T>>;
+            operations: T[];
+          },
+        ) => {
+          if (p.has(c.changedObserver)) {
+            c.operations.forEach(op => {
+              p.get(c.changedObserver)?.push(op);
+            });
+          } else {
+            p.set(c.changedObserver, [...c.operations]);
+          }
+          return p;
+        },
+        broadcastLocalOpMap,
+      )
+      .forEach((v, k) => {
+        k.next({ callerId, ops: v });
+      });
     this.localOpsCache = [];
   };
 
@@ -82,6 +108,7 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
         op: ISequencedDocumentMessage,
         target: SharedMap,
       ) => {
+        const targetPath = this.getTargetSharedMapPath(target);
         if (local) {
           this.processorGroup
             .map(item => ({
@@ -91,6 +118,7 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
                 op,
                 target,
                 root,
+                { targetPath, model: this },
               ),
             }))
             .forEach(item => this.localOpsCache.push(item));
@@ -103,6 +131,7 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
                 op,
                 target,
                 root,
+                { targetPath, model: this },
               ),
               changedObserver: item.changedObserver,
             });
@@ -123,6 +152,7 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
     fluidText.on(
       'sequenceDelta',
       (event: SequenceDeltaEvent, target: SharedString) => {
+        const targetPath = this.getTargetSharedStringPath(target);
         if (event.isLocal) {
           this.processorGroup
             .map(item => ({
@@ -131,6 +161,7 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
                 event,
                 target,
                 root,
+                { targetPath, model: this },
               ),
             }))
             .forEach(item => this.localOpsCache.push(item));
@@ -138,7 +169,12 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
           this.processorGroup.forEach(item => {
             ddsChangesQueue.addOperationResolver({
               key: root.id,
-              resolver: item.processor.remote.SharedString(event, target, root),
+              resolver: item.processor.remote.SharedString(
+                event,
+                target,
+                root,
+                { targetPath, model: this },
+              ),
               changedObserver: item.changedObserver,
             });
           });
@@ -161,6 +197,7 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
         event: SequenceDeltaEvent,
         target: SharedObjectSequence<IFluidHandle<SharedMap>>,
       ) => {
+        const targetPath = this.getTargetSharedObjectSequencePath(target);
         if (event.isLocal) {
           this.processorGroup
             .map(item => ({
@@ -169,6 +206,7 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
                 event,
                 target,
                 root,
+                { targetPath, model: this },
               ),
             }))
             .forEach(item => this.localOpsCache.push(item));
@@ -180,7 +218,7 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
                 event,
                 target,
                 root,
-                this,
+                { targetPath, model: this },
               ),
               changedObserver: item.changedObserver,
             });

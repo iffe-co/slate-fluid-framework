@@ -16,6 +16,7 @@ import { getChildren } from '../../operation-applier/node-getter';
 import { getNodeFromCacheByHandle } from '../../dds-cache';
 import { IFluidHandle } from '@fluidframework/core-interfaces';
 import { SharedMap } from '@fluidframework/map';
+import { ProcessorContext } from '@solidoc/fluid-model-base';
 
 function getTextPathFromRoot(
   text: FluidNodeProperty,
@@ -69,12 +70,7 @@ function process(event: SequenceDeltaEvent, path: number[]) {
   });
 }
 
-function getOperationPromise(
-  event: SequenceDeltaEvent,
-  target: FluidNodeProperty,
-  root: FluidNodeChildren,
-) {
-  const path = getTextPathFromRoot(target, root) || [];
+function getOperationPromise(event: SequenceDeltaEvent, path: number[]) {
   return process(event, path);
 }
 
@@ -82,9 +78,10 @@ function textSequenceDeltaEventProcessor(
   event: SequenceDeltaEvent,
   target: SharedString,
   root: SharedObjectSequence<IFluidHandle<SharedMap>>,
+  { targetPath }: ProcessorContext<Operation>,
 ): Operation[] {
   checkEventType(event);
-  return getOperationPromise(event, target, root);
+  return getOperationPromise(event, targetPath);
 }
 
-export { textSequenceDeltaEventProcessor };
+export { textSequenceDeltaEventProcessor, getTextPathFromRoot };

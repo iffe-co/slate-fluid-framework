@@ -22,8 +22,9 @@ import {
 } from '../../dds-cache';
 import { ddsToSlateNode } from '../../convertor';
 import { BaseFluidModel } from '@solidoc/fluid-model-base';
+import { ProcessorContext } from '@solidoc/fluid-model-base';
 
-function getPathFromRoot(
+function getTargetSequencePathFromRoot(
   target: FluidNodeChildren,
   root: FluidNodeChildren,
   path: Path = [],
@@ -41,7 +42,7 @@ function getPathFromRoot(
     } else {
       const children = getChildren(needCheckNode);
 
-      const res = getPathFromRoot(target, children, [...path, i]);
+      const res = getTargetSequencePathFromRoot(target, children, [...path, i]);
       if (!res) {
         continue;
       } else {
@@ -220,23 +221,23 @@ function localChildrenSequenceDeltaEventProcessor(
   event: SequenceDeltaEvent,
   target: SharedObjectSequence<IFluidHandle<SharedMap>>,
   root: SharedObjectSequence<IFluidHandle<SharedMap>>,
+  { targetPath, model }: ProcessorContext<Operation>,
 ): Operation[] {
-  const path = getPathFromRoot(target, root) || [];
-  return localEventProcessor(target, root, event, path);
+  return localEventProcessor(target, root, event, targetPath);
 }
 
 function remoteChildrenSequenceDeltaEventProcessor(
   event: SequenceDeltaEvent,
   target: SharedObjectSequence<IFluidHandle<SharedMap>>,
   root: SharedObjectSequence<IFluidHandle<SharedMap>>,
-  model?: BaseFluidModel<Operation>,
+  { targetPath, model }: ProcessorContext<Operation>,
 ): Promise<Operation[]> {
-  const path = getPathFromRoot(target, root) || [];
-  return getOperationsPromise(target, root, event, path, model);
+  return getOperationsPromise(target, root, event, targetPath, model);
 }
 
 export {
   convertSharedMapToSlateOp,
   localChildrenSequenceDeltaEventProcessor,
   remoteChildrenSequenceDeltaEventProcessor,
+  getTargetSequencePathFromRoot,
 };

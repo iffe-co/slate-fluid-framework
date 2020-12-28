@@ -23,16 +23,32 @@ import {
   getNodeFromCacheByHandle,
   getTextFromCacheByHandle,
 } from './dds-cache';
-import { createSetNodeOperation } from '.';
+import {
+  createSetNodeOperation,
+  getTargetSequencePathFromRoot,
+  getTargetSharedMapPathFromRoot,
+  getTextPathFromRoot,
+} from '.';
 import { docEventprocessor } from './dds-event-processor/doc-event-processor';
 import { Observable } from 'rxjs';
 
 class SlateFluidModel extends BaseFluidModel<Operation> {
+  getTargetSharedStringPath(target: SharedString): number[] {
+    return getTextPathFromRoot(target, this.fluidNodeSequence) || [];
+  }
+  getTargetSharedMapPath(target: SharedMap): number[] {
+    return getTargetSharedMapPathFromRoot(target, this.fluidNodeSequence) || [];
+  }
+  getTargetSharedObjectSequencePath(
+    target: SharedObjectSequence<IFluidHandle<SharedMap>>,
+  ): number[] {
+    return getTargetSequencePathFromRoot(target, this.fluidNodeSequence) || [];
+  }
   bindDefaultEventProcessor(): Observable<BroadcastOpsRes<Operation>> {
     return this.bindEventProcessors(docEventprocessor);
   }
 
-  private docProperties!: SharedMap;
+  public docProperties!: SharedMap;
   private fluidNodeSequence!: SharedObjectSequence<IFluidHandle<SharedMap>>;
 
   public getDocContentAndProperties = () => {
@@ -43,7 +59,7 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
     };
   };
 
-  private getImmediateChildren = () => {
+  public getImmediateChildren = () => {
     return this.fluidNodeSequence
       .getItems(0)
       .map(nodeHandle => getNodeFromCacheByHandle(nodeHandle));
