@@ -93,7 +93,7 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
       if (op.type === 'set_node' && op.path.length === 0) {
         this.applySetRootNodeOp(op);
       } else if (op.type === 'set_selection') {
-        this.notifyConsumer(callerId, [op]);
+        this.broadcastOpToAllSubject(op);
       } else {
         operationApplier[op.type](op, this.fluidNodeSequence, this.runtime);
       }
@@ -170,15 +170,21 @@ class SlateFluidModel extends BaseFluidModel<Operation> {
           const newProperties = { [event.key]: target.get(event.key) };
           const op = createSetNodeOperation(path, properties, newProperties);
           if (local) {
-            this.processorGroup.forEach(({ changedObserver }) =>
-              this.localOpsCache.push({ operations: [op], changedObserver }),
-            );
+            this.broadcastOpToAllSubject(op);
           } else {
+            // by default, set title event should not occur with others.
+            // anytime  if this assume was broken, try to add op and subject into ddsChangedQueue
             this.notifyConsumer('remote', [op]);
           }
         }
         return;
       },
+    );
+  }
+
+  private broadcastOpToAllSubject(op: Operation) {
+    this.processorGroup.forEach(({ changedObserver }) =>
+      this.localOpsCache.push({ operations: [op], changedObserver }),
     );
   }
 
