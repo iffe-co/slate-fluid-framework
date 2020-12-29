@@ -125,7 +125,6 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
         } else {
           this.processorGroup.forEach(item => {
             ddsChangesQueue.addOperationResolver({
-              key: root.id,
               resolver: item.processor.remote.SharedMap(
                 event,
                 op,
@@ -168,7 +167,6 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
         } else {
           this.processorGroup.forEach(item => {
             ddsChangesQueue.addOperationResolver({
-              key: root.id,
               resolver: item.processor.remote.SharedString(
                 event,
                 target,
@@ -213,7 +211,6 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
         } else {
           this.processorGroup.forEach(item => {
             ddsChangesQueue.addOperationResolver({
-              key: root.id,
               resolver: item.processor.remote.SharedObjectSequence(
                 event,
                 target,

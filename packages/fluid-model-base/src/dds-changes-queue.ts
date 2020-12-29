@@ -1,9 +1,7 @@
-import { Operation } from '@solidoc/slate';
 import { v4 } from 'uuid';
 import { Subject } from 'rxjs';
 
 type OperationResolver = {
-  key: string;
   resolver: any[] | Promise<any[]>;
   changedObserver: Subject<any>;
 };
@@ -13,14 +11,12 @@ class DdsChangesQueue {
   private currentKey!: string;
   private keyQueue!: string[];
   private processing: boolean = false;
-  private operationBroadcaster: { [key: string]: (ops: Operation[]) => void };
 
   constructor() {
     this.resolverMap = new Map<string, OperationResolver[]>();
     this.currentKey = v4();
     this.keyQueue = [];
     this.resolverMap.set(this.currentKey, []);
-    this.operationBroadcaster = {};
   }
 
   public addOperationResolver(resolver: OperationResolver) {
@@ -52,14 +48,6 @@ class DdsChangesQueue {
     }
   }
 
-  public logContent() {
-    console.log(
-      'start enqueue message',
-      this.currentKey,
-      this.resolverMap.get(this.currentKey),
-    );
-  }
-
   private startProcess() {
     this.processing = true;
     this.process();
@@ -74,7 +62,6 @@ class DdsChangesQueue {
       }
       this.resolveOperations(key)
         .then(notifiableGroup => {
-          const uuid = v4();
           notifiableGroup.forEach(({ changedObserver, ops }) => {
             changedObserver.next({ ops, callerId: 'remote' });
           });
