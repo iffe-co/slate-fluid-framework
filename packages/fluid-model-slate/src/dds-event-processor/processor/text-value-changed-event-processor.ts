@@ -78,7 +78,7 @@ function textSequenceDeltaEventProcessor(
   event: SequenceDeltaEvent,
   target: SharedString,
   root: SharedObjectSequence<IFluidHandle<SharedMap>>,
-  { targetPath }: ProcessorContext<Operation>,
+  { targetPath }: ProcessorContext<Operation, IFluidHandle<SharedMap>>,
 ): Operation[] {
   checkEventType(event);
   return getOperationPromise(event, targetPath);

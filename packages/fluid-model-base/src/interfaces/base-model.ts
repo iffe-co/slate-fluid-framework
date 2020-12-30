@@ -6,10 +6,10 @@ interface BroadcastOpsRes<T> {
   ops: T[];
 }
 
-interface IBaseFluidModel<T> {
+interface IBaseFluidModel<T, D = object> {
   changedObserver: Observable<BroadcastOpsRes<T>>;
   bindEventProcessors(
-    eventProcessor: EventProcessor<T>,
+    eventProcessor: EventProcessor<T, D>,
   ): Observable<BroadcastOpsRes<T>>;
   apply(callerId: string, ops: T[]): void;
   fetch(): any;

@@ -24,6 +24,8 @@ import { ddsToSlateNode } from '../../convertor';
 import { BaseFluidModel } from '@solidoc/fluid-model-base';
 import { ProcessorContext } from '@solidoc/fluid-model-base';
 
+export type DocModelType = BaseFluidModel<Operation, IFluidHandle<SharedMap>>;
+
 function getTargetSequencePathFromRoot(
   target: FluidNodeChildren,
   root: FluidNodeChildren,
@@ -82,7 +84,7 @@ async function convertSharedMapToSlateOp(node: SharedMap) {
 const addNodeWithChildrenToCache = async (
   node: FluidNode,
   root: FluidNodeChildren,
-  model: BaseFluidModel<Operation>,
+  model: DocModelType,
 ) => {
   await addNodeWithChildrenToCacheNeo(node, root);
   // TODO: need fix addListenerToNode not in model type
@@ -97,7 +99,7 @@ async function insertNodeOpProcessor(
   event: SequenceDeltaEvent,
   path: number[],
   root: FluidNodeChildren,
-  model: BaseFluidModel<Operation>,
+  model: DocModelType,
 ): Promise<Operation[]> {
   const {
     op: {
@@ -152,7 +154,7 @@ async function getOperationsPromise(
   root: FluidNodeChildren,
   event: SequenceDeltaEvent,
   path: Path,
-  model: BaseFluidModel<Operation>,
+  model: DocModelType,
 ) {
   if (event.opArgs.op.type === MergeTreeDeltaType.REMOVE.valueOf()) {
     return removeNodeOpProcessor(event, path);
@@ -221,7 +223,7 @@ function localChildrenSequenceDeltaEventProcessor(
   event: SequenceDeltaEvent,
   target: SharedObjectSequence<IFluidHandle<SharedMap>>,
   root: SharedObjectSequence<IFluidHandle<SharedMap>>,
-  { targetPath, model }: ProcessorContext<Operation>,
+  { targetPath, model }: ProcessorContext<Operation, IFluidHandle<SharedMap>>,
 ): Operation[] {
   return localEventProcessor(target, root, event, targetPath);
 }
@@ -230,7 +232,7 @@ function remoteChildrenSequenceDeltaEventProcessor(
   event: SequenceDeltaEvent,
   target: SharedObjectSequence<IFluidHandle<SharedMap>>,
   root: SharedObjectSequence<IFluidHandle<SharedMap>>,
-  { targetPath, model }: ProcessorContext<Operation>,
+  { targetPath, model }: ProcessorContext<Operation, IFluidHandle<SharedMap>>,
 ): Promise<Operation[]> {
   return getOperationsPromise(target, root, event, targetPath, model);
 }

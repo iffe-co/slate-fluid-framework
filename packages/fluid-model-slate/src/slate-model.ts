@@ -32,7 +32,10 @@ import {
 import { docEventprocessor } from './dds-event-processor/doc-event-processor';
 import { Observable } from 'rxjs';
 
-class SlateFluidModel extends BaseFluidModel<Operation> {
+class SlateFluidModel extends BaseFluidModel<
+  Operation,
+  IFluidHandle<SharedMap>
+> {
   getTargetSharedStringPath(target: SharedString): number[] {
     return getTextPathFromRoot(target, this.fluidNodeSequence) || [];
   }

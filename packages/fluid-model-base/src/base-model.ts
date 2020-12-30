@@ -12,9 +12,9 @@ import { ISequencedDocumentMessage } from '@fluidframework/protocol-definitions'
 import { SequenceDeltaEvent } from '@fluidframework/sequence';
 import { ddsChangesQueue } from './dds-changes-queue';
 
-abstract class BaseFluidModel<T, O extends IFluidObject = object>
+abstract class BaseFluidModel<T, D = object, O extends IFluidObject = object>
   extends DataObject<O>
-  implements IBaseFluidModel<T> {
+  implements IBaseFluidModel<T, D> {
   public constructor(props: IDataObjectProps<O>) {
     super(props);
     this.changedObserver = this.bindDefaultEventProcessor
@@ -28,10 +28,10 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
   abstract getTargetSharedStringPath(target: SharedString): number[];
   abstract getTargetSharedMapPath(target: SharedMap): number[];
   abstract getTargetSharedObjectSequencePath(
-    target: SharedObjectSequence<IFluidHandle<SharedMap>>,
+    target: SharedObjectSequence<D>,
   ): number[];
   protected readonly processorGroup: {
-    processor: EventProcessor<T>;
+    processor: EventProcessor<T, D>;
     changedObserver: Subject<BroadcastOpsRes<T>>;
   }[] = [];
   protected localOpsCache: {
@@ -81,9 +81,8 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
   };
 
   public bindEventProcessors = (
-    eventProcessor: EventProcessor<T>,
+    eventProcessor: EventProcessor<T, D>,
   ): Observable<BroadcastOpsRes<T>> => {
-    console.log('bindEventProcessors');
     const subject = new Subject<BroadcastOpsRes<T>>();
     this.processorGroup.push({
       processor: eventProcessor,
@@ -182,8 +181,8 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
   }
 
   public bindSharedObjectSequenceEvent(
-    children: SharedObjectSequence<IFluidHandle<SharedMap>>,
-    root: SharedObjectSequence<IFluidHandle<SharedMap>>,
+    children: SharedObjectSequence<D>,
+    root: SharedObjectSequence<D>,
   ) {
     if (children.listenerCount('sequenceDelta') !== 0) {
       return;
@@ -191,10 +190,7 @@ abstract class BaseFluidModel<T, O extends IFluidObject = object>
     console.log('bind new event to []');
     children.on(
       'sequenceDelta',
-      (
-        event: SequenceDeltaEvent,
-        target: SharedObjectSequence<IFluidHandle<SharedMap>>,
-      ) => {
+      (event: SequenceDeltaEvent, target: SharedObjectSequence<D>) => {
         const targetPath = this.getTargetSharedObjectSequencePath(target);
         if (event.isLocal) {
           this.processorGroup

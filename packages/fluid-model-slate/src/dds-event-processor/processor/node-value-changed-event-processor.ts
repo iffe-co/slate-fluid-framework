@@ -55,7 +55,7 @@ function nodeValueChangedEventProcessor(
   op: ISequencedDocumentMessage,
   target: SharedMap,
   root: SharedObjectSequence<IFluidHandle<SharedMap>>,
-  { targetPath }: ProcessorContext<Operation>,
+  { targetPath }: ProcessorContext<Operation, IFluidHandle<SharedMap>>,
 ): Operation[] {
   const type = (op && op.contents.type) || 'set';
   if (type === 'set' && !noChangedKey.includes(event.key as FLUIDNODE_KEYS)) {

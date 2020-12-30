@@ -1,3 +1,5 @@
+import { IFluidHandle } from '@fluidframework/core-interfaces';
+import { SharedMap } from '@fluidframework/map';
 import { EventProcessor } from '@solidoc/fluid-model-base';
 import { Operation } from '@solidoc/slate';
 import { textSequenceDeltaEventProcessor } from './processor';
@@ -7,7 +9,7 @@ import {
   remoteChildrenSequenceDeltaEventProcessor,
 } from './processor';
 
-const docEventprocessor: EventProcessor<Operation> = {
+const docEventprocessor: EventProcessor<Operation, IFluidHandle<SharedMap>> = {
   local: {
     SharedString: textSequenceDeltaEventProcessor,
     SharedMap: nodeValueChangedEventProcessor,
