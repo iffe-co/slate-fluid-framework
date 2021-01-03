@@ -90,7 +90,7 @@ class SlateFluidModel extends BaseFluidModel<
     {},
   );
 
-  apply(callerId: string, ops: Operation[]) {
+  applyHandler(callerId: string, ops: Operation[]) {
     console.log('model-apply:', ops);
     ops.forEach(op => {
       if (op.type === 'set_node' && op.path.length === 0) {

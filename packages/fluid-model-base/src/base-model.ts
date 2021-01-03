@@ -11,6 +11,7 @@ import { IValueChanged } from '@fluidframework/map';
 import { ISequencedDocumentMessage } from '@fluidframework/protocol-definitions';
 import { SequenceDeltaEvent } from '@fluidframework/sequence';
 import { ddsChangesQueue } from './dds-changes-queue';
+import { applyErrorHandler } from './apply-error-handler';
 
 abstract class BaseFluidModel<T, D = object, O extends IFluidObject = object>
   extends DataObject<O>
@@ -22,7 +23,22 @@ abstract class BaseFluidModel<T, D = object, O extends IFluidObject = object>
       : new Subject<BroadcastOpsRes<T>>();
   }
   changedObserver: Observable<BroadcastOpsRes<T>>;
-  abstract apply(callerId: string, op: T[]): void;
+
+  apply(callerId: string, ops: T[]): void {
+    try {
+      this.applyHandler(callerId, ops);
+    } catch (error) {
+      this.applyErrorHandler(ops, error, true);
+    }
+  }
+  protected applyErrorHandler(ops: T[], error: any, isLocal: boolean) {
+    console.error('apply-error: ', error, ops);
+    if (isLocal) {
+      applyErrorHandler.setAppleyError(ops, error);
+    }
+  }
+
+  abstract applyHandler(callerId: string, ops: T[]): void;
   abstract fetch(): any;
   abstract bindDefaultEventProcessor(): Observable<BroadcastOpsRes<T>>;
   abstract getTargetSharedStringPath(target: SharedString): number[];
@@ -30,6 +46,7 @@ abstract class BaseFluidModel<T, D = object, O extends IFluidObject = object>
   abstract getTargetSharedObjectSequencePath(
     target: SharedObjectSequence<D>,
   ): number[];
+
   protected readonly processorGroup: {
     processor: EventProcessor<T, D>;
     changedObserver: Subject<BroadcastOpsRes<T>>;
