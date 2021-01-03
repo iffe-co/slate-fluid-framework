@@ -115,7 +115,7 @@ abstract class BaseFluidModel<T, D = object, O extends IFluidObject = object>
     if (fluidNode.listenerCount('valueChanged') !== 0) {
       return;
     }
-    console.log('bind new event to map');
+    //console.log('bind new event to map');
     fluidNode.on(
       'valueChanged',
       (
@@ -163,7 +163,7 @@ abstract class BaseFluidModel<T, D = object, O extends IFluidObject = object>
     if (fluidText.listenerCount('sequenceDelta') !== 0) {
       return;
     }
-    console.log('bind new event to string');
+    //console.log('bind new event to string');
     fluidText.on(
       'sequenceDelta',
       (event: SequenceDeltaEvent, target: SharedString) => {
@@ -204,7 +204,7 @@ abstract class BaseFluidModel<T, D = object, O extends IFluidObject = object>
     if (children.listenerCount('sequenceDelta') !== 0) {
       return;
     }
-    console.log('bind new event to []');
+    // console.log('bind new event to []');
     children.on(
       'sequenceDelta',
       (event: SequenceDeltaEvent, target: SharedObjectSequence<D>) => {
