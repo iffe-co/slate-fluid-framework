@@ -34,5 +34,5 @@
     "@fluidframework/sequence": "^0.31.1",
     "rxjs": "^6.6.3"
   },
-  "gitHead": "b49d1cc580949699fbbc99fae1fb2013c138be28"
+  "gitHead": "c62d9516b375d385ea44eb3b9c0ba343cdcebf4e"
 }
