@@ -28,10 +28,10 @@
     "url": "https://github.com/iffe-co/slate-fluid-framework/issues"
   },
   "dependencies": {
-    "@fluidframework/aqueduct": "^0.30.4",
-    "@fluidframework/core-interfaces": "^0.30.4",
-    "@fluidframework/map": "^0.30.4",
-    "@fluidframework/sequence": "^0.30.4",
+    "@fluidframework/aqueduct": "^0.31.1",
+    "@fluidframework/core-interfaces": "^0.31.1",
+    "@fluidframework/map": "^0.31.1",
+    "@fluidframework/sequence": "^0.31.1",
     "rxjs": "^6.6.3"
   },
   "gitHead": "b49d1cc580949699fbbc99fae1fb2013c138be28"
