@@ -8,8 +8,8 @@
   "author": "CoffeyGit <tjcaofei@126.com>",
   "homepage": "https://github.com/iffe-co/slate-fluid-framework#readme",
   "license": "ISC",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.es.js",
+  "main": "dist/index.es.mjs",
+  "module": "dist/index.es.mjs",
   "types": "dist/index.d.ts",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
