@@ -20,7 +20,7 @@ let buildFileNum = 0;
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
 module.exports = (opt, format = 'cjs') => {
-  const file = `${path.resolve(opt.path, './dist')}/index.${format}.${format === 'es' ? 'mjs' : 'cjs'}`;
+  const file = `${path.resolve(opt.path, './dist')}/index.${format}.js`;
   const getInput = filename => path.resolve(opt.path, `./src/${filename}`);
   const isTs = fs.existsSync(getInput('index.ts'));
   const input = isTs ? getInput('index.ts') : getInput('index.js');
