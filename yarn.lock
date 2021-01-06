@@ -2998,21 +2998,21 @@
     minimist "^1.2.5"
     shelljs "^0.8.4"
 
-"@solidoc/is-plain-object@0.1.0":
-  version "0.1.0"
-  resolved "https://npm.pkg.github.com/download/@solidoc/is-plain-object/0.1.0/edf239703059d793dcdf5e42ef28500b29da3d448d592876f54cf375c973a3a9#aa285ffe8950fbfc0dc0453723b6ff7f1767cf3b"
-  integrity sha512-2Uz5j3qWpHzJZXdLk3prsV3wJIAt7+CDdGZ2o8iXO6mS17dT7S95xXRw6nnpXv2KJBxByFl3p1Tgjf+IH6PfMg==
+"@solidoc/is-plain-object@0.1.1":
+  version "0.1.1"
+  resolved "https://npm.pkg.github.com/download/@solidoc/is-plain-object/0.1.1/9ad096ab55b59f7215ac432e6d07326ea82ba97b15e9faa7526678c7ac90a862#c02c34b9bac55bd4247b79ac5846066a41d1ad0c"
+  integrity sha512-FXMuTSz3F4DwQ+CbkSXBuAwsdAM3X/567LLq9fP2Qcn1r4rP79arleeG4ADLQTIE2sZL5sjyGLvm8ZZgVkgMvw==
 
-"@solidoc/slate-dependencies@0.1.4":
-  version "0.1.4"
-  resolved "https://npm.pkg.github.com/download/@solidoc/slate-dependencies/0.1.4/1bb885fc65032ad9d5b14c7e89e4cabbd2a05ef4817b88c7c4608a8a2bf6e679#b963c34bdb23888921f38e87d8ee92fa79bd47c9"
-  integrity sha512-EQ09/oSQdYYvlukGeA22+d4GzRvHZdTnc0tTLdoGU3wnGjmLNF2ZuFoR/uG3HcoNyEY7Rw8VtBvPLP4tGMnzpA==
+"@solidoc/slate-dependencies@^0.1.5":
+  version "0.1.5"
+  resolved "https://npm.pkg.github.com/download/@solidoc/slate-dependencies/0.1.5/bb006ac8a57b88a0c0473a41cb69fc659adea79a68083c7e4f69b7417eb16ce6#5b9b7824777d0405da4908b3642995db1b47a52f"
+  integrity sha512-xYnMbIXz59AefsNtQwOrIBCJmAYmTlFCrpRdN1j4QrTIQnQIZrToWqRWKnnhx+58s5HZ8ritUKgDASP+cN9Www==
   dependencies:
-    "@solidoc/is-plain-object" "0.1.0"
-    "@solidoc/slate" "0.2.1"
-    "@solidoc/slate-history" "0.1.0"
-    "@solidoc/slate-hyperscript" "0.1.0"
-    "@solidoc/slate-react" "0.1.4"
+    "@solidoc/is-plain-object" "0.1.1"
+    "@solidoc/slate" "0.2.2"
+    "@solidoc/slate-history" "0.1.1"
+    "@solidoc/slate-hyperscript" "0.1.1"
+    "@solidoc/slate-react" "0.1.5"
     esrever "^0.2.0"
     immer "8.0.0"
     is-hotkey "^0.1.7"
@@ -3020,25 +3020,25 @@
     scroll-into-view-if-needed "^2.2.20"
     tiny-warning "^1.0.3"
 
-"@solidoc/slate-history@0.1.0":
-  version "0.1.0"
-  resolved "https://npm.pkg.github.com/download/@solidoc/slate-history/0.1.0/525d3d180e93236a6fd980eb27f8ffe77e41cf942a63312fd8b5ab03461e81c9#93db2eb4fbb19daedf54d73faa2443f3abe3955e"
-  integrity sha512-V+7hu/IqjaJwkUGSQ3HlESn5wYUyADUDWRTimNIbZm/tgvtaTvFbemyMhl9gjSpTG1tiwljr1D3N6avA2TCk0Q==
+"@solidoc/slate-history@0.1.1":
+  version "0.1.1"
+  resolved "https://npm.pkg.github.com/download/@solidoc/slate-history/0.1.1/df26a33974d213f4788a3b506f3a5852d33399c54cafc564c51a4d55f571fb6d#be84f59464094112c6dce40c04944619b8b3b7e7"
+  integrity sha512-8H62PnvtwZdViWm75hkrJFScKcz2FbmUodcITbTzsyLRPcnSGb73UbpIeuDfD4WKDgrCokju9/WUv4eFYxtfCQ==
 
-"@solidoc/slate-hyperscript@0.1.0":
-  version "0.1.0"
-  resolved "https://npm.pkg.github.com/download/@solidoc/slate-hyperscript/0.1.0/8ee4da3f98574873252d63ca09cb024f54d0a35a3dd447de22dffc8258cd2e77#46b9dded7b3c071d4551282acba4e14e901cf5eb"
-  integrity sha512-hsLaypDQLWUYy3AAW33omHbqCfFF7TXvOpNL+sF9HWqToTwiJvJic+wdMRmXz+DLEdmw171cMZWBpksz0u7VqQ==
+"@solidoc/slate-hyperscript@0.1.1":
+  version "0.1.1"
+  resolved "https://npm.pkg.github.com/download/@solidoc/slate-hyperscript/0.1.1/aba2cffef1bc878c2dfc94d99438fa1775b6ab839e29277c83889a88ba8222d6#9b6c603bf29123cb61713dba89669254f23875d0"
+  integrity sha512-7wf/hsCJW2EUDCRnUetGu2Vq1fH7LJUs+zPcm1zmA8SpACirBJ2ud+eCV8VjdH3w30SYU9KO+OjH+9km1qGjmg==
 
-"@solidoc/slate-react@0.1.4":
-  version "0.1.4"
-  resolved "https://npm.pkg.github.com/download/@solidoc/slate-react/0.1.4/dc4f68603ad7e5404d27b318600d0aaaeaf7b1cc107f0adf37a8149828b5160b#ca0a08c24b64ccf2e24aaf2ddc4e3a1acfb7126b"
-  integrity sha512-btk3DofzOnQg4/Bk3GUDM0IgPMh6pz6YfApqeJMfnjBVmt3GEBxnpYEJaSwQNs1kfJgPAwsFvTL91YKkQgQ9Tw==
+"@solidoc/slate-react@0.1.5":
+  version "0.1.5"
+  resolved "https://npm.pkg.github.com/download/@solidoc/slate-react/0.1.5/bb063c9c98f88a1e61df5ce6d817e73e15f2766e34573a007ab5832282e0cfdc#263a4b98c70dd6031d6d7e5c42b0b0bf824a070d"
+  integrity sha512-GUWuftWD7eY0NenYlW+Ik7pTC8tq0Hz/xQL/aqGWF+QyXqUOrxIx6t1MLdamj+MAEp2GgXkctqdwI6D9xzjb9g==
 
-"@solidoc/slate@0.2.1":
-  version "0.2.1"
-  resolved "https://npm.pkg.github.com/download/@solidoc/slate/0.2.1/24a18e454eb8e5021b1ff4ce087e8a0a41d7bd6a347d5145be815f8a60c0a084#f92efda079bae461bc106e5ce20b55725113daa3"
-  integrity sha512-HIlzehKLoNWv0F5cgl/pOvUwc9Pe09tzgRicOH3ncZ3dQljGBbbyCFc4dkGnRMGaJ9n/JwTxkLdOcjAn9xGivQ==
+"@solidoc/slate@0.2.2":
+  version "0.2.2"
+  resolved "https://npm.pkg.github.com/download/@solidoc/slate/0.2.2/4091d17de21912c1b88adca04707dc914f31e65c7b5c540b559be156b0d4793a#2cb79e788bff02c50db2b84a1e9906bfbb0f249e"
+  integrity sha512-uCV+AkcApeCyjA4fbbk7gUZPA2e9j37cX7dWcVhTpWGJyiA436db28CFJZZmzjXXKZZ0YsMzOek1v4F7BsnlUQ==
 
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.7":
   version "7.1.12"
