@@ -1,6 +1,6 @@
 {
   "name": "@solidoc/slate-fluid",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "description": "adapter for slate to fluid framework",
   "keywords": [
     "fluid",
@@ -29,7 +29,7 @@
     "url": "https://github.com/iffe-co/slate-fluid-framework/issues"
   },
   "dependencies": {
-    "@solidoc/fluid-model-slate": "^0.1.16"
+    "@solidoc/fluid-model-slate": "^0.1.17"
   },
   "gitHead": "c62d9516b375d385ea44eb3b9c0ba343cdcebf4e"
 }
