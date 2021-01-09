@@ -205,7 +205,36 @@ class SlateFluidModel extends BaseFluidModel<
     };
   }
 
-  private;
+  private fetchChildren = (root: FluidNodeChildren) => {
+    const slateNodes: any[] = [];
+    const nodeHandles = (root || this.fluidNodeSequence).getRange(0);
+    for (let nodeHandle of nodeHandles) {
+      const node = getNodeFromCacheByHandle(nodeHandle);
+      const slateNode = {};
+      if (node.has(FLUIDNODE_KEYS.CHILDREN)) {
+        const childrenHandle = node.get<FluidNodeChildrenHandle>(
+          FLUIDNODE_KEYS.CHILDREN,
+        );
+        const children = getChildrenFromCacheByHandle(childrenHandle);
+        slateNode[FLUIDNODE_KEYS.CHILDREN] = this.fetchChildren(children);
+      }
+      if (node.has(FLUIDNODE_KEYS.TEXT)) {
+        const textHandle = node.get<FluidNodePropertyHandle>(
+          FLUIDNODE_KEYS.TEXT,
+        );
+        const text = getTextFromCacheByHandle(textHandle);
+        slateNode[FLUIDNODE_KEYS.TEXT] = text.getText();
+      }
+      [...node.keys()]
+        .filter(k => k !== 'children' && k !== 'text')
+        .forEach(k => {
+          slateNode[k] = node.get(k);
+        });
+      slateNodes.push(slateNode);
+    }
+    return slateNodes;
+  };
+
   private async toInitSlateValue(root: FluidNodeChildren) {
     const slateNodes: any[] = [];
     const nodeHandles = root.getRange(0);
