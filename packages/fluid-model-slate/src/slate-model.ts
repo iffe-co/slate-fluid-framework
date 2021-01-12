@@ -125,12 +125,12 @@ class SlateFluidModel extends BaseFluidModel<
     const node_0_0 = SharedMap.create(this.runtime);
     const node_0_0_text = SharedString.create(this.runtime);
 
-    node_0.set(FLUIDNODE_KEYS.CHILDREN, node_0_children.handle);
-    node_0.set('type', 'Paragraph');
-    node_0_children.insert(0, [node_0_0.handle]);
-    node_0_0.set(FLUIDNODE_KEYS.TEXT, node_0_0_text.handle);
+    // node_0.set(FLUIDNODE_KEYS.CHILDREN, node_0_children.handle);
+    // node_0.set('type', 'Paragraph');
+    // node_0_children.insert(0, [node_0_0.handle]);
+    // node_0_0.set(FLUIDNODE_KEYS.TEXT, node_0_0_text.handle);
 
-    fluidNodeSequence.insert(0, [node_0.handle]);
+    // fluidNodeSequence.insert(0, [node_0.handle]);
     this.fluidNodeSequence = fluidNodeSequence as SharedObjectSequence<
       IFluidHandle<SharedMap>
     >;
