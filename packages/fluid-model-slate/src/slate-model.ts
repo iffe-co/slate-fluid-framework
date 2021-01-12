@@ -200,7 +200,9 @@ class SlateFluidModel extends BaseFluidModel<
     return {
       id: this.id,
       title: this.docProperties.get(FLUIDNODE_KEYS.TITLE),
+      desc: this.docProperties.get(FLUIDNODE_KEYS.DESC),
       icon: this.docProperties.get(FLUIDNODE_KEYS.ICON),
+      props: this.docProperties.get(FLUIDNODE_KEYS.DOC_PROPS),
       children: this.fetchChildren(this.fluidNodeSequence),
     };
   }

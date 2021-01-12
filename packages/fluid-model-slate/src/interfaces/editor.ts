@@ -56,7 +56,9 @@ enum FLUIDNODE_KEYS {
   TEXT = 'text',
   TITALIC = 'titalic',
   TITLE = 'title',
+  DESC = 'desc',
   ICON = 'icon',
+  DOC_PROPS = 'props',
   PROPERTIES = 'properties',
 }
 
