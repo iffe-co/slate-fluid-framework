@@ -6,6 +6,11 @@ type OperationResolver = {
   changedObserver: Subject<any>;
 };
 
+type NotifyItem = {
+  changedObserver: Subject<any>;
+  ops: any[];
+};
+
 class DdsChangesQueue {
   private resolverMap: Map<string, OperationResolver[]>;
   private currentKey!: string;
@@ -30,6 +35,26 @@ class DdsChangesQueue {
     currentValue.push(resolver);
   }
 
+  private mergeTheSameSubjectOps = (
+    notifyGroup: NotifyItem[],
+  ): NotifyItem[] => {
+    const broadcastLocalOpMap = new Map<Subject<any>, any[]>();
+    notifyGroup.reduce((p: Map<Subject<any>, any[]>, c: NotifyItem) => {
+      if (p.has(c.changedObserver)) {
+        c.ops.forEach(op => {
+          p.get(c.changedObserver)?.push(op);
+        });
+      } else {
+        p.set(c.changedObserver, [...c.ops]);
+      }
+      return p;
+    }, broadcastLocalOpMap);
+    return [...broadcastLocalOpMap.keys()].map(k => ({
+      changedObserver: k,
+      ops: broadcastLocalOpMap.get(k) as any[],
+    }));
+  };
+
   public async resolveOperations(key: string = '') {
     if (this.resolverMap.has(key)) {
       const resolvers = this.resolverMap.get(key) || [];
@@ -42,7 +67,8 @@ class DdsChangesQueue {
         }),
       );
       this.resolverMap.delete(key);
-      return notifiableGroup;
+      const mergeNotifiableGroup = this.mergeTheSameSubjectOps(notifiableGroup);
+      return mergeNotifiableGroup;
     } else {
       return [];
     }
