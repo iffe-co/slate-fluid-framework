@@ -41,7 +41,7 @@
     "@fluidframework/test-runtime-utils": "^0.31.1",
     "@fluidframework/test-utils": "^0.31.1",
     "@solidoc/fluid-model-base": "^0.1.20",
-    "@solidoc/slate-dependencies": "^0.1.5",
+    "@solidoc/slate-dependencies": "^0.1.7",
     "core-js": "3.8.2",
     "rxjs": "^6.6.3"
   },
