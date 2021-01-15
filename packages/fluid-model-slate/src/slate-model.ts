@@ -138,7 +138,7 @@ class SlateFluidModel extends BaseFluidModel<
 
     // init doc properties
     const docProperties = SharedMap.create(this.runtime);
-    docProperties.set(FLUIDNODE_KEYS.TITLE, 'default title');
+    docProperties.set(FLUIDNODE_KEYS.TITLE, '');
     docProperties.set(FLUIDNODE_KEYS.ICON, '');
     docProperties.set(FLUIDNODE_KEYS.TYPE, 'Page');
 
