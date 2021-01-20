@@ -102,7 +102,12 @@ class SlateFluidModel extends BaseFluidModel<
       }
     });
     this.broadcastLocalOp(callerId);
-    this.addEventListenerHandler(this.fluidNodeSequence);
+    this.addEventListenerHandler(
+      this.fluidNodeSequence,
+      ops.every(
+        op => op.type === 'set_selection' || (op.path as number[]).length < 2,
+      ),
+    );
   }
 
   private applySetRootNodeOp = (op: SetNodeOperation) => {
@@ -152,8 +157,6 @@ class SlateFluidModel extends BaseFluidModel<
       this.root.get(FLUIDNODE_KEYS.PROPERTIES).get(),
     ]);
 
-    await this.addDDSToCache();
-    this.addEventListenerHandler(this.fluidNodeSequence);
     this.onDocPropertiesChanged();
   }
 
@@ -191,9 +194,14 @@ class SlateFluidModel extends BaseFluidModel<
     );
   }
 
-  private async addDDSToCache() {
-    const initValue = await this.toInitSlateValue(this.fluidNodeSequence);
+  private async addDDSToCache(deep: boolean = true) {
+    const initValue = await this.toInitSlateValue(this.fluidNodeSequence, deep);
     console.log('init value', initValue);
+  }
+
+  public async init(deep: boolean = true) {
+    await this.addDDSToCache(deep);
+    this.addEventListenerHandler(this.fluidNodeSequence, deep);
   }
 
   public fetch() {
@@ -237,14 +245,17 @@ class SlateFluidModel extends BaseFluidModel<
     return slateNodes;
   };
 
-  private async toInitSlateValue(root: FluidNodeChildren) {
+  private async toInitSlateValue(
+    root: FluidNodeChildren,
+    deep: boolean = true,
+  ) {
     const slateNodes: any[] = [];
     const nodeHandles = root.getRange(0);
     for (let nodeHandle of nodeHandles) {
       const node = await nodeHandle.get();
       addNodeToCache(node);
       const slateNode = {};
-      if (node.has(FLUIDNODE_KEYS.CHILDREN)) {
+      if (node.has(FLUIDNODE_KEYS.CHILDREN) && deep) {
         const children = await node
           .get<FluidNodeChildrenHandle>(FLUIDNODE_KEYS.CHILDREN)
           .get();
@@ -270,21 +281,22 @@ class SlateFluidModel extends BaseFluidModel<
     return slateNodes;
   }
 
-  addEventListenerHandler = (root: FluidNodeChildren) => {
+  addEventListenerHandler = (root: FluidNodeChildren, deep: boolean = true) => {
     this.bindSharedObjectSequenceEvent(root, root);
     const nodeHandles = root.getRange(0);
     for (let handle of nodeHandles) {
-      this.addListenerToNode(handle, root);
+      this.addListenerToNode(handle, root, deep);
     }
   };
 
   addListenerToNode = (
     nodeHandle: IFluidHandle<SharedMap>,
     root: FluidNodeChildren,
+    deep: boolean = true,
   ) => {
     const node = getNodeFromCacheByHandle(nodeHandle);
     this.bindSharedMapEvent(node, root);
-    if (node.has(FLUIDNODE_KEYS.CHILDREN)) {
+    if (node.has(FLUIDNODE_KEYS.CHILDREN) && deep) {
       const childrenHandle = <FluidNodeChildrenHandle>(
         node.get(FLUIDNODE_KEYS.CHILDREN)
       );
